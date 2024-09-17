@@ -1,0 +1,30 @@
+{
+  "name": "docker_web_app",
+  "version": "1.0.0",
+  "description": "Node.js on Docker",
+  "author": "First Last <first.last@example.com>",
+  "main": "index.ts",
+  "scripts": {
+    "start": "ts-node-dev --poll src/index.ts",
+    "format": "prettier --write src/",
+    "typeorm": "typeorm-ts-node-commonjs"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "ejs": "^3.1.10",
+    "express": "^4.16.1",
+    "pg": "^8.12.0",
+    "reflect-metadata": "^0.2.2",
+    "routing-controllers": "^0.10.4",
+    "socket.io": "^4.7.5",
+    "ts-node-dev": "^2.0.0",
+    "typeorm": "^0.3.20"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.5.5",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.2"
+  }
+}
