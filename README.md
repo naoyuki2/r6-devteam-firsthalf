@@ -13,6 +13,14 @@ cd r6-devteam-firsthalf
 code .
 ```
 
+パッケージをインストールするために下記のコマンドを実行
+
+※ npm をマシンに入れていない場合はインストールする必要あり
+
+```
+npm install
+```
+
 Dockerを起動するために、`r6-devteam-firsthalf` 直下で下記のコマンドを実行
 
 ```
