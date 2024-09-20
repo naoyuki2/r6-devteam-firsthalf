@@ -1,6 +1,6 @@
 // アプリケーション全体で使用するページを定義する
 export enum AppPages {
-  home = 'home.ejs',
+  landing = 'landing.ejs',
 }
 
 // 全てのページで渡すデータを定義する

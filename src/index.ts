@@ -27,5 +27,9 @@ app.use(
   '/icons',
   express.static(path.join(__dirname, '../node_modules/bootstrap-icons/font')),
 )
+app.use(
+  '/css',
+  express.static(path.join(__dirname, '../public/css')),
+)
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
