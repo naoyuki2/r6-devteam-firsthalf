@@ -1,10 +1,9 @@
 import express from 'express'
 import { createExpressServer } from 'routing-controllers'
-import { RouteController } from './controller/route.controller'
-import { TravelController } from './controller/travel.controller'
-import { OrderController } from './controller/order.controller'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
+import { OrderController } from './module/order/order.controller'
+import { RouteController } from './module/route/route.controller'
 
 const PORT = 3000
 
@@ -17,7 +16,7 @@ AppDataSource.initialize()
   })
 
 const app = createExpressServer({
-  controllers: [RouteController,OrderController,TravelController],
+  controllers: [RouteController, OrderController],
 })
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'view'))
@@ -29,9 +28,6 @@ app.use(
   '/icons',
   express.static(path.join(__dirname, '../node_modules/bootstrap-icons/font')),
 )
-app.use(
-  '/css',
-  express.static(path.join(__dirname, '../public/css')),
-)
+app.use('/css', express.static(path.join(__dirname, '../public/css')))
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
