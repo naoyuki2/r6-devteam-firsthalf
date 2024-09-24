@@ -1,6 +1,8 @@
 import express from 'express'
 import { createExpressServer } from 'routing-controllers'
 import { RouteController } from './controller/route.controller'
+import { TravelController } from './controller/travel.controller'
+import { OrderController } from './controller/order.controller'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
 
@@ -15,7 +17,7 @@ AppDataSource.initialize()
   })
 
 const app = createExpressServer({
-  controllers: [RouteController],
+  controllers: [RouteController,OrderController,TravelController],
 })
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'view'))
