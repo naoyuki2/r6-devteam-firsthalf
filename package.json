@@ -10,6 +10,7 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
+    "argon2": "^0.41.1",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "ejs": "^3.1.10",

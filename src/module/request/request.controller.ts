@@ -1,20 +1,20 @@
 import 'reflect-metadata'
 import { Request, Response, NextFunction } from 'express'
 import { Get, Param, Req, Res, Controller } from 'routing-controllers'
-import { OrderService } from './order.service'
+import { RequestService } from './request.service'
 
-@Controller('/api/orders')
-export class OrderController {
-  private orderService: OrderService
+@Controller('/api/requests')
+export class RequestController {
+  private requestService: RequestService
 
   constructor() {
-    this.orderService = new OrderService()
+    this.requestService = new RequestService()
   }
 
   @Get('/')
   async getAll(@Req() req: Request, @Res() res: Response, next: NextFunction) {
     try {
-      const orders = await this.orderService.getAll()
+      const orders = await this.requestService.getAll()
       return res.json(orders)
     } catch (error) {
       next(error)
@@ -28,7 +28,7 @@ export class OrderController {
     next: NextFunction,
   ) {
     try {
-      const order = await this.orderService.getOneById(id)
+      const order = await this.requestService.getOneById(id)
       return res.json(order)
     } catch (error) {
       next(error)
