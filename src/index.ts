@@ -2,7 +2,7 @@ import express from 'express'
 import { createExpressServer } from 'routing-controllers'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
-import { OrderController } from './module/order/order.controller'
+import { OrderController } from './module/request/request.controller'
 import { RouteController } from './module/route/route.controller'
 
 const PORT = 3000

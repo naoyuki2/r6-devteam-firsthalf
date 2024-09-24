@@ -1,4 +1,4 @@
-export class OrderService {
+export class RequestService {
   private orders = [
     {
       id: 101,
