@@ -15,6 +15,7 @@ export class UserController {
     try {
       const user = await this.userService.signup({ name, email, password })
       const token = generateToken(user.id)
+      // TODO : シリアライザーを作成してuser情報を整形する
       return { user, token }
     } catch (error) {
       console.error(error)
