@@ -10,25 +10,18 @@ export class UserController {
   private auth = new Auth()
 
   @Post('/signup')
-  async register(
-    @Body()
-    body: {
-      username: string
-      email: string
-      password: string
-    },
-    next: NextFunction,
-  ) {
-    const { username, email, password } = body
-
+  async register(@Body() user: any, next: NextFunction) {
+    console.error(user)
+    const { name, email, password } = user
+    console.error(name, email, password)
     try {
-      const user = await this.userService.signup(username, email, password) //user情報登録メソッドの呼び出し
-
+      const user = await this.userService.signup({ name, email, password }) //user情報登録メソッドの呼び出し
+      console.log('ユーザー情報登録通ったよ')
       const token = this.auth.generateToken(user.id) //token生成メソッドの呼び出し
-
+      console.log('トークン生成できたよ')
       return { message: '登録が成功しました。', token }
     } catch (error) {
-      next(error)
+      console.error(error)
     }
   }
 }

@@ -1,9 +1,11 @@
 import express from 'express'
-import { createExpressServer } from 'routing-controllers'
+import { BodyParam, createExpressServer } from 'routing-controllers'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
-import { OrderController } from './module/request/request.controller'
+import { RequestController } from './module/request/request.controller'
 import { RouteController } from './module/route/route.controller'
+import { UserController } from './module/user/user.controller'
+import bodyParser from 'body-parser'
 
 const PORT = 3000
 
@@ -16,8 +18,12 @@ AppDataSource.initialize()
   })
 
 const app = createExpressServer({
-  controllers: [RouteController, OrderController],
+  controllers: [RouteController, RequestController, UserController],
 })
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'view'))
 app.use(
