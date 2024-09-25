@@ -1,8 +1,14 @@
 import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm'
 
 import { Request } from '../request/request.entity'
-
 
 @Entity()
 export class User {
@@ -32,17 +38,20 @@ export class User {
     type: 'varchar',
     nullable: true,
   })
-  @ValidateIf(o => o.iconImageUrl !== null)
+  @ValidateIf((o) => o.iconImageUrl !== null)
   @IsString()
   icon_image_url: string | null = null
 
-  @Column("date")
+  @CreateDateColumn({
+    update: false,
+  })
   created_at!: Date
 
-  @Column("date")
+  @CreateDateColumn({
+    update: true,
+  })
   updated_at!: Date
 
   @OneToMany(() => Request, (request) => request.user)
   requests!: Request[]
-
 }
