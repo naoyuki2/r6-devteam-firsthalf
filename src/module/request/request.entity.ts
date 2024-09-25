@@ -27,11 +27,11 @@ export class Request {
     @IsString()
     location_details!: string
     
-    @Column("varchar")
+    @Column("varchar", {nullable:true})
     @IsString()
     delivery_location: string | null = null
 
-    @Column("date")
+    @Column("date", {nullable:true})
     delivery_date: Date | null = null
 
     @Column("text")
@@ -54,6 +54,6 @@ export class Request {
     @Column("date")
     updated_at!: Date
 
-    @Column("date")
+    @Column("date", {nullable:true})
     completed_at: Date | null = null
 }
