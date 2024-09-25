@@ -12,7 +12,10 @@ export class UserController {
   @Post('/signup')
   async register(@Body() user: any, next: NextFunction) {
     console.error(user)
-    const { name, email, password } = user
+    //const { name, email, password } = user
+    const name = 'test'
+    const email = 'test@example.com'
+    const password = '11111111'
     console.error(name, email, password)
     try {
       const user = await this.userService.signup({ name, email, password }) //user情報登録メソッドの呼び出し
