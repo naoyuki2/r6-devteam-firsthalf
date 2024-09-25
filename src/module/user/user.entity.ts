@@ -2,7 +2,7 @@ import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { Request } from '../request/request.entity'
-import { Item } from '../item/item.entity'
+
 
 @Entity()
 export class User {
@@ -45,6 +45,4 @@ export class User {
   @OneToMany(() => Request, (request) => request.user)
   requests!: Request[]
 
-  @OneToMany(() => Item, (item) => item.user)
-  items!: Item[]
 }

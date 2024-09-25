@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator'
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { User } from '../user/user.entity'
+
+import { Request } from '../request/request.entity'
 
 @Entity()
 export class Item {
@@ -18,6 +19,6 @@ export class Item {
     @Column("int")
     price!: number
 
-    @ManyToOne(() => User, (user) => user.items)
-    user!: User
+    @ManyToOne(() => Request, (request) => request.items)
+    request!: Request
 }

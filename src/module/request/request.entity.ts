@@ -2,6 +2,7 @@ import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { User } from '../user/user.entity'
+import { Item } from '../item/item.entity'
 
 export enum status {
     pending = "pending",
@@ -56,4 +57,8 @@ export class Request {
 
     @Column("date", {nullable:true})
     completed_at: Date | null = null
+
+    @OneToMany(() => Item, (item) => item.request)
+    items!: Item[]
+  
 }
