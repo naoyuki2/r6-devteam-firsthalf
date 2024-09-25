@@ -1,44 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ヘッダーとフッター</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
     <style>
-        .bg-blue {
-          background-color: #84C9EF !important;
-        }
-      </style>
+      .bg-blue {
+        background-color: #84c9ef !important;
+      }
+    </style>
   </head>
   <body>
     <!-- Header -->
-    <header class="bg-blue p-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <!-- 左側のマイページのアイコンのとこ -->
-          <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-          <!-- ヘッダーの真ん中のロゴがくるところ -->
-          <div class="position-absolute start-50 translate-middle-x">
-            <div class="rounded-circle bg-dark" style="width: 40px; height: 40px;"></div>
-          </div>
-        </div>
-      </header>
+    <header class="bg-blue px-3 py-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <!-- 左側のマイページのアイコンのとこ -->
+        <i class="bi bi-person-circle" style="font-size: 2rem"></i>
+        <!-- ヘッダーの真ん中のロゴがくるところ -->
+        <div
+          class="rounded-circle bg-dark"
+          style="width: 2rem; height: 2rem"
+        ></div>
+        <div style="width: 2rem; height: 2rem"></div>
+      </div>
+    </header>
 
-    <div class="container mt-5">
-      
+    <div class="container">
       <!--コンテンツ-->
     </div>
 
- <!-- Footer -->
-<footer class="bg-light fixed-bottom py-3">
-    <div class="d-flex justify-content-between w-100 px-5">
-      <i class="bi bi-house-door" style="font-size: 2rem;"></i>
-      <i class="bi bi-plus" style="font-size: 2rem;"></i>
-      <i class="bi bi-chat-dots" style="font-size: 2rem;"></i>
-    </div>
-  </footer>
-  
+    <!-- Footer -->
+    <footer class="bg-light fixed-bottom py-3 px-4">
+      <div class="d-flex justify-content-between">
+        <i class="bi bi-house-door" style="font-size: 2rem"></i>
+        <i class="bi bi-plus" style="font-size: 2rem"></i>
+        <i class="bi bi-chat-dots" style="font-size: 2rem"></i>
+      </div>
+    </footer>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
