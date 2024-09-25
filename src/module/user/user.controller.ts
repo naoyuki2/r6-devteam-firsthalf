@@ -1,28 +1,21 @@
 import 'reflect-metadata'
 import { NextFunction } from 'express'
-import { Controller, Post, Get, Put, Body } from 'routing-controllers'
+import { Controller, Post, Get, Put, Body, Req } from 'routing-controllers'
 import { UserService } from './user.service'
-import { Auth } from '../../utils/token'
+import { generateToken } from '../../utils/token'
+import { signUpParams } from './user.type'
 
 @Controller('/api/user')
 export class UserController {
   private userService = new UserService()
-  private auth = new Auth()
 
-  @Post('/signup')
-  async register(@Body() user: any, next: NextFunction) {
-    console.error(user)
-    //const { name, email, password } = user
-    const name = 'test'
-    const email = 'test@example.com'
-    const password = '11111111'
-    console.error(name, email, password)
+  @Post('/')
+  async register(@Body() user: signUpParams, next: NextFunction) {
+    const { name, email, password } = user
     try {
-      const user = await this.userService.signup({ name, email, password }) //user情報登録メソッドの呼び出し
-      console.log('ユーザー情報登録通ったよ')
-      const token = this.auth.generateToken(user.id) //token生成メソッドの呼び出し
-      console.log('トークン生成できたよ')
-      return { message: '登録が成功しました。', token }
+      const user = await this.userService.signup({ name, email, password })
+      const token = generateToken(user.id)
+      return { user, token }
     } catch (error) {
       console.error(error)
     }
