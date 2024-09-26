@@ -12,10 +12,10 @@ export class RequestController {
   }
 
   @Get('/')
-  async getAll(@Req() req: Request, @Res() res: Response, next: NextFunction) {
+  async getAll(@Req() _req: Request, @Res() res: Response, next: NextFunction) {
     try {
-      const orders = await this.requestService.getAll()
-      return res.json(orders)
+      const requests = await this.requestService.getAll()
+      return res.json(requests)
     } catch (error) {
       next(error)
     }
@@ -24,12 +24,13 @@ export class RequestController {
   @Get('/:id')
   async getOneById(
     @Param('id') id: number,
+    @Req() _req: Request,
     @Res() res: Response,
     next: NextFunction,
   ) {
     try {
-      const order = await this.requestService.getOneById(id)
-      return res.json(order)
+      const request = await this.requestService.getOneById(id)
+      return res.json(request)
     } catch (error) {
       next(error)
     }
