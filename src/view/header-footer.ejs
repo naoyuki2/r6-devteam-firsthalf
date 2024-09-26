@@ -16,11 +16,15 @@
       .bg-blue {
         background-color: #84c9ef !important;
       }
+
+      body {
+        padding-top: 70px; /* ここにヘッダー分のスペースを追加した */
+      }
     </style>
   </head>
   <body>
     <!-- Header -->
-    <header class="bg-blue px-3 py-2">
+    <header class="bg-blue px-3 py-2 fixed-top">
       <div class="d-flex justify-content-between align-items-center">
         <!-- 左側のマイページのアイコンのとこ -->
         <i class="bi bi-person-circle" style="font-size: 2rem"></i>
@@ -34,11 +38,16 @@
     </header>
 
     <div class="container">
-      <!--コンテンツ-->
+      <% for(let i = 1; i <= 10; i++) { %>
+        <div class="bg-primary text-white p-2 mb-2">
+          <h1>コンテンツ <%= i %></h1>
+          <p>ここにコンテンツが入ります。</p>
+        </div>
+      <% } %>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-light fixed-bottom py-3 px-4">
+    <footer class="bg-light sticky-bottom py-3 px-4 mt-5">
       <div class="d-flex justify-content-between">
         <i class="bi bi-house-door" style="font-size: 2rem"></i>
         <i class="bi bi-plus" style="font-size: 2rem"></i>
