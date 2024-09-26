@@ -8,7 +8,7 @@ import { userSerializer } from '../user/user.serializer'
 
 @Controller('/api/auth')
 export class AuthController {
-  private userService = new AuthService()
+  private authService = new AuthService()
 
   @Post('/')
   async signIn(
@@ -19,7 +19,7 @@ export class AuthController {
   ) {
     const { email, password } = user
     try {
-      const authenticatedUser = await this.userService.signIn({
+      const authenticatedUser = await this.authService.signIn({
         email,
         password,
       })
