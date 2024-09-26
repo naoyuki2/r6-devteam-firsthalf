@@ -1,5 +1,5 @@
 import { AppDataSource } from '../../app-data-source'
-import { hash } from '../../lib/hash'
+import { hashPassword } from '../../lib/hash'
 import { User } from './user.entity'
 import { signUpParams } from './user.type'
 
@@ -12,7 +12,7 @@ export class UserService {
     if (existingUser) {
       throw new Error('このメールアドレスは既に登録されています。')
     }
-    const hashedPassword = await hash(password)
+    const hashedPassword = await hashPassword(password)
     const user = userRepository.create({
       name,
       email,

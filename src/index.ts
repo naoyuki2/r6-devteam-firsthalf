@@ -5,6 +5,7 @@ import { AppDataSource } from './app-data-source'
 import { RequestController } from './module/request/request.controller'
 import { RouteController } from './module/route/route.controller'
 import { UserController } from './module/user/user.controller'
+import { AuthController } from './module/auth/auth.controller'
 
 const PORT = 3000
 
@@ -35,7 +36,12 @@ app.use(
 app.use('/css', express.static(path.join(__dirname, '../public/css')))
 
 useExpressServer(app, {
-  controllers: [RouteController, RequestController, UserController],
+  controllers: [
+    RouteController,
+    RequestController,
+    UserController,
+    AuthController,
+  ],
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
