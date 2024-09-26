@@ -6,7 +6,7 @@ import { signUpParams } from './user.type'
 const userRepository = AppDataSource.getRepository(User)
 
 export class UserService {
-  async signup({ name, email, password }: signUpParams): Promise<User> {
+  async signUp({ name, email, password }: signUpParams): Promise<User> {
     // TODO : バリデーション処理の追加
     const existingUser = await userRepository.findOne({ where: { email } })
     if (existingUser) {

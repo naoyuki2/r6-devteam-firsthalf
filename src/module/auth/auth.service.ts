@@ -6,18 +6,18 @@ import { signInParams } from './auth.type'
 const userRepository = AppDataSource.getRepository(User)
 
 export class AuthService {
-  async signin({ email, password }: signInParams): Promise<User> {
-      const existingUser = await userRepository.findOne({ where: { email } })
+  async signIn({ email, password }: signInParams): Promise<User> {
+    const existingUser = await userRepository.findOne({ where: { email } })
 
-      if (!existingUser) {
-        throw new Error('User not found')
-      }
+    if (!existingUser) {
+      throw new Error('User not found')
+    }
 
-      const verify = await verifyPassword(existingUser.password, password)
+    const isVerify = await verifyPassword(existingUser.password, password)
 
-      if (!verify) {
-        throw new Error('Invalid password')
-      }
-      return existingUser
+    if (!isVerify) {
+      throw new Error('Invalid password')
+    }
+    return existingUser
   }
 }

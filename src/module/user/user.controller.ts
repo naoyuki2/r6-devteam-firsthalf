@@ -1,22 +1,27 @@
 import 'reflect-metadata'
-import { NextFunction } from 'express'
-import { Controller, Post, Get, Put, Body, Req } from 'routing-controllers'
+import { NextFunction, Request, Response } from 'express'
+import { Controller, Post, Get, Put, Body, Req, Res } from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { signUpParams } from './user.type'
+import { userSerializer } from './user.serializer'
 
 @Controller('/api/user')
 export class UserController {
   private userService = new UserService()
 
   @Post('/')
-  async register(@Body() user: signUpParams, next: NextFunction) {
+  async signUp(
+    @Body() user: signUpParams,
+    @Req() _req: Request,
+    @Res() res: Response,
+    next: NextFunction,
+  ) {
     const { name, email, password } = user
     try {
-      const user = await this.userService.signup({ name, email, password })
+      const user = await this.userService.signUp({ name, email, password })
       const token = generateToken(user.id)
-      // TODO : シリアライザーを作成してuser情報を整形する
-      return { user, token }
+      res.json({ user: userSerializer(user), token })
     } catch (error) {
       console.error(error)
     }
