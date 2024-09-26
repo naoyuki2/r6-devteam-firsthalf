@@ -3,6 +3,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 
 import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
+import { Room } from '../room/room.entity'
 
 export enum status {
     pending = "pending",
@@ -60,5 +61,8 @@ export class Request {
 
     @OneToMany(() => Item, (item) => item.request)
     items!: Item[]
+
+    @OneToMany(() => Room, (room) => room.request)
+    rooms!: Room[]
   
 }

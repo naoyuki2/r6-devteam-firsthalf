@@ -2,6 +2,8 @@ import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { Request } from '../request/request.entity'
+import { RoomUser } from '../roomuser/roomuser.entity'
+import { Message } from '../message/message.entity'
 
 
 @Entity()
@@ -44,5 +46,11 @@ export class User {
 
   @OneToMany(() => Request, (request) => request.user)
   requests!: Request[]
+
+  @OneToMany(() => RoomUser, (roomuser) => roomuser.user)
+  roomusers!: RoomUser[]
+
+  @OneToMany(() => Message, (message) => message.user)
+  messages!: Message[]
 
 }
