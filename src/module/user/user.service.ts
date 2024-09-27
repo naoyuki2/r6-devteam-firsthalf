@@ -21,4 +21,12 @@ export class UserService {
 
     return await userRepository.save(user)
   }
+
+  async getUserById(id: number): Promise<User> {
+    const user = await userRepository.findOne({ where: { id } })
+    if (!user) {
+      throw new Error(`Order with id ${id} not found`)
+    }
+    return user
+  }
 }
