@@ -3,16 +3,16 @@ import { NextFunction, Request, Response } from 'express'
 import { Controller, Post, Get, Put, Body, Req, Res } from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
-import { signUpParams } from './user.type'
+import { SignUpParams, UserEndpoint } from './user.type'
 import { userSerializer } from './user.serializer'
 
-@Controller('/api/user')
+@Controller()
 export class UserController {
   private userService = new UserService()
 
-  @Post('/')
+  @Post(UserEndpoint.signUp)
   async signUp(
-    @Body() user: signUpParams,
+    @Body() user: SignUpParams,
     @Req() _req: Request,
     @Res() res: Response,
     next: NextFunction,
