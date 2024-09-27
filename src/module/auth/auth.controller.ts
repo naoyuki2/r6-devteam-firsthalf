@@ -4,10 +4,11 @@ import { Controller, Post, Body, Req, Res } from 'routing-controllers'
 import { generateToken } from '../../utils/token'
 import { AuthService } from './auth.service'
 import { signInParams } from './auth.type'
+import { userSerializer } from '../user/user.serializer'
 
 @Controller('/api/auth')
 export class AuthController {
-  private userService = new AuthService()
+  private authService = new AuthService()
 
   @Post('/')
   async signIn(
@@ -18,7 +19,7 @@ export class AuthController {
   ) {
     const { email, password } = user
     try {
-      const authenticatedUser = await this.userService.signIn({
+      const authenticatedUser = await this.authService.signIn({
         email,
         password,
       })
@@ -28,7 +29,7 @@ export class AuthController {
       }
 
       const token = generateToken(authenticatedUser.id)
-      return { user: authenticatedUser, token }
+      res.json({ user: userSerializer(authenticatedUser), token })
     } catch (error) {
       console.error(error)
       next(error)
