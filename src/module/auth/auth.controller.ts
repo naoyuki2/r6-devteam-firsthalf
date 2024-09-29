@@ -1,38 +1,27 @@
 import 'reflect-metadata'
-import { NextFunction, Request, Response } from 'express'
-import { Controller, Post, Body, Req, Res } from 'routing-controllers'
+import { Request, Response } from 'express'
+import { Controller, Post, Req, Res } from 'routing-controllers'
 import { generateToken } from '../../utils/token'
 import { AuthService } from './auth.service'
-import { SignInParams, AuthEndpoints } from './auth.type'
 import { userSerializer } from '../user/user.serializer'
+import { SignIn } from './auth.type'
 
 @Controller()
 export class AuthController {
   private authService = new AuthService()
 
-  @Post(AuthEndpoints.auth)
+  @Post(SignIn.endpoint)
   async signIn(
-    @Body() user: SignInParams,
-    @Req() _req: Request,
-    @Res() res: Response,
-    next: NextFunction,
+    @Req() req: Request<{}, {}, SignIn.req, {}>,
+    @Res() res: Response<SignIn.res>,
   ) {
-    const { email, password } = user
-    try {
-      const authenticatedUser = await this.authService.signIn({
-        email,
-        password,
-      })
+    const { email, password } = req.body
+    const authenticatedUser = await this.authService.signIn({
+      email,
+      password,
+    })
 
-      if (!authenticatedUser) {
-        return { message: 'Invalid email or password' }
-      }
-
-      const token = generateToken(authenticatedUser.id)
-      res.json({ user: userSerializer(authenticatedUser), token })
-    } catch (error) {
-      console.error(error)
-      next(error)
-    }
+    const token = generateToken(authenticatedUser.id)
+    res.json({ user: userSerializer(authenticatedUser), token })
   }
 }

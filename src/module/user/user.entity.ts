@@ -35,12 +35,12 @@ export class User {
   @IsNotEmpty()
   password!: string
 
+  @ValidateIf((o) => o.icon_image_url !== null)
+  @IsString()
   @Column({
     type: 'varchar',
     nullable: true,
   })
-  @ValidateIf((o) => o.iconImageUrl !== null)
-  @IsString()
   icon_image_url: string | null = null
 
   @CreateDateColumn({
