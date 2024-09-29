@@ -1,12 +1,12 @@
 import { AppDataSource } from '../../app-data-source'
 import { verifyPassword } from '../../lib/hash'
 import { User } from '../user/user.entity'
-import { signInParams } from './auth.type'
+import { SignInParams } from './auth.type'
 
 const userRepository = AppDataSource.getRepository(User)
 
 export class AuthService {
-  async signIn({ email, password }: signInParams): Promise<User> {
+  async signIn({ email, password }: SignInParams): Promise<User> {
     const existingUser = await userRepository.findOne({ where: { email } })
 
     if (!existingUser) {

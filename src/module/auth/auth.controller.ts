@@ -3,16 +3,16 @@ import { NextFunction, Request, Response } from 'express'
 import { Controller, Post, Body, Req, Res } from 'routing-controllers'
 import { generateToken } from '../../utils/token'
 import { AuthService } from './auth.service'
-import { signInParams } from './auth.type'
+import { SignInParams, AuthEndpoints } from './auth.type'
 import { userSerializer } from '../user/user.serializer'
 
-@Controller('/api/auth')
+@Controller()
 export class AuthController {
   private authService = new AuthService()
 
-  @Post('/')
+  @Post(AuthEndpoints.auth)
   async signIn(
-    @Body() user: signInParams,
+    @Body() user: SignInParams,
     @Req() _req: Request,
     @Res() res: Response,
     next: NextFunction,

@@ -2,8 +2,9 @@ import 'reflect-metadata'
 import { Request, Response, NextFunction } from 'express'
 import { Get, Param, Req, Res, Controller } from 'routing-controllers'
 import { RequestService } from './request.service'
+import { RequestEndpoints } from './request.type'
 
-@Controller('/api/requests')
+@Controller()
 export class RequestController {
   private requestService: RequestService
 
@@ -11,7 +12,7 @@ export class RequestController {
     this.requestService = new RequestService()
   }
 
-  @Get('/')
+  @Get(RequestEndpoints.getAll)
   async getAll(@Req() _req: Request, @Res() res: Response, next: NextFunction) {
     try {
       const requests = await this.requestService.getAll()
@@ -21,7 +22,7 @@ export class RequestController {
     }
   }
 
-  @Get('/:id')
+  @Get(RequestEndpoints.getOneById)
   async getOneById(
     @Param('id') id: number,
     @Req() _req: Request,
