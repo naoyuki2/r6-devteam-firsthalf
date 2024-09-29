@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, HomeRenderData } from '../type/route'
+import { AppPages, HomeRenderData ,HeaderFooterRenderData} from '../type/route'
+
 
 @Controller()
 export class RouteController {
@@ -11,5 +12,12 @@ export class RouteController {
       title: 'Home',
       body: 'Welcome to the home page',
     }
+  }@Get('/header-footer')
+  @Render(AppPages.headerFooter)
+  headerFooter(): HeaderFooterRenderData {
+    return {
+      title: '',
+      body: '',
+    };
   }
 }
