@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, RenderData } from './page.type'
+import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
 
 @Controller()
 export class PageController {
@@ -24,6 +24,14 @@ export class PageController {
   login(): RenderData {
     return {
       title: 'Login',
+    }
+  }
+  @Get('/header-footer')
+  @Render(AppPages.headerFooter)
+  headerFooter(): HeaderFooterRenderData {
+    return {
+      title: '',
+      body: '',
     }
   }
 }
