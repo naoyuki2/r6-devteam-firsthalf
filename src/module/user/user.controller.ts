@@ -1,56 +1,33 @@
 import 'reflect-metadata'
-import { NextFunction, Request, Response } from 'express'
-import {
-  Controller,
-  Post,
-  Get,
-  Put,
-  Body,
-  Req,
-  Res,
-  Param,
-} from 'routing-controllers'
+import { Request, Response } from 'express'
+import { Controller, Post, Get, Req, Res } from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
-import { SignUpParams, UserEndpoint } from './user.type'
 import { userSerializer } from './user.serializer'
+import { GetById, SignUp } from './user.type'
 
 @Controller()
 export class UserController {
   private userService = new UserService()
 
-  @Post(UserEndpoint.signUp)
+  @Post(SignUp.endpoint)
   async signUp(
-    @Body() user: SignUpParams,
-    @Req() _req: Request,
-    @Res() res: Response,
-    next: NextFunction,
+    @Req() req: Request<{}, {}, SignUp.req, {}>,
+    @Res() res: Response<SignUp.res>,
   ) {
-    const { name, email, password } = user
-    try {
-      const user = await this.userService.signUp({ name, email, password })
-      const token = generateToken(user.id)
-      res.json({ user: userSerializer(user), token })
-    } catch (error) {
-      console.error(error)
-    }
+    const { name, email, password } = req.body
+    const getUser = await this.userService.signUp({ name, email, password })
+    const token = generateToken(getUser.id)
+    return res.json({ user: userSerializer(getUser), token })
   }
 
-  @Get(UserEndpoint.getUserById)
-  async getUser(
-    @Param('id') id: number,
-    @Res() res: Response,
-    _next: NextFunction,
+  @Get(GetById.endpoint)
+  async getById(
+    @Req() req: Request<GetById.param, {}, {}, {}>,
+    @Res() res: Response<GetById.res>,
   ) {
-    try {
-      const user = await this.userService.getUserById(id)
-      if (user) {
-        res.json({ user: userSerializer(user) })
-      } else {
-        console.error('User not found')
-      }
-    } catch (error) {
-      console.error(error)
-    }
+    const { id } = req.params
+    const user = await this.userService.getById({ id })
+    return res.json({ user: userSerializer(user) })
   }
 }

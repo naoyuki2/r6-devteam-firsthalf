@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 import {
   Column,
   Entity,
@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
 } from 'typeorm'
-
 import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
 
@@ -44,7 +43,7 @@ export class Request {
 
   @Column('text')
   @IsString()
-  description!: String
+  description!: string
 
   @Column({
     type: 'varchar',

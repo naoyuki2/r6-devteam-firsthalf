@@ -3,16 +3,16 @@ import { Request } from './request.entity'
 
 const requestRepository = AppDataSource.getRepository(Request)
 
+type GetByIdProps = {
+  id: number
+}
+
 export class RequestService {
   async getAll(): Promise<Request[]> {
     return await requestRepository.find()
   }
 
-  async getOneById(id: number): Promise<Request> {
-    const request = await requestRepository.findOne({ where: { id } })
-    if (!request) {
-      throw new Error(`Order with id ${id} not found`)
-    }
-    return request
+  async getById({ id }: GetByIdProps): Promise<Request> {
+    return await requestRepository.findOneByOrFail({ id })
   }
 }
