@@ -19,4 +19,11 @@ export class RouteController {
       title: 'Card',
     }
   }
+  @Get('/login')
+  @Render(AppPages.login)
+  login(): RenderData {
+    return {
+      title: 'Login',
+    }
+  }
 }
