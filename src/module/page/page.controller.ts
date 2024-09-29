@@ -11,4 +11,19 @@ export class PageController {
       title: 'Landing',
     }
   }
+
+  @Get('/card')
+  @Render(AppPages.card)
+  card(): RenderData {
+    return {
+      title: 'Card',
+    }
+  }
+  @Get('/login')
+  @Render(AppPages.login)
+  login(): RenderData {
+    return {
+      title: 'Login',
+    }
+  }
 }
