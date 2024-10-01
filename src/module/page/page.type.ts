@@ -6,6 +6,7 @@ export enum AppPages {
   landing = 'landing.ejs',
   request = 'request.ejs',
   login = 'login.ejs',
+  newregistraition = 'newregistraition.ejs',
 }
 
 // 全てのページで渡すデータを定義する

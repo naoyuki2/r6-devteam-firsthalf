@@ -28,6 +28,7 @@ export class PageController {
       title: 'Login',
     }
   }
+
   @Get('/header-footer')
   @Render(AppPages.headerFooter)
   headerFooter(): HeaderFooterRenderData {
