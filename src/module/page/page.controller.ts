@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
 import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
-import { fetchAllRequest } from '../request/request.client'
+import { getAllRequest } from '../request/request.client'
 @Controller()
 export class PageController {
   @Get('/')
@@ -15,7 +15,7 @@ export class PageController {
   @Get('/card')
   @Render(AppPages.card)
   async card() {
-    const data = await fetchAllRequest()
+    const data = await getAllRequest()
     return {
       title: 'Card',
       data: data,

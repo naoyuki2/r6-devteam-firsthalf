@@ -1,14 +1,8 @@
-import axios from 'axios'
 import { GetAll } from './request.type'
+import { axiosInstance } from '../../lib/axios.instance'
 
-export const fetchAllRequest = async (): Promise<GetAll.res> => {
-  const response = await axios.get(`${GetAll.endpoint}`, {
-    baseURL: 'http://localhost:3000', // APIのベースURL
-    headers: {
-      'Content-Type': 'application/json',
-      // Authorization: 'Bearer your_token',
-    },
-  })
+export const getAllRequest = async (): Promise<GetAll.res> => {
+  const response = await axiosInstance.get(`${GetAll.endpoint}`)
 
-  return response.data // レスポンスデータを返す
+  return response.data
 }
