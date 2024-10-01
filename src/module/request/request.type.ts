@@ -1,12 +1,12 @@
 import { Request } from './request.entity'
-
+import { User } from '../user/user.entity'
 const root = '/api/requests'
 
 export namespace GetAll {
   export const endpoint = root
 
   export type res = {
-    requests: Request[]
+    requests: any
   }
 }
 
