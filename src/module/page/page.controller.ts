@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, RenderData } from '../../type/route'
-
+import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
+import { getAllRequest, GetByIdRequest } from '../request/request.client'
 @Controller()
-export class RouteController {
+export class PageController {
   @Get('/')
   @Render(AppPages.landing)
   landing(): RenderData {
@@ -14,9 +14,11 @@ export class RouteController {
 
   @Get('/card')
   @Render(AppPages.card)
-  card(): RenderData {
+  async card() {
+    const data = await getAllRequest()
     return {
       title: 'Card',
+      data: data,
     }
   }
   @Get('/login')
@@ -27,11 +29,12 @@ export class RouteController {
     }
   }
 
-  @Get('/newregistraition')
-  @Render(AppPages.newregistraition)
-  newregistraition(): RenderData {
+  @Get('/header-footer')
+  @Render(AppPages.headerFooter)
+  headerFooter(): HeaderFooterRenderData {
     return {
-      title: 'newregistraition',
+      title: '',
+      body: '',
     }
   }
 }

@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 import {
   Column,
   Entity,
@@ -7,9 +7,9 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
 } from 'typeorm'
-
 import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
+import { Room } from '../room/room.entity'
 
 export enum status {
   pending = 'pending',
@@ -44,7 +44,7 @@ export class Request {
 
   @Column('text')
   @IsString()
-  description!: String
+  description!: string
 
   @Column({
     type: 'varchar',
@@ -61,6 +61,12 @@ export class Request {
   })
   created_at!: Date
 
+  @OneToMany(() => Item, (item) => item.request)
+  items!: Item[]
+
+  @OneToMany(() => Room, (room) => room.request)
+  rooms!: Room[]
+
   @CreateDateColumn({
     update: true,
   })
@@ -68,7 +74,4 @@ export class Request {
 
   @Column('date', { nullable: true })
   completed_at: Date | null = null
-
-  @OneToMany(() => Item, (item) => item.request)
-  items!: Item[]
 }

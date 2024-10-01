@@ -3,9 +3,10 @@ import { useExpressServer } from 'routing-controllers'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
 import { RequestController } from './module/request/request.controller'
-import { RouteController } from './module/route/route.controller'
+import { PageController } from './module/page/page.controller'
 import { UserController } from './module/user/user.controller'
 import { AuthController } from './module/auth/auth.controller'
+import { ErrorHandler } from './middleware/errorHandler'
 
 const PORT = 3000
 
@@ -37,11 +38,13 @@ app.use('/css', express.static(path.join(__dirname, '../public/css')))
 
 useExpressServer(app, {
   controllers: [
-    RouteController,
+    PageController,
     RequestController,
     UserController,
     AuthController,
   ],
+  middlewares: [ErrorHandler],
+  defaultErrorHandler: false,
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))

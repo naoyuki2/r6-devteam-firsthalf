@@ -5,10 +5,11 @@ import {
   Entity,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm'
 
 import { Request } from '../request/request.entity'
+import { RoomUser } from '../roomuser/roomuser.entity'
+import { Message } from '../message/message.entity'
 
 @Entity()
 export class User {
@@ -34,12 +35,12 @@ export class User {
   @IsNotEmpty()
   password!: string
 
+  @ValidateIf((o) => o.icon_image_url !== null)
+  @IsString()
   @Column({
     type: 'varchar',
     nullable: true,
   })
-  @ValidateIf((o) => o.iconImageUrl !== null)
-  @IsString()
   icon_image_url: string | null = null
 
   @CreateDateColumn({
@@ -54,4 +55,10 @@ export class User {
 
   @OneToMany(() => Request, (request) => request.user)
   requests!: Request[]
+
+  @OneToMany(() => RoomUser, (roomuser) => roomuser.user)
+  roomusers!: RoomUser[]
+
+  @OneToMany(() => Message, (message) => message.user)
+  messages!: Message[]
 }
