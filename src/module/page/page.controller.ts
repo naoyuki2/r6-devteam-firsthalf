@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
 import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
-
+import { getAllRequest, GetByIdRequest } from '../request/request.client'
 @Controller()
 export class PageController {
   @Get('/')
@@ -14,9 +14,11 @@ export class PageController {
 
   @Get('/card')
   @Render(AppPages.card)
-  card(): RenderData {
+  async card() {
+    const data = await getAllRequest()
     return {
       title: 'Card',
+      data: data,
     }
   }
   @Get('/login')
@@ -26,6 +28,7 @@ export class PageController {
       title: 'Login',
     }
   }
+
   @Get('/header-footer')
   @Render(AppPages.headerFooter)
   headerFooter(): HeaderFooterRenderData {

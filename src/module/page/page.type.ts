@@ -4,8 +4,10 @@ export enum AppPages {
   headerFooter = 'header-footer.ejs',
   card = 'card.ejs',
   landing = 'landing.ejs',
+  request = 'request.ejs',
   login = 'login.ejs',
   detail = 'detail.ejs',
+  newregistraition = 'newregistraition.ejs',
 }
 
 // 全てのページで渡すデータを定義する

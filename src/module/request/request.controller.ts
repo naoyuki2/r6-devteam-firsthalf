@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { Get, Controller, Req, Res } from 'routing-controllers'
 import { GetAll, GetById } from './request.type'
 import { RequestService } from './request.service'
+import { requestSerializer } from './request.serializer'
 
 @Controller()
 export class RequestController {
@@ -11,9 +12,8 @@ export class RequestController {
   @Get(GetAll.endpoint)
   async getAll(@Req() _req: Request, @Res() res: Response<GetAll.res>) {
     const requests = await this.requestService.getAll()
-    // TODO : RequestSerializer
     return res.json({
-      requests,
+      requests: requests.map((request) => requestSerializer(request)),
     })
   }
 
@@ -24,7 +24,8 @@ export class RequestController {
   ) {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
-    // TODO : RequestSerializer
-    return res.json({ request })
+    return res.json({
+      request:requestSerializer(request)
+    })
   }
 }
