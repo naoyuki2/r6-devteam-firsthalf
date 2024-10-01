@@ -5,7 +5,7 @@ import { getAllRequest, GetByIdRequest } from '../request/request.client'
 @Controller()
 export class PageController {
   @Get('/')
-  @Render(AppPages.landing)
+  @Render(AppPages.home)
   landing(): RenderData {
     return {
       title: 'Landing',
@@ -35,6 +35,13 @@ export class PageController {
     return {
       title: '',
       body: '',
+    }
+  }
+  @Get('/detail')
+  @Render(AppPages.detail)
+  detail(): RenderData {
+    return {
+      title: 'detail',
     }
   }
 }
