@@ -7,6 +7,7 @@ import { PageController } from './module/page/page.controller'
 import { UserController } from './module/user/user.controller'
 import { AuthController } from './module/auth/auth.controller'
 import { ErrorHandler } from './middleware/errorHandler'
+import { setCurrentUser } from './middleware/setCurrentUser'
 
 const PORT = 3000
 
@@ -43,7 +44,7 @@ useExpressServer(app, {
     UserController,
     AuthController,
   ],
-  middlewares: [ErrorHandler],
+  middlewares: [ErrorHandler, setCurrentUser],
   defaultErrorHandler: false,
 })
 

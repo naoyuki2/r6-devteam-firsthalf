@@ -15,6 +15,19 @@ export const generateToken = (userId: number): string => {
   return createJWT(userId, jwtSecret)
 }
 
+export const verifyToken = (token: string): boolean => {
+  const splits = token.split('.')
+  const unsignedToken = [splits[0], splits[1]].join('.')
+  const signature = splits[2]
+  return signature === hmacSHA256(jwtSecret, unsignedToken) //envがまだないので変数を使用してますのちのちgetJWT_SECRET()
+}
+
+export const decodeToken = (token: string): Payload => {
+  const splits = token.split('.')
+  const decodedJsonStr = Buffer.from(splits[1], 'base64').toString('utf-8')
+  return JSON.parse(decodedJsonStr)
+}
+
 const createJWT = (userId: number, secret: string): string => {
   const header: Header = { alg: 'HS256', typ: 'JWT' }
   const payload: Payload = { sub: userId }
