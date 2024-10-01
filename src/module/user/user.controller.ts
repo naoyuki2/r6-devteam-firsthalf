@@ -1,29 +1,33 @@
 import 'reflect-metadata'
-import { NextFunction, Request, Response } from 'express'
-import { Controller, Post, Get, Put, Body, Req, Res } from 'routing-controllers'
+import { Request, Response } from 'express'
+import { Controller, Post, Get, Req, Res } from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
-import { signUpParams } from './user.type'
 import { userSerializer } from './user.serializer'
+import { GetById, SignUp } from './user.type'
 
-@Controller('/api/user')
+@Controller()
 export class UserController {
   private userService = new UserService()
 
-  @Post('/')
+  @Post(SignUp.endpoint)
   async signUp(
-    @Body() user: signUpParams,
-    @Req() _req: Request,
-    @Res() res: Response,
-    next: NextFunction,
+    @Req() req: Request<{}, {}, SignUp.req, {}>,
+    @Res() res: Response<SignUp.res>,
   ) {
-    const { name, email, password } = user
-    try {
-      const user = await this.userService.signUp({ name, email, password })
-      const token = generateToken(user.id)
-      res.json({ user: userSerializer(user), token })
-    } catch (error) {
-      console.error(error)
-    }
+    const { name, email, password } = req.body
+    const getUser = await this.userService.signUp({ name, email, password })
+    const token = generateToken(getUser.id)
+    return res.json({ user: userSerializer(getUser), token })
+  }
+
+  @Get(GetById.endpoint)
+  async getById(
+    @Req() req: Request<GetById.param, {}, {}, {}>,
+    @Res() res: Response<GetById.res>,
+  ) {
+    const { id } = req.params
+    const user = await this.userService.getById({ id })
+    return res.json({ user: userSerializer(user) })
   }
 }
