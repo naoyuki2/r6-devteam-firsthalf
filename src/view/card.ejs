@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
   </head>
   <body>
+  <%- include ("header") %>
     <div class="container">
     <% data.requests.forEach(function(request) { %>
       <div class="border-bottom border-opacity-25">
@@ -26,7 +27,7 @@
           <p class="text-truncate mb-2">
             <%= request.description %>
           </p>
-        
+
         <div class="d-flex justify-content-evenly">
           <div class="d-flex align-items-center">
             <div class="d-flex-flex-column">
@@ -48,7 +49,7 @@
       </div>
     <% }) %>
   </div>
-    
+  <%- include ("footer") %>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
