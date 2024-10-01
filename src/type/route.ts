@@ -3,6 +3,7 @@ export enum AppPages {
   home = 'home.ejs',
   card = 'card.ejs',
   login = 'login.ejs',
+  newregistraition = 'newregistraition.ejs',
 }
 
 // 全てのページで渡すデータを定義する

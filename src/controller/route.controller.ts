@@ -27,4 +27,12 @@ export class RouteController {
       title: 'Login',
     }
   }
+
+  @Get('/newregistraition')
+  @Render(AppPages.newregistraition)
+  newregistraition(): RenderData {
+    return {
+      title: 'newregistraition',
+    }
+  }
 }
