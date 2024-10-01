@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
 import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
-import { getAllRequest } from '../request/request.client'
+import { getAllRequest, GetByIdRequest } from '../request/request.client'
 @Controller()
 export class PageController {
   @Get('/')

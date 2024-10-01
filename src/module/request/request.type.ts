@@ -6,7 +6,7 @@ export namespace GetAll {
   export const endpoint = root
 
   export type res = {
-    requests: any
+    requests: any //エラーが起こるのでanyにしてます
   }
 }
 
@@ -17,6 +17,6 @@ export namespace GetById {
   }
 
   export type res = {
-    request: Request
+    request: any //エラーが起こるのでanyにしてます
   }
 }
