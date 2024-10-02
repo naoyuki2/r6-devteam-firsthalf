@@ -6,6 +6,7 @@ export enum AppPages {
   landing = 'landing.ejs',
   request = 'request.ejs',
   login = 'login.ejs',
+  newregistration = 'newregistration',
   detail = 'detail.ejs',
   newregistraition = 'newregistraition.ejs',
 }

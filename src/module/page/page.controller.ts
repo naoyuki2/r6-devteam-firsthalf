@@ -37,6 +37,15 @@ export class PageController {
       body: '',
     }
   }
+  @Get('/newregistration')
+  @Render(AppPages.newregistration)
+  async() {
+    const data = getAllRequest()
+    return {
+      title: 'newregistration',
+      data: data,
+    }
+  }
   @Get('/detail')
   @Render(AppPages.detail)
   detail(): RenderData {
