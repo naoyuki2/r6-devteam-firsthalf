@@ -11,8 +11,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true
-  },
-  "exclude": ["node_modules"],
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "*/**/*.json"]
+    "esModuleInterop": true,
+    "typeRoots": ["./src/types", "node_modules/@types"]
+  }
 }

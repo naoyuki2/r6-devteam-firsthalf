@@ -9,7 +9,6 @@ export const setCurrentUser = async (
   next: NextFunction,
 ) => {
   req.currentUser = null
-
   try {
     const authorization = req.headers.authorization
 
