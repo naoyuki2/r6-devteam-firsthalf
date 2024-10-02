@@ -25,7 +25,7 @@ export class RequestController {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
     return res.json({
-      request:requestSerializer(request)
+      request: requestSerializer(request),
     })
   }
 }

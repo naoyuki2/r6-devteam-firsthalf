@@ -1,4 +1,5 @@
 import { Request } from './request.entity'
+import { itemSerializer } from '../item/itemSerializer'
 import { userSerializer } from '../user/user.serializer'
 
 export const requestSerializer = (request: Request) => ({
@@ -14,4 +15,5 @@ export const requestSerializer = (request: Request) => ({
   created_at: request.created_at,
   updated_at: request.updated_at,
   user: userSerializer(request.user),
+  items: request.items.map((item) => itemSerializer(item)),
 })
