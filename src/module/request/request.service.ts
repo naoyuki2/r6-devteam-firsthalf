@@ -17,7 +17,7 @@ export class RequestService {
   async getById({ id }: GetByIdProps): Promise<Request> {
     return await requestRepository.findOneOrFail({
       where: { id },
-      relations: ['user'],
+      relations: ['user', 'items'],
     })
   }
 }
