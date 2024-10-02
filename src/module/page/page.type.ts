@@ -1,14 +1,11 @@
 // アプリケーション全体で使用するページを定義する
 export enum AppPages {
-  home = 'home.ejs',
-  headerFooter = 'header-footer.ejs',
-  card = 'card.ejs',
   landing = 'landing.ejs',
+  home = 'home.ejs',
   request = 'request.ejs',
-  login = 'login.ejs',
-  newregistration = 'newregistration',
   detail = 'detail.ejs',
-  newregistraition = 'newregistraition.ejs',
+  login = 'login.ejs',
+  signup = 'signup.ejs',
 }
 
 // 全てのページで渡すデータを定義する

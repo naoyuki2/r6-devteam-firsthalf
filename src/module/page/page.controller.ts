@@ -5,22 +5,31 @@ import { getAllRequest, GetByIdRequest } from '../request/request.client'
 @Controller()
 export class PageController {
   @Get('/')
-  @Render(AppPages.home)
+  @Render(AppPages.landing)
   landing(): RenderData {
     return {
       title: 'Landing',
     }
   }
 
-  @Get('/card')
-  @Render(AppPages.card)
-  async card() {
+  @Get('/home')
+  @Render(AppPages.home)
+  async home() {
     const data = await getAllRequest()
     return {
-      title: 'Card',
+      title: 'Home',
       data: data,
     }
   }
+
+  @Get('/detail')
+  @Render(AppPages.detail)
+  detail(): RenderData {
+    return {
+      title: 'detail',
+    }
+  }
+
   @Get('/login')
   @Render(AppPages.login)
   login(): RenderData {
@@ -29,28 +38,11 @@ export class PageController {
     }
   }
 
-  @Get('/header-footer')
-  @Render(AppPages.headerFooter)
-  headerFooter(): HeaderFooterRenderData {
+  @Get('/signup')
+  @Render(AppPages.signup)
+  async(): RenderData {
     return {
-      title: '',
-      body: '',
-    }
-  }
-  @Get('/newregistration')
-  @Render(AppPages.newregistration)
-  async() {
-    const data = getAllRequest()
-    return {
-      title: 'newregistration',
-      data: data,
-    }
-  }
-  @Get('/detail')
-  @Render(AppPages.detail)
-  detail(): RenderData {
-    return {
-      title: 'detail',
+      title: 'Signup',
     }
   }
 }

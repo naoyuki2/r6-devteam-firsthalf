@@ -10,7 +10,7 @@ type GetByIdProps = {
 export class RequestService {
   async getAll(): Promise<Request[]> {
     return await requestRepository.find({
-      relations: ['user'],
+      relations: ['user', 'items'],
     })
   }
 
