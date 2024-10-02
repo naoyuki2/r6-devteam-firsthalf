@@ -18,7 +18,8 @@ export class UserController {
     const { name, email, password } = req.body
     const getUser = await this.userService.signUp({ name, email, password })
     const token = generateToken(getUser.id)
-    return res.json({ user: userSerializer(getUser), token })
+    //return res.json({ user: userSerializer(getUser), token })
+    return res.redirect('/home')
   }
 
   @Get(GetById.endpoint)
