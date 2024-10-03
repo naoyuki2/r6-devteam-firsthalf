@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import { Controller, Get, Render } from 'routing-controllers'
 import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
+
 @Controller()
 export class PageController {
   @Get('/')

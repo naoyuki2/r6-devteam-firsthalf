@@ -1,5 +1,5 @@
 import express from 'express'
-import { useExpressServer } from 'routing-controllers'
+import { Action, useExpressServer } from 'routing-controllers'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
 import { RequestController } from './module/request/request.controller'
@@ -47,6 +47,9 @@ useExpressServer(app, {
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
+  authorizationChecker: (action: Action,roles:string[]) =>{
+    return action.request.currentUser;
+  }
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
