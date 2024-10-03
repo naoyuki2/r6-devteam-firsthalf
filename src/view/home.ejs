@@ -14,19 +14,20 @@
     <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
   </head>
   <body>
-  <%- include ("header") %>
+    <%- include ("header") %>
     <div class="container">
-    <% data.requests.forEach(function(request) { %>
+      <% data.requests.forEach(function(request) { %>
       <div class="border-bottom border-opacity-25">
-          <div class="d-flex">
-            <i class="bi bi-person-circle me-3" style="font-size: 1.5rem"></i>
-            <span class="fw-bold my-2"><%= request.user.name %></span>
-            <span class="ms-auto my-2"><%= request.created_at.slice(0, 10) %> <%= request.created_at.slice(11, 16) %></span>
-          </div>
-          <p class="fw-bold mb-2"><%= request.title %></p>
-          <p class="text-truncate mb-2">
-            <%= request.description %>
-          </p>
+        <div class="d-flex">
+          <i class="bi bi-person-circle me-3" style="font-size: 1.5rem"></i>
+          <span class="fw-bold my-2"><%= request.user.name %></span>
+          <span class="ms-auto my-2"
+            ><%= request.created_at.slice(0, 10) %> <%=
+            request.created_at.slice(11, 16) %></span
+          >
+        </div>
+        <p class="fw-bold mb-2"><%= request.title %></p>
+        <p class="text-truncate mb-2"><%= request.description %></p>
 
         <div class="d-flex justify-content-evenly">
           <div class="d-flex align-items-center">
@@ -47,9 +48,9 @@
           </div>
         </div>
       </div>
-    <% }) %>
-  </div>
-  <%- include ("footer") %>
+      <% }) %>
+    </div>
+    <%- include ("footer") %>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
