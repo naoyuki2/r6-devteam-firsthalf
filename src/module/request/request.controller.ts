@@ -1,8 +1,9 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Get, Controller, Req, Res } from 'routing-controllers'
-import { GetAll, GetById } from './request.type'
+import { Get, Controller, Req, Res, Post } from 'routing-controllers'
+import { Create, GetAll, GetById } from './request.type'
 import { RequestService } from './request.service'
+import { RequestSerializer } from './request.serializer'
 
 @Controller()
 export class RequestController {
@@ -26,5 +27,31 @@ export class RequestController {
     const request = await this.requestService.getById({ id })
     // TODO : RequestSerializer
     return res.json({ request })
+  }
+
+  @Post(Create.endpoint)
+  async createRequest(
+    @Req() req: Request<{}, {}, Create.req, {}>,
+    @Res() res: Response<Create.res>,
+  ) {
+    const {
+      title,
+      location_prefecture,
+      location_details,
+      delivery_location,
+      delivery_date,
+      description,
+      userId,
+    } = req.body
+    const getRequest = await this.requestService.createRequest({
+      title,
+      location_prefecture,
+      location_details,
+      delivery_location,
+      delivery_date,
+      description,
+      userId,
+    })
+    return res.json({ request: RequestSerializer(getRequest) })
   }
 }

@@ -20,3 +20,21 @@ export namespace GetById {
     request: Request
   }
 }
+
+export namespace Create {
+  export const endpoint = root
+
+  export type req = {
+    title: string
+    location_prefecture: string
+    location_details: string
+    delivery_location: string
+    delivery_date: string
+    description: string
+    userId: number
+  }
+
+  export type res = {
+    request: any
+  }
+}

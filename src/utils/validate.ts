@@ -8,5 +8,6 @@ export const validatePassword = (password: string): void => {
 
 export const validateEntity = async (entity: any): Promise<void> => {
   const errors = await validate(entity)
+  console.log(errors)
   if (errors.length > 0) throw new CustomError('Entity validation failed', 422)
 }
