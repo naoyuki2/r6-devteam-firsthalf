@@ -17,7 +17,7 @@ export class RequestController {
     })
   }
 
-  @Get(GetById.endpoint)
+  @Get(GetById.endpoint())
   async getById(
     @Req() req: Request<GetById.param, {}, {}, {}>,
     @Res() res: Response<GetById.res>,
@@ -25,7 +25,7 @@ export class RequestController {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
     return res.json({
-      request:requestSerializer(request)
+      request: requestSerializer(request),
     })
   }
 }

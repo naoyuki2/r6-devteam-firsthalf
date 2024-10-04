@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/css/reset.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/destyle.css@1.0.15/destyle.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
+  </head>
+  <body>
+    <div>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.title %>
+      </div>
+      <p class="text-truncate mb-2">入手場所</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.location_prefecture %>
+      </div>
+      <p class="text-truncate mb-2">受け渡し場所</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.delivery_location %>
+      </div>
+      <p class="text-truncate mb-2">受け渡し日時</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.delivery_date %>
+      </div>
+      <p class="text-truncate mb-2">詳細情報</p>
+      <div class="text-truncate mb-2">
+        <div class="text-container"><%= data.request.description %></div>
+      </div>
+      <p class="text-truncate mb-2">投稿者</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <i class="bi bi-person-circle me-3" style="font-size: 1.5rem"></i>
+        <span class="fw-bold my-2"><%= data.request.user.name %></span>
+      </div>
+      <div class="d-grid gap-2 col-10 mx-auto">
+        <button class="btn btn-info" type="button">チャットする</button>
+      </div>
+    </div>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>
