@@ -8,7 +8,7 @@ export const requestSerializer = (request: Request) => ({
   location_prefecture: request.location_prefecture,
   location_details: request.location_details,
   delivery_location: request.delivery_location,
-  delivery_data: request.delivery_date,
+  delivery_date: request.delivery_date,
   description: request.description,
   status: request.status,
   completed_at: request.completed_at,

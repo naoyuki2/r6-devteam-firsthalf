@@ -1,3 +1,5 @@
+import { Request } from '../request/request.entity'
+
 // アプリケーション全体で使用するページを定義する
 export enum AppPages {
   landing = 'landing.ejs',
@@ -20,4 +22,8 @@ export interface HomeRenderData extends RenderData {
 
 export interface HeaderFooterRenderData extends RenderData {
   body: string
+}
+
+export interface DetailRenderData extends RenderData {
+  data: Request
 }
