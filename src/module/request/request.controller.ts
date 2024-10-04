@@ -17,7 +17,7 @@ export class RequestController {
     })
   }
 
-  @Get(GetById.endpoint)
+  @Get(GetById.endpoint())
   async getById(
     @Req() req: Request<GetById.param, {}, {}, {}>,
     @Res() res: Response<GetById.res>,
