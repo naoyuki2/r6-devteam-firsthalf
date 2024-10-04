@@ -37,7 +37,18 @@
     <p>
       <a class="link-opacity-100" href="#">アカウントをお持ちの方はこちら</a>
     </p>
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <% if (typeof errorData !== 'undefined' && errorData) { %>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: '新規登録に失敗しました',
+        text: '<%= errorData.error %>',
+      })
+    </script>
+    <% } %>
   </body>
 </html>

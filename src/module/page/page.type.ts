@@ -24,7 +24,6 @@ export interface HomeRenderData extends RenderData {
 }
 
 export interface SignUpRenderData extends RenderData {
-  title: string
   data: SignUp.res | null
   error: CustomError | null
 }

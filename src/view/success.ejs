@@ -14,4 +14,9 @@
     <a href="/home">タイムラインを見る</a>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
+
+  <script>
+    const user = JSON.parse('<%- JSON.stringify(user) %>')
+    localStorage.setItem('user', JSON.stringify(user))
+  </script>
 </html>
