@@ -11,7 +11,9 @@ export namespace GetAll {
 }
 
 export namespace GetById {
-  export const endpoint = `${root}/:id`
+  export const endpoint = (id?: number): string => {
+    return id ? `${root}/${id}` : `${root}/:id`
+  }
   export type param = {
     id: number
   }

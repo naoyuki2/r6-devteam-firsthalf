@@ -1,5 +1,6 @@
 import { SignUp } from '../user/user.type'
 import { CustomError } from '../../error/CustomError'
+import { Request } from '../request/request.entity'
 
 // アプリケーション全体で使用するページを定義する
 export enum AppPages {
@@ -30,4 +31,8 @@ export interface SignUpRenderData extends RenderData {
 
 export interface HeaderFooterRenderData extends RenderData {
   body: string
+}
+
+export interface DetailRenderData extends RenderData {
+  data: Request
 }

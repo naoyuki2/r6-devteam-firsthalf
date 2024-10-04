@@ -14,54 +14,35 @@
     <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
   </head>
   <body>
-    <p>
-        <div class="mx-auto p-2" style="width: 200px;">
-            ＊＊＊フェス行きます
-          </div>
-            <p class="text-truncate mb-2">
-                入手場所 </p>
-                <div class="mx-auto p-2" style="width: 200px;">
-                    東京都：東京ビックサイト
-                  </div>
-                    <p class="text-truncate mb-2">
-                        受け渡し場所</p>
-                        <div class="mx-auto p-2" style="width: 200px;">
-                            新宿駅東口
-                          </div>
-                            <p class="text-truncate mb-2">
-                                受け渡し日時</p>
-                                <div class="mx-auto p-2" style="width: 200px;">
-                                    2024/10/2(水)
-                                  </div>
-                                    <p class="text-truncate mb-2">
-                                        詳細情報</p>
-                                        <table style="width: 100%;word-break:break-all;">
-                                        <br><p class="text-truncate mb-2">
-                                            <div class="text-container">
-                                              ○○フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。</p>
-                                          </div>
-                                          </table>
-                                            <br><p class="text-truncate mb-2">
-                                            Tシャツ(黒、Lサイズ)</p>
-                                        <br><p class="text-truncate mb-2">
-                                          <div class="text-container">
-                                            それぞれ、フェス会場内のオフィシャルグッズショップで購入できると思います。
-                                            フェスの開催日が9月24日なので、その前後で購入していただけるとありがたいです。
-                                        </div></p>
-                                            <p class="text-truncate mb-2">
-                                                以下のリンクに商品情報がありますので、参考にしてください。</p>
-                                                <br><p class="text-truncate mb-2">
-                                                    https://example.com/product/tshirt </p>
-                                                    <br><p class="text-truncate mb-2">
-                                                        投稿者</p>
-                                                        <div class="mx-auto p-2" style="width: 200px;">
-                                                            <i class="bi bi-person-circle me-3" style="font-size: 1.5rem"></i>
-                                                        <span class="fw-bold my-2">AAAさん</span>
-                                                          </div>
-                                                            <div class="d-grid gap-2 col-10 mx-auto">
-                                                              <button class="btn btn-info" type="button">チャットする</button>
-                                                            </div>
-    </p>
+    <div>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.title %>
+      </div>
+      <p class="text-truncate mb-2">入手場所</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.location_prefecture %>
+      </div>
+      <p class="text-truncate mb-2">受け渡し場所</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.delivery_location %>
+      </div>
+      <p class="text-truncate mb-2">受け渡し日時</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <%= data.request.delivery_date %>
+      </div>
+      <p class="text-truncate mb-2">詳細情報</p>
+      <div class="text-truncate mb-2">
+        <div class="text-container"><%= data.request.description %></div>
+      </div>
+      <p class="text-truncate mb-2">投稿者</p>
+      <div class="mx-auto p-2" style="width: 200px">
+        <i class="bi bi-person-circle me-3" style="font-size: 1.5rem"></i>
+        <span class="fw-bold my-2"><%= data.request.user.name %></span>
+      </div>
+      <div class="d-grid gap-2 col-10 mx-auto">
+        <button class="btn btn-info" type="button">チャットする</button>
+      </div>
+    </div>
     <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
