@@ -8,7 +8,7 @@ export const getAllRequest = async (): Promise<GetAll.res> => {
 }
 
 export const GetByIdRequest = async (id: number): Promise<GetById.res> => {
-  const response = await axiosInstance.get(`/api/requests/${id}`)
+  const response = await axiosInstance.get(GetById.endpoint(id))
 
   return response.data
 }
