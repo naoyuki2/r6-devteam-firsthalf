@@ -1,7 +1,14 @@
 import 'reflect-metadata'
-import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
+import { Controller, Get, Render, Req, Res } from 'routing-controllers'
+import {
+  AppPages,
+  DetailRenderData,
+  HeaderFooterRenderData,
+  RenderData,
+} from './page.type'
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
+import { GetById } from '../request/request.type'
+import { Request, Response } from 'express'
 @Controller()
 export class PageController {
   @Get('/')
@@ -22,11 +29,17 @@ export class PageController {
     }
   }
 
-  @Get('/detail')
+  @Get('/detail/:id')
   @Render(AppPages.detail)
-  detail(): RenderData {
+  async detail(
+    @Req() req: Request<GetById.param, {}, {}, {}>,
+    @Res() res: Response<GetById.res>,
+  ): Promise<any> {
+    const data = await GetByIdRequest(req.params.id)
+    console.log(data)
     return {
-      title: 'detail',
+      title: 'detail/:id',
+      data: data,
     }
   }
 
