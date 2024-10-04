@@ -9,6 +9,7 @@ export enum AppPages {
   detail = 'detail.ejs',
   login = 'login.ejs',
   signup = 'signup.ejs',
+  success = 'success.ejs',
 }
 
 // 全てのページで渡すデータを定義する

@@ -11,6 +11,7 @@ import { getAllRequest, GetByIdRequest } from '../request/request.client'
 import { SignUp } from '../user/user.type'
 import { postSignup } from '../user/user.client'
 import { Response } from 'express'
+import { title } from 'process'
 
 @Controller()
 export class PageController {
@@ -60,12 +61,15 @@ export class PageController {
   async postSignup(@Body() body: SignUp.req, @Res() res: Response) {
     try {
       await postSignup(body)
-      res.redirect('/home')
+      return res.render(AppPages.success)
     } catch (err: any) {
       const errorData = {
         error: err,
       }
-      res.render(AppPages.signup, errorData)
+      res.render(AppPages.signup, {
+        title: 'Signup',
+        errorData,
+      })
 
       return errorData
     }

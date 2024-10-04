@@ -43,7 +43,7 @@ useExpressServer(app, {
     UserController,
     AuthController,
   ],
-  middlewares: [ErrorHandler],
+  // middlewares: [ErrorHandler],
   defaultErrorHandler: false,
 })
 
