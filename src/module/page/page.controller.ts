@@ -1,7 +1,17 @@
 import 'reflect-metadata'
-import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
+import { Controller, Get, Post, Render, Body, Res } from 'routing-controllers'
+import {
+  AppPages,
+  HeaderFooterRenderData,
+  HomeRenderData,
+  RenderData,
+  SignUpRenderData,
+} from './page.type'
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
+import { SignUp } from '../user/user.type'
+import { postSignup } from '../user/user.client'
+import { Response } from 'express'
+
 @Controller()
 export class PageController {
   @Get('/')
@@ -14,7 +24,7 @@ export class PageController {
 
   @Get('/home')
   @Render(AppPages.home)
-  async home() {
+  async home(): Promise<HomeRenderData> {
     const data = await getAllRequest()
     return {
       title: 'Home',
@@ -43,6 +53,21 @@ export class PageController {
   async(): RenderData {
     return {
       title: 'Signup',
+    }
+  }
+
+  @Post('/signup')
+  async postSignup(@Body() body: SignUp.req, @Res() res: Response) {
+    try {
+      await postSignup(body)
+      res.redirect('/home')
+    } catch (err: any) {
+      const errorData = {
+        error: err,
+      }
+      res.render(AppPages.signup, errorData)
+
+      return errorData
     }
   }
 }
