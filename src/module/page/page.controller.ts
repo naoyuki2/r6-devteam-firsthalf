@@ -29,16 +29,15 @@ export class PageController {
     }
   }
 
-  @Get('/detail/:id')
+  @Get('/home/:id')
   @Render(AppPages.detail)
   async detail(
     @Req() req: Request<GetById.param, {}, {}, {}>,
     @Res() res: Response<GetById.res>,
   ): Promise<any> {
     const data = await GetByIdRequest(req.params.id)
-    console.log(data)
     return {
-      title: 'detail/:id',
+      title: 'detail',
       data: data,
     }
   }
