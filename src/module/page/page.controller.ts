@@ -57,4 +57,12 @@ export class PageController {
       title: 'Signup',
     }
   }
+  @Get('/request')
+  @Render(AppPages.request)
+  request() {
+    return {
+      title: '',
+      body: '',
+    }
+  }
 }
