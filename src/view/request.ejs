@@ -8,6 +8,11 @@
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
       rel="stylesheet"
     />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
+    />
     <style>
       .form-container {
         max-width: 500px;
@@ -63,13 +68,23 @@
       textarea {
         resize: none;
       }
-
+      input.form-control {
+        margin-bottom: 8px;
+      }
+      select.form-control {
+        margin-bottom: 8px;
+      }
       .d-flex input {
         margin-right: 5px;
       }
 
       .d-flex input:last-child {
         margin-right: 0;
+      }
+
+      .add-item-btn {
+        cursor: pointer;
+        margin-top: 10px;
       }
     </style>
   </head>
@@ -135,23 +150,56 @@
             />
           </div>
 
-          <div class="form-group">
+          <div id="item-fields">
+            <div class="form-group item-field">
+              <label for="item1">欲しいもの1</label>
+              <input
+                type="text"
+                class="form-control"
+                id="item1"
+                name="item1"
+                placeholder="例）＊＊＊のTシャツ"
+                required
+              />
+              <div class="d-flex align-items-center">
+                <select class="form-control" name="quantity1" required>
+                  <option value="">個数</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                </select>
+                <span>個</span>
+                <input
+                  type="number"
+                  class="form-control ml-2"
+                  name="price1"
+                  placeholder="金額"
+                  required
+                />
+                <span>円</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="text-right">
+            <span class="add-item-btn"> <i class="bi bi-plus"></i> 追加 </span>
+          </div>
+
+          <div class="form-group mt-3">
             <label for="details">詳細情報</label>
             <textarea
               class="form-control"
               id="details"
               name="details"
-              rows="10"
-              placeholder="例）〇〇フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。
-
-              Tシャツ（黒、Lサイズ）
-              
-              それぞれ、フェス会場内のオフィシャルグッズショップで購入できると思います。  
-              フェスの開催日が9月24日なので、その前後で購入していただけるとありがたいです。
-              
-              以下のリンクに商品情報がありますので、参考にしてください。   
-              
-              https://example.com/product/tshirt"
+              rows="5"
+              placeholder="例）〇〇フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。"
               required
             ></textarea>
           </div>
@@ -164,6 +212,58 @@
     </div>
 
     <script>
+      let itemCount = 1
+      const maxItems = 10
+      const itemFields = document.getElementById('item-fields')
+      const addItemBtn = document.querySelector('.add-item-btn')
+
+      addItemBtn.addEventListener('click', function () {
+        if (itemCount < maxItems) {
+          itemCount++
+          const newItem = document.createElement('div')
+          newItem.classList.add('form-group', 'item-field')
+          newItem.innerHTML = `
+            <label for="item${itemCount}">欲しいもの${itemCount}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="item${itemCount}"
+              name="item${itemCount}"
+              placeholder="例）＊＊＊のTシャツ"
+              required
+            />
+            <div class="d-flex align-items-center">
+              <select class="form-control" name="quantity${itemCount}" required>
+                <option value="">個数</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+               
+              </select>
+              <span>個</span>
+              <input
+                type="number"
+                class="form-control ml-2"
+                name="price${itemCount}"
+                placeholder="金額"
+                required
+              />
+              <span>円</span>
+            </div>
+          `
+          itemFields.appendChild(newItem)
+        } else {
+          alert('追加できる欲しいものは最大10個までです。')
+        }
+      })
+
       const prefectures = [
         '北海道',
         '青森県',
