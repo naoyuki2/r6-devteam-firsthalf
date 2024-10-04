@@ -36,4 +36,12 @@ export class PageController {
       body: '',
     }
   }
+  @Get('/request')
+  @Render(AppPages.request)
+  request() {
+    return {
+      title: '',
+      body: '',
+    }
+  }
 }

@@ -4,97 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css"
-    />
-    <style>
-      .form-container {
-        max-width: 500px;
-        margin: 50px auto;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #fff;
-        border-radius: 10px;
-      }
-
-      .form-group label {
-        color: #000;
-        font-weight: bold;
-        position: relative;
-        padding-left: 20px;
-      }
-
-      .form-group label::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 5px;
-        height: 100%;
-        background-color: #17a2b8;
-        border-radius: 3px;
-      }
-
-      .form-control {
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-shadow: none;
-      }
-
-      .submit-btn {
-        background-color: #4db8ff;
-        color: white;
-        font-weight: bold;
-        border-radius: 5px;
-      }
-
-      .submit-btn:hover {
-        background-color: #3399ff;
-      }
-
-      .form-title {
-        text-align: center;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      textarea {
-        resize: none;
-      }
-      input.form-control {
-        margin-bottom: 8px;
-      }
-      select.form-control {
-        margin-bottom: 8px;
-      }
-      .d-flex input {
-        margin-right: 5px;
-      }
-
-      .d-flex input:last-child {
-        margin-right: 0;
-      }
-
-      .add-item-btn {
-        cursor: pointer;
-        margin-top: 10px;
-      }
-    </style>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="/css/color.css" />
   </head>
   <body>
     <div class="container">
-      <div class="form-container">
-        <h3 class="form-title"><%= title %></h3>
-        <form action="/submit-request" method="POST">
-          <div class="form-group">
-            <label for="title">タイトル</label>
+      <div class="my-5 p-3 shadow rounded">
+        <h3 class="form-title text-center mb-3">依頼を作成</h3>
+        <form action="#" method="POST">
+          <div class="mb-3">
+            <label
+              for="title"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              タイトル
+            </label>
             <input
               type="text"
               class="form-control"
@@ -104,19 +30,27 @@
               required
             />
           </div>
-
-          <div class="form-group">
-            <label for="locationPrefecture">入手場所（都道府県）</label>
+          <div class="mb-3">
+            <label
+              for="locationPrefecture"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              入手場所（都道府県）
+            </label>
             <select
               class="form-control"
               id="locationPrefecture"
               name="locationPrefecture"
               required
             ></select>
+            <!-- プレースホルダおきたい -->
           </div>
-
-          <div class="form-group">
-            <label for="locationDetail">入手場所（詳細情報）</label>
+          <div class="mb-3">
+            <label
+              for="locationDetail"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >入手場所（詳細情報）
+            </label>
             <input
               type="text"
               class="form-control"
@@ -126,9 +60,13 @@
               required
             />
           </div>
-
-          <div class="form-group">
-            <label for="deliveryPlace">受け渡し場所</label>
+          <div class="mb-3">
+            <label
+              for="deliveryPlace"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              受け渡し場所
+            </label>
             <input
               type="text"
               class="form-control"
@@ -138,9 +76,12 @@
               required
             />
           </div>
-
-          <div class="form-group">
-            <label for="deliveryDate">受け渡し日時</label>
+          <div class="mb-3">
+            <label
+              for="deliveryDate"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >受け渡し日時
+            </label>
             <input
               type="date"
               class="form-control"
@@ -149,51 +90,65 @@
               required
             />
           </div>
-
-          <div id="item-fields">
-            <div class="form-group item-field">
-              <label for="item1">欲しいもの1</label>
+          <div id="item-fields" class="mb-3">
+            <div class="pb-3">
+              <label
+                for="item1"
+                class="border-start border-info border-5 ps-2 fw-bold mb-2"
+                >欲しいもの1
+              </label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control mb-2"
                 id="item1"
                 name="item1"
-                placeholder="例）＊＊＊のTシャツ"
+                placeholder="例）***のTシャツ"
                 required
               />
-              <div class="d-flex align-items-center">
-                <select class="form-control" name="quantity1" required>
-                  <option value="">個数</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                  <option value="10">10</option>
-                </select>
-                <span>個</span>
-                <input
-                  type="number"
-                  class="form-control ml-2"
-                  name="price1"
-                  placeholder="金額"
-                  required
-                />
-                <span>円</span>
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 個数： </span>
+                  <select class="form-select mx-2" name="quantity1" required>
+                    <option value="">-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span>個</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 金額： </span>
+                  <input
+                    type="number"
+                    class="form-control mx-2"
+                    name="price1"
+                    required
+                  />
+                  <span>円</span>
+                </div>
               </div>
             </div>
+            <hr />
           </div>
-
-          <div class="text-right">
-            <span class="add-item-btn"> <i class="bi bi-plus"></i> 追加 </span>
+          <div class="text-end mb-3">
+            <span class="add-item-btn" role="button">
+              <i class="bi bi-plus"></i>
+              追加
+            </span>
           </div>
-
-          <div class="form-group mt-3">
-            <label for="details">詳細情報</label>
+          <div class="mb-3">
+            <label
+              for="details"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >詳細情報
+            </label>
             <textarea
               class="form-control"
               id="details"
@@ -203,8 +158,7 @@
               required
             ></textarea>
           </div>
-
-          <button type="submit" class="btn submit-btn btn-block">
+          <button type="submit" class="btn btn-info w-100">
             この内容で依頼を投稿
           </button>
         </form>
@@ -213,55 +167,67 @@
 
     <script>
       let itemCount = 1
-      const maxItems = 10
+      const MAX_ITEMS = 10
       const itemFields = document.getElementById('item-fields')
       const addItemBtn = document.querySelector('.add-item-btn')
 
       addItemBtn.addEventListener('click', function () {
-        if (itemCount < maxItems) {
-          itemCount++
-          const newItem = document.createElement('div')
-          newItem.classList.add('form-group', 'item-field')
-          newItem.innerHTML = `
-            <label for="item${itemCount}">欲しいもの${itemCount}</label>
-            <input
-              type="text"
-              class="form-control"
-              id="item${itemCount}"
-              name="item${itemCount}"
-              placeholder="例）＊＊＊のTシャツ"
-              required
-            />
-            <div class="d-flex align-items-center">
-              <select class="form-control" name="quantity${itemCount}" required>
-                <option value="">個数</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-               
-              </select>
-              <span>個</span>
+        if (itemCount >= MAX_ITEMS) {
+          return Swal.fire({
+            icon: 'error',
+            text: 'これ以上追加できません',
+          })
+        }
+        itemCount++
+        const newItem = document.createElement('div')
+        newItem.innerHTML = `
+            <div class="py-3">
+              <label
+                for="item${itemCount}"
+                class="border-start border-info border-5 ps-2 fw-bold mb-2"
+                >欲しいもの${itemCount}
+              </label>
               <input
-                type="number"
-                class="form-control ml-2"
-                name="price${itemCount}"
-                placeholder="金額"
+                type="text"
+                class="form-control mb-2"
+                id="item${itemCount}"
+                name="item${itemCount}"
+                placeholder="例）***のTシャツ"
                 required
               />
-              <span>円</span>
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 個数： </span>
+                  <select class="form-select mx-2" name="quantity${itemCount}" required>
+                    <option value="">-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span>個</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 金額： </span>
+                  <input
+                    type="number"
+                    class="form-control mx-2"
+                    name="price${itemCount}"
+                    required
+                  />
+                  <span>円</span>
+                </div>
+              </div>
+              <hr />
             </div>
           `
-          itemFields.appendChild(newItem)
-        } else {
-          alert('追加できる欲しいものは最大10個までです。')
-        }
+        itemFields.appendChild(newItem)
       })
 
       const prefectures = [
@@ -323,5 +289,7 @@
         selectElement.appendChild(option)
       })
     </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
