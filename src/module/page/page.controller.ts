@@ -11,6 +11,8 @@ import { SignUp } from '../user/user.type'
 import { postSignup } from '../user/user.client'
 import { Response, Request } from 'express'
 import { GetById } from '../request/request.type'
+import { Request, Response } from 'express'
+
 @Controller()
 export class PageController {
   @Get('/')
@@ -81,6 +83,14 @@ export class PageController {
         title: errorData.title,
         errorData,
       })
+      
+  @Get('/request')
+  @Render(AppPages.request)
+  request() {
+    return {
+      title: '',
+      body: '',
+
     }
   }
 }

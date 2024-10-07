@@ -1,5 +1,5 @@
 import express from 'express'
-import { useExpressServer } from 'routing-controllers'
+import { Action, useExpressServer } from 'routing-controllers'
 import path from 'path'
 import { AppDataSource } from './app-data-source'
 import { RequestController } from './module/request/request.controller'
@@ -7,6 +7,7 @@ import { PageController } from './module/page/page.controller'
 import { UserController } from './module/user/user.controller'
 import { AuthController } from './module/auth/auth.controller'
 import { ErrorHandler } from './middleware/errorHandler'
+import { setCurrentUser } from './middleware/setCurrentUser'
 
 const PORT = 3000
 
@@ -22,6 +23,7 @@ const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(setCurrentUser)
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'view'))
@@ -45,6 +47,9 @@ useExpressServer(app, {
   ],
   // middlewares: [ErrorHandler],
   defaultErrorHandler: false,
+  authorizationChecker: (action: Action,roles:string[]) =>{
+    return action.request.currentUser;
+  }
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
