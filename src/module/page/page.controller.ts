@@ -9,6 +9,7 @@ import {
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
 import { GetById } from '../request/request.type'
 import { Request, Response } from 'express'
+
 @Controller()
 export class PageController {
   @Get('/')
