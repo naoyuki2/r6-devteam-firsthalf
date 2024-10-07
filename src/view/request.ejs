@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
+    <link rel="stylesheet" href="/css/color.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="my-5 p-3 shadow rounded">
+        <h3 class="form-title text-center mb-3">依頼を作成</h3>
+        <form action="#" method="POST">
+          <div class="mb-3">
+            <label
+              for="title"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              タイトル
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              name="title"
+              placeholder="例）＊＊＊限定グッズを購入してほしい！"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label
+              for="locationPrefecture"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              入手場所（都道府県）
+            </label>
+            <select
+              class="form-control"
+              id="locationPrefecture"
+              name="locationPrefecture"
+              required
+            ></select>
+            <!-- プレースホルダおきたい -->
+          </div>
+          <div class="mb-3">
+            <label
+              for="locationDetail"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >入手場所（詳細情報）
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="locationDetail"
+              name="locationDetail"
+              placeholder="例）東京ビッグサイト"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label
+              for="deliveryPlace"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+            >
+              受け渡し場所
+            </label>
+            <input
+              type="text"
+              class="form-control"
+              id="deliveryPlace"
+              name="deliveryPlace"
+              placeholder="例）新宿駅東口"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label
+              for="deliveryDate"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >受け渡し日時
+            </label>
+            <input
+              type="date"
+              class="form-control"
+              id="deliveryDate"
+              name="deliveryDate"
+              required
+            />
+          </div>
+          <div id="item-fields" class="mb-3">
+            <div class="pb-3">
+              <label
+                for="item1"
+                class="border-start border-info border-5 ps-2 fw-bold mb-2"
+                >欲しいもの1
+              </label>
+              <input
+                type="text"
+                class="form-control mb-2"
+                id="item1"
+                name="item1"
+                placeholder="例）***のTシャツ"
+                required
+              />
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 個数： </span>
+                  <select class="form-select mx-2" name="quantity1" required>
+                    <option value="">-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span>個</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 金額： </span>
+                  <input
+                    type="number"
+                    class="form-control mx-2"
+                    name="price1"
+                    required
+                  />
+                  <span>円</span>
+                </div>
+              </div>
+            </div>
+            <hr />
+          </div>
+          <div class="text-end mb-3">
+            <span class="add-item-btn" role="button">
+              <i class="bi bi-plus"></i>
+              追加
+            </span>
+          </div>
+          <div class="mb-3">
+            <label
+              for="details"
+              class="border-start border-info border-5 ps-2 fw-bold mb-2"
+              >詳細情報
+            </label>
+            <textarea
+              class="form-control"
+              id="details"
+              name="details"
+              rows="10"
+              placeholder="例）〇〇フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。
+
+              Tシャツ（黒、Lサイズ）
+
+              それぞれ、フェス会場内のオフィシャルグッズショップで購入できると思います。
+              フェスの開催日が9月24日なので、その前後で購入していただけるとありがたいです。
+
+              以下のリンクに商品情報がありますので、参考にしてください。
+
+              https://example.com/product/tshirt"
+              required
+            ></textarea>
+          </div>
+          <button type="submit" class="btn btn-info w-100">
+            この内容で依頼を投稿
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      let itemCount = 1
+      const MAX_ITEMS = 10
+      const itemFields = document.getElementById('item-fields')
+      const addItemBtn = document.querySelector('.add-item-btn')
+
+      addItemBtn.addEventListener('click', function () {
+        if (itemCount >= MAX_ITEMS) {
+          return Swal.fire({
+            icon: 'error',
+            text: 'これ以上追加できません',
+          })
+        }
+        itemCount++
+        const newItem = document.createElement('div')
+        newItem.innerHTML = `
+            <div class="py-3">
+              <label
+                for="item${itemCount}"
+                class="border-start border-info border-5 ps-2 fw-bold mb-2"
+                >欲しいもの${itemCount}
+              </label>
+              <input
+                type="text"
+                class="form-control mb-2"
+                id="item${itemCount}"
+                name="item${itemCount}"
+                placeholder="例）***のTシャツ"
+                required
+              />
+              <div class="d-flex justify-content-evenly">
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 個数： </span>
+                  <select class="form-select mx-2" name="quantity${itemCount}" required>
+                    <option value="">-</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                  </select>
+                  <span>個</span>
+                </div>
+                <div class="d-flex align-items-center">
+                  <span class="flex-shrink-0"> 金額： </span>
+                  <input
+                    type="number"
+                    class="form-control mx-2"
+                    name="price${itemCount}"
+                    required
+                  />
+                  <span>円</span>
+                </div>
+              </div>
+              <hr />
+            </div>
+          `
+        itemFields.appendChild(newItem)
+      })
+
+      const prefectures = [
+        '北海道',
+        '青森県',
+        '岩手県',
+        '宮城県',
+        '秋田県',
+        '山形県',
+        '福島県',
+        '茨城県',
+        '栃木県',
+        '群馬県',
+        '埼玉県',
+        '千葉県',
+        '東京都',
+        '神奈川県',
+        '新潟県',
+        '富山県',
+        '石川県',
+        '福井県',
+        '山梨県',
+        '長野県',
+        '岐阜県',
+        '静岡県',
+        '愛知県',
+        '三重県',
+        '滋賀県',
+        '京都府',
+        '大阪府',
+        '兵庫県',
+        '奈良県',
+        '和歌山県',
+        '鳥取県',
+        '島根県',
+        '岡山県',
+        '広島県',
+        '山口県',
+        '徳島県',
+        '香川県',
+        '愛媛県',
+        '高知県',
+        '福岡県',
+        '佐賀県',
+        '長崎県',
+        '熊本県',
+        '大分県',
+        '宮崎県',
+        '鹿児島県',
+        '沖縄県',
+      ]
+
+      const selectElement = document.getElementById('locationPrefecture')
+
+      prefectures.forEach((prefecture) => {
+        const option = document.createElement('option')
+        option.value = prefecture
+        option.textContent = prefecture
+        selectElement.appendChild(option)
+      })
+    </script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>

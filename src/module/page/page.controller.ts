@@ -1,7 +1,14 @@
 import 'reflect-metadata'
-import { Controller, Get, Render } from 'routing-controllers'
-import { AppPages, HeaderFooterRenderData, RenderData } from './page.type'
+import { Controller, Get, Render, Req, Res } from 'routing-controllers'
+import {
+  AppPages,
+  DetailRenderData,
+  HeaderFooterRenderData,
+  RenderData,
+} from './page.type'
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
+import { GetById } from '../request/request.type'
+import { Request, Response } from 'express'
 
 @Controller()
 export class PageController {
@@ -13,15 +20,29 @@ export class PageController {
     }
   }
 
-  @Get('/card')
-  @Render(AppPages.card)
-  async card() {
+  @Get('/home')
+  @Render(AppPages.home)
+  async home() {
     const data = await getAllRequest()
     return {
-      title: 'Card',
+      title: 'Home',
       data: data,
     }
   }
+
+  @Get('/home/:id')
+  @Render(AppPages.detail)
+  async detail(
+    @Req() req: Request<GetById.param, {}, {}, {}>,
+    @Res() res: Response<GetById.res>,
+  ): Promise<any> {
+    const data = await GetByIdRequest(req.params.id)
+    return {
+      title: 'detail',
+      data: data,
+    }
+  }
+
   @Get('/login')
   @Render(AppPages.login)
   login(): RenderData {
@@ -29,9 +50,17 @@ export class PageController {
       title: 'Login',
     }
   }
-  @Get('/header-footer')
-  @Render(AppPages.headerFooter)
-  headerFooter(): HeaderFooterRenderData {
+
+  @Get('/signup')
+  @Render(AppPages.signup)
+  async(): RenderData {
+    return {
+      title: 'Signup',
+    }
+  }
+  @Get('/request')
+  @Render(AppPages.request)
+  request() {
     return {
       title: '',
       body: '',
