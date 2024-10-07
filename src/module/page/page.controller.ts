@@ -9,7 +9,6 @@ import {
 import { getAllRequest, GetByIdRequest } from '../request/request.client'
 import { SignUp } from '../user/user.type'
 import { postSignup } from '../user/user.client'
-import { Response, Request } from 'express'
 import { GetById } from '../request/request.type'
 import { Request, Response } from 'express'
 
@@ -83,14 +82,14 @@ export class PageController {
         title: errorData.title,
         errorData,
       })
-      
+    }
+  }
   @Get('/request')
   @Render(AppPages.request)
   request() {
     return {
       title: '',
       body: '',
-
     }
   }
 }
