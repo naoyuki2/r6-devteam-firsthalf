@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Get, Controller, Req, Res, Authorized } from 'routing-controllers'
+import { Get, Controller, Req, Res } from 'routing-controllers'
 import { GetAll, GetById } from './request.type'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
@@ -11,7 +11,6 @@ export class RequestController {
 
   @Get(GetAll.endpoint)
   async getAll(@Req() _req: Request, @Res() res: Response<GetAll.res>) {
-    console.log(this.requestService)
     const requests = await this.requestService.getAll()
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
