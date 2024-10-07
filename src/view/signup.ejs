@@ -1,37 +1,54 @@
 <!doctype html>
-<html lang="en">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title><%= title %></title>
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-  <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
-<body>
-<div class="h-100  d-flex justify-content-evenly">
-  <div class="d-flex align-items-center">
-    <div class="d-flex-flex-column">
-      <p class="fw-bold fs-2">新規登録</p>
-      <p class="text-truncate"></p>
-      <p class=" mb-2">ユーザーネーム</p>
-      <span><input type="text" name="name" /></span>
-      <p class="text-truncate"></p>
-      <p class=" mb-2">メールアドレス</p>
-      <span><input type="text" name="mail" /></span>
-      <p class="text-truncate"></p>
-      <p class=" mb-2">パスワード</p>
-      <span><input type="password" name="password" /></span>
-      <div class="d-grid gap-2 col-6 mx-auto"></div>
-      <p class="fw-bold my-3">
-        <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="button">新規登録</button>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= title %></title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
+  </head>
+  <body>
+    <form action="/signup" method="post">
+      <div class="h-100 d-flex justify-content-evenly">
+        <div class="d-flex align-items-center">
+          <div class="d-flex-flex-column">
+            <p class="fw-bold fs-2">新規登録</p>
+
+            <p class="mb-2">ユーザーネーム</p>
+            <input type="text" name="name" class="form-control" />
+
+            <p class="mb-2">メールアドレス</p>
+            <input type="email" name="email" class="form-control" />
+
+            <p class="mb-2">パスワード</p>
+            <input type="password" name="password" class="form-control" />
+
+            <div class="d-grid gap-2 col-6 mx-auto"></div>
+            <div class="fw-bold my-3">
+              <div class="d-grid gap-2">
+                <button class="btn btn-primary" type="submit">新規登録</button>
+              </div>
+            </div>
+          </div>
         </div>
-      </p>
-      <p>
-        <a class="link-opacity-100" href="#">アカウントをお持ちの方はこちら</a>
-      </p>
-    </div>
-  </div>
       </div>
-   <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
-</body>
+    </form>
+    <p>
+      <a class="link-opacity-100" href="#">アカウントをお持ちの方はこちら</a>
+    </p>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <% if (typeof errorData !== 'undefined' && errorData) { %>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: '新規登録に失敗しました',
+        text: '<%= errorData.error %>',
+      })
+    </script>
+    <% } %>
+  </body>
 </html>

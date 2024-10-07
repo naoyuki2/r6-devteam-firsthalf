@@ -45,7 +45,7 @@ useExpressServer(app, {
     UserController,
     AuthController,
   ],
-  middlewares: [ErrorHandler],
+  // middlewares: [ErrorHandler],
   defaultErrorHandler: false,
   authorizationChecker: (action: Action,roles:string[]) =>{
     return action.request.currentUser;
