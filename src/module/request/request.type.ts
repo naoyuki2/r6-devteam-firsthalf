@@ -1,3 +1,4 @@
+import { Item } from '../item/item.entity'
 import { Request } from './request.entity'
 
 const root = '/api/requests'
@@ -32,6 +33,7 @@ export namespace Create {
     delivery_date: string
     description: string
     userId: number
+    items: Item[]
   }
 
   export type res = {

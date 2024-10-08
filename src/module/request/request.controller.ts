@@ -42,7 +42,9 @@ export class RequestController {
       delivery_date,
       description,
       userId,
+      items,
     } = req.body
+    const item = await this.requestService.createItem({ items })
     const getRequest = await this.requestService.createRequest({
       title,
       location_prefecture,
@@ -51,6 +53,7 @@ export class RequestController {
       delivery_date,
       description,
       userId,
+      item,
     })
     return res.json({ request: RequestSerializer(getRequest) })
   }

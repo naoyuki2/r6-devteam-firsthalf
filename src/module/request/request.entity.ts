@@ -62,7 +62,7 @@ export class Request {
   })
   created_at!: Date
 
-  @OneToMany(() => Item, (item) => item.request)
+  @OneToMany(() => Item, (item) => item.request, { cascade: true })
   items!: Item[]
 
   @OneToMany(() => Room, (room) => room.request)

@@ -1,6 +1,7 @@
 import { AppDataSource } from '../../app-data-source'
 import { validateEntity } from '../../utils/validate'
 import { Request } from './request.entity'
+import { Item } from '../item/item.entity'
 
 const requestRepository = AppDataSource.getRepository(Request)
 
@@ -16,6 +17,11 @@ type createRequestProps = {
   delivery_date: string
   description: string
   userId: number
+  item: Item[]
+}
+
+type createItemProps = {
+  items: Item[]
 }
 
 export class RequestService {
@@ -35,6 +41,7 @@ export class RequestService {
     delivery_date,
     description,
     userId,
+    item,
   }: createRequestProps): Promise<Request> {
     const request = requestRepository.create({
       title,
@@ -44,8 +51,20 @@ export class RequestService {
       delivery_date,
       description,
       user: { id: userId },
+      items: item,
     })
     await validateEntity(request)
     return await requestRepository.save(request)
+  }
+
+  async createItem({ items }: createItemProps) {
+    const item = []
+
+    for (let i: number = 0; i < items.length; i++) {
+      const l = items[i]
+      item.push(l)
+    }
+
+    return item
   }
 }
