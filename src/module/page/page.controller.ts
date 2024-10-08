@@ -92,4 +92,13 @@ export class PageController {
       body: '',
     }
   }
+
+  @Get('/lp')
+  @Render(AppPages.lp)
+  lp() {
+    return {
+      title: 'Hakobun',
+      body: '',
+    }
+  }
 }

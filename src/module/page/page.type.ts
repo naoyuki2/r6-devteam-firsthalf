@@ -6,6 +6,7 @@ import { Request } from '../request/request.entity'
 export enum AppPages {
   landing = 'landing.ejs',
   home = 'home.ejs',
+  lp = 'lp.ejs',
   request = 'request.ejs',
   detail = 'detail.ejs',
   login = 'login.ejs',
