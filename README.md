@@ -1,3 +1,20 @@
+# 開発時
+
+## バックエンド起動
+
+ルートディレクトリで下記を実行
+
+```shell
+docker-compose up -d
+```
+
+## フロントエンド起動
+
+```shell
+cd frontend
+npm run dev
+```
+
 # 環境構築
 
 このリポジトリをローカルのお好きな場所にクローン
@@ -6,12 +23,7 @@
 git clone git@github.com:naoyuki2/r6-devteam-firsthalf.git
 ```
 
-エディタ(VSCodeなど)で`r6-devteam-firsthalf`ディレクトリを開く
-
-```
-cd r6-devteam-firsthalf
-code .
-```
+エディタ(VSCode など)で`r6-devteam-firsthalf`ディレクトリを開く
 
 パッケージをインストールするために下記のコマンドを実行
 
@@ -21,13 +33,13 @@ code .
 npm install
 ```
 
-Dockerを起動するために、`r6-devteam-firsthalf` 直下で下記のコマンドを実行
+Docker を起動するために、`r6-devteam-firsthalf` 直下で下記のコマンドを実行
 
 ```
 docker-compose up -d
 ```
 
-Docker Desktopを起動し、
+Docker Desktop を起動し、
 
 下のキャプチャのように `Node` と `PostgresSQL` が起動していることを確認
 
@@ -35,7 +47,7 @@ Docker Desktopを起動し、
 
 ## Node
 
-http://localhost:3000 にアクセスし、下のキャプチャのような変な画面が出ればOK
+http://localhost:3000 にアクセスし、下のキャプチャのような変な画面が出れば OK
 
 <img width="507" alt="image" src="https://github.com/user-attachments/assets/6d9b9b0f-3758-4d64-b9d2-48a12b00744f">
 
@@ -43,9 +55,9 @@ http://localhost:3000 にアクセスし、下のキャプチャのような変�
 
 データベース管理ツール(a5m2, TablePlus など)で 起動した `PostgresSQL` サーバーに接続する
 
-- user : `postgres`  
-- password : `password`  
-- database : `mydatabase`  
+- user : `postgres`
+- password : `password`
+- database : `mydatabase`
 
 下は TablePlus で接続する際のキャプチャ
 
