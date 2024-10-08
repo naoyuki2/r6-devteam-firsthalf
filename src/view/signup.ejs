@@ -8,32 +8,32 @@
   <link rel="stylesheet" href="/icons/bootstrap-icons.css" />
   <body>
   <form action="/api/user" method="post">
-  <div class="h-100  d-flex justify-content-evenly">
+  <div class="vh-100  d-flex justify-content-evenly">
     <div class="d-flex align-items-center">
       <div class="d-flex-flex-column">
-        <p class="fw-bold fs-2">新規登録</p>
+        <p class="text-center fw-bold fs-2">新規登録</p>
         <p class="text-truncate"></p>
-        <p class=" mb-2">ユーザーネーム</p>
-        <span><input type="text" name="name" /></span>
+        <p class="border-start border-info border-5 ps-2 fw-bold mb-2" >ユーザーネーム</p>
+        <span><input type="name" class="form-control" id="title" name="title" placeholder="HaKobun" required></span>
         <p class="text-truncate"></p>
-        <p class=" mb-2">メールアドレス</p>
-        <span><input type="email" name="email" /></span>
+        <p class="border-start border-info border-5 ps-2 fw-bold mb-2" >メールアドレス</p>
+        <span><input type="mail" class="form-control" id="title" name="title" placeholder="sample@gmail.com" required></span>
         <p class="text-truncate"></p>
-        <p class=" mb-2">パスワード</p>
-        <span><input type="password" name="password" /></span>
+        <p class="border-start border-info border-5 ps-2 fw-bold mb-2" >パスワード</p>
+        <span> <input type="password" class="form-control" id="title" name="password" placeholder="***********" required></span></span>
         <div class="d-grid gap-2 col-6 mx-auto"></div>
         <p class="fw-bold my-3">
         <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="submit">新規登録</button>
+        <button class="btn btn-info">新規登録</button>
+        </div>
+        </p>
+        </form>
+          <p>
+        <a href="login" class="link-dark">アカウントをお持ちの方はこちら</a>
+          </p>
+        </div>
       </div>
-    </p>
-  </form>
-      <p>
-        <a class="link-opacity-100" href="#">アカウントをお持ちの方はこちら</a>
-      </p>
-    </div>
   </div>
-      </div>
    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
