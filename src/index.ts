@@ -38,6 +38,8 @@ app.use(
 )
 app.use('/css', express.static(path.join(__dirname, '../public/css')))
 
+app.use(express.static(path.join(__dirname, '../public')))
+
 useExpressServer(app, {
   controllers: [
     PageController,
@@ -47,9 +49,9 @@ useExpressServer(app, {
   ],
   // middlewares: [ErrorHandler],
   defaultErrorHandler: false,
-  authorizationChecker: (action: Action,roles:string[]) =>{
-    return action.request.currentUser;
-  }
+  authorizationChecker: (action: Action, roles: string[]) => {
+    return action.request.currentUser
+  },
 })
 
 app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
