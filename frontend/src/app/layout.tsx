@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import { Noto_Sans_JP } from 'next/font/google'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import NavTop from './component/nav-top'
-import NavBottom from './component/nav-bottom'
+import NavTop from '../component/nav-top'
+import NavBottom from '../component/nav-bottom'
 
 const notoSansJP = Noto_Sans_JP({ subsets: ['latin'], weight: ['400'] })
 
