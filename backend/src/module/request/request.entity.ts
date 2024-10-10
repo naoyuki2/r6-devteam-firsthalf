@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import {
   Column,
   Entity,
@@ -60,6 +60,12 @@ export class Request {
   @IsNotEmpty()
   created_at!: Date
 
+  @OneToMany(() => Item, (item) => item.request, { cascade: true })
+  items!: Item[]
+
+  @OneToMany(() => Room, (room) => room.request)
+  rooms!: Room[]
+
   @CreateDateColumn({
     update: true,
   })
@@ -73,10 +79,4 @@ export class Request {
   @ManyToOne(() => User, (user) => user.requests)
   @IsNotEmpty()
   user!: User
-
-  @OneToMany(() => Item, (item) => item.request)
-  items!: Item[]
-
-  @OneToMany(() => Room, (room) => room.request)
-  rooms!: Room[]
 }
