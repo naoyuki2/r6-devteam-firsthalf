@@ -13,8 +13,8 @@ type createRequestProps = {
   title: string
   location_prefecture: string
   location_details: string
-  delivery_location: string
-  delivery_date: string
+  delivery_prefecture: string
+  delivery_details: string
   description: string
   userId: number
   item: Item[]
@@ -42,8 +42,8 @@ export class RequestService {
     title,
     location_prefecture,
     location_details,
-    delivery_location,
-    delivery_date,
+    delivery_prefecture,
+    delivery_details,
     description,
     userId,
     item,
@@ -52,8 +52,8 @@ export class RequestService {
       title,
       location_prefecture,
       location_details,
-      delivery_location,
-      delivery_date,
+      delivery_prefecture,
+      delivery_details,
       description,
       user: { id: userId },
       items: item,

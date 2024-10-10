@@ -31,8 +31,8 @@ export namespace Create {
     title: string
     location_prefecture: string
     location_details: string
-    delivery_location: string
-    delivery_date: string
+    delivery_prefecture: string
+    delivery_details: string
     description: string
     userId: number
     items: Item[]
