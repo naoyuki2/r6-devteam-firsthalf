@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import {
   Column,
   Entity,
@@ -35,8 +35,9 @@ export class Request {
   @IsString()
   location_details!: string
 
-  @Column('varchar', { nullable: true })
+  @ValidateIf((o) => o.delivery_location !== null)
   @IsString()
+  @Column('varchar', { nullable: true })
   delivery_location: string | null = null
 
   @Column('date', { nullable: true })
@@ -61,7 +62,7 @@ export class Request {
   })
   created_at!: Date
 
-  @OneToMany(() => Item, (item) => item.request)
+  @OneToMany(() => Item, (item) => item.request, { cascade: true })
   items!: Item[]
 
   @OneToMany(() => Room, (room) => room.request)

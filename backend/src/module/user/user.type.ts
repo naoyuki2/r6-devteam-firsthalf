@@ -1,4 +1,4 @@
-const root = '/api/user'
+const root = '/user'
 
 export namespace SignUp {
   export const endpoint = root
