@@ -8,7 +8,7 @@ import {
 } from 'typeorm'
 
 import { Request } from '../request/request.entity'
-import { RoomUser } from '../roomuser/roomuser.entity'
+import { RoomUser } from '../room_user/room_user.entity'
 import { Message } from '../message/message.entity'
 
 @Entity()
@@ -56,8 +56,8 @@ export class User {
   @OneToMany(() => Request, (request) => request.user)
   requests!: Request[]
 
-  @OneToMany(() => RoomUser, (roomuser) => roomuser.user)
-  roomusers!: RoomUser[]
+  @OneToMany(() => RoomUser, (room_user) => room_user.user)
+  room_users!: RoomUser[]
 
   @OneToMany(() => Message, (message) => message.user)
   messages!: Message[]

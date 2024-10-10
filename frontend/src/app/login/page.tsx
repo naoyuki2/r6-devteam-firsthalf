@@ -1,9 +1,10 @@
-import { Container } from 'react-bootstrap'
+import { Button, Container } from 'react-bootstrap'
 
 export default async function Login() {
+  console.log('test')
   return (
     <Container>
-      <p>Login</p>
+      <Button variant="primary">Primary</Button>
     </Container>
   )
 }

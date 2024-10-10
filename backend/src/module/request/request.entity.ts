@@ -7,16 +7,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
 } from 'typeorm'
+
 import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
 import { Room } from '../room/room.entity'
 
-export enum status {
-  pending = 'pending',
-  progress = 'progress',
-  completed = 'completed',
-}
-
+export type status = 'pending' | 'progress' | 'completed'
 @Entity()
 export class Request {
   @PrimaryGeneratedColumn()
@@ -29,19 +25,23 @@ export class Request {
 
   @Column('varchar')
   @IsString()
+  @IsNotEmpty()
   location_prefecture!: string
 
   @Column('varchar')
   @IsString()
+  @IsNotEmpty()
   location_details!: string
 
-  @ValidateIf((o) => o.delivery_location !== null)
+  @Column('varchar')
   @IsString()
-  @Column('varchar', { nullable: true })
-  delivery_location: string | null = null
+  @IsNotEmpty()
+  delivery_prefecture!: string
 
-  @Column('date', { nullable: true })
-  delivery_date: Date | null = null
+  @Column('varchar', { nullable: true })
+  @IsString()
+  @IsNotEmpty()
+  delivery_details: string | null = null
 
   @Column('text')
   @IsString()
@@ -49,17 +49,15 @@ export class Request {
 
   @Column({
     type: 'varchar',
-    enum: status,
-    default: status.pending,
+    default: 'pending',
   })
+  @IsNotEmpty()
   status!: status
-
-  @ManyToOne(() => User, (user) => user.requests)
-  user!: User
 
   @CreateDateColumn({
     update: false,
   })
+  @IsNotEmpty()
   created_at!: Date
 
   @OneToMany(() => Item, (item) => item.request, { cascade: true })
@@ -71,8 +69,14 @@ export class Request {
   @CreateDateColumn({
     update: true,
   })
+  @IsNotEmpty()
   updated_at!: Date
 
   @Column('date', { nullable: true })
+  @IsNotEmpty()
   completed_at: Date | null = null
+
+  @ManyToOne(() => User, (user) => user.requests)
+  @IsNotEmpty()
+  user!: User
 }
