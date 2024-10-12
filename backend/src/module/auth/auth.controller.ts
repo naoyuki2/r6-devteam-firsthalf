@@ -22,6 +22,6 @@ export class AuthController {
     })
 
     const token = generateToken(authenticatedUser.id)
-    res.json({ user: userSerializer(authenticatedUser), token })
+    return res.json({ user: userSerializer(authenticatedUser), token })
   }
 }

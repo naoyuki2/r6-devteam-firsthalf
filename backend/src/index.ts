@@ -6,6 +6,7 @@ import { UserController } from './module/user/user.controller'
 import { AuthController } from './module/auth/auth.controller'
 import { ErrorHandler } from './middleware/errorHandler'
 import { setCurrentUser } from './middleware/setCurrentUser'
+import cors from 'cors'
 
 const PORT = 3030
 
@@ -19,6 +20,7 @@ AppDataSource.initialize()
 
 const app = express()
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(setCurrentUser)
