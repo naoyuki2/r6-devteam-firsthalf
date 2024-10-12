@@ -1,6 +1,7 @@
 import { Request } from './request.entity'
 import { User } from '../user/user.entity'
-const root = '/api/requests'
+import { Item } from '../item/item.entity'
+const root = '/requests'
 
 export namespace GetAll {
   export const endpoint = root
@@ -20,5 +21,24 @@ export namespace GetById {
 
   export type res = {
     request: any //エラーが起こるのでanyにしてます
+  }
+}
+
+export namespace Create {
+  export const endpoint = root
+
+  export type req = {
+    title: string
+    location_prefecture: string
+    location_details: string
+    delivery_prefecture: string
+    delivery_details: string
+    description: string
+    userId: number
+    items: Item[]
+  }
+
+  export type res = {
+    request: any
   }
 }
