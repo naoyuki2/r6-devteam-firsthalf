@@ -9,9 +9,6 @@ import { CustomError } from '../error/CustomError'
 export class ErrorHandler implements ExpressErrorMiddlewareInterface {
   error(error: CustomError, _req: Request, res: Response) {
     console.error(error)
-    return res.json({
-      message: error.message || 'Internal server error',
-      status: error.status,
-    })
+    return res.status(error.status).json({ message: error.message })
   }
 }
