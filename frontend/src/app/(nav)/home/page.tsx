@@ -1,3 +1,4 @@
+import { AppLink } from '@/component/AppLink'
 import Link from 'next/link'
 import { Container } from 'react-bootstrap'
 import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
@@ -5,13 +6,7 @@ import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
 export default async function Home() {
   return (
     <Container>
-      <Link
-        href="#"
-        style={{
-          textDecoration: 'none',
-          color: '#4b4b4b',
-        }}
-      >
+      <AppLink href="#">
         <div className="border-bottom border-opacity-25">
           <div className="d-flex">
             <PersonCircle size={36} className="me-3 mt-2" />
@@ -39,7 +34,7 @@ export default async function Home() {
             </div>
           </div>
         </div>
-      </Link>
+      </AppLink>
     </Container>
   )
 }
