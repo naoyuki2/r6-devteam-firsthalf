@@ -42,7 +42,7 @@ export const SignUpClient = () => {
     }))
   }
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     // TODO : バリデーション, ローディング
     const args: any = {
       name: name.value,
@@ -100,7 +100,7 @@ export const SignUpClient = () => {
         </Form.Group>
         <AppButton
           text="新規登録"
-          onClick={handleLogin}
+          onClick={handleSignUp}
           className="w-100"
           variant="info"
         />
