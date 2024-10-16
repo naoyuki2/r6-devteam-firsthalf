@@ -1,6 +1,11 @@
 'use client'
 import { Container, Button, Row, Col, Card } from 'react-bootstrap'
-import { BsArrowRight, BsBox, BsGeoAlt, BsTruck } from 'react-icons/bs'
+import {
+  ArrowRight,
+  GeoAlt,
+  Cart,
+  TrainLightrailFront,
+} from 'react-bootstrap-icons'
 
 export default async function Landing() {
   return (
@@ -25,7 +30,7 @@ export default async function Landing() {
           </h1>
           <p className="lead text-secondary mb-4">旅行のお土産で誰かの助けに</p>
           <Button variant="info" size="lg" className="text-white px-4 py-2">
-            使ってみる <BsArrowRight />
+            使ってみる <ArrowRight />
           </Button>
         </div>
 
@@ -33,7 +38,7 @@ export default async function Landing() {
           <Col>
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
-                <BsBox size={24} />
+                <GeoAlt size={24} />
 
                 <Card.Title className="h5 fw-bold">魅力をかく①</Card.Title>
                 <Card.Text className="text-secondary">
@@ -45,7 +50,7 @@ export default async function Landing() {
           <Col>
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
-                <BsGeoAlt size={24} />
+                <Cart size={24} />
                 <Card.Title className="h5 fw-bold">魅力をかく②</Card.Title>
                 <Card.Text className="text-secondary">
                   ○○○○○○○○○○○○○○○○○○します。
@@ -56,7 +61,7 @@ export default async function Landing() {
           <Col>
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
-                <BsTruck size={24} />
+                <TrainLightrailFront size={24} />
                 <Card.Title className="h5 fw-bold">魅力をかく③</Card.Title>
                 <Card.Text className="text-secondary">
                   ○○○○○○○○○○○○○○○○○○します。
