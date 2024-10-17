@@ -31,9 +31,7 @@ type Request = {
 
 export default async function Home() {
   const res = await apiClient.get('/requests')
-  const requests: Request = res.data[0]
-  console.log(res.data)
-  if (!res) return <></>
+  const { requests } = res.data
 
   return (
     <Container>
@@ -41,7 +39,7 @@ export default async function Home() {
         <div className="border-bottom border-opacity-25">
           <div className="d-flex">
             <PersonCircle size={36} className="me-3 mt-2" />
-            <span className="fw-bold my-2 mt-2">{requests.id}</span>
+            <span className="fw-bold my-2 mt-2">{requests[0].id}</span>
             <span className="ms-auto my-2 mt-2"></span>
           </div>
           <p className="fw-bold text-truncate mb-2">title</p>
