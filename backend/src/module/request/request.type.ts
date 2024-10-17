@@ -34,7 +34,6 @@ export namespace Create {
     delivery_prefecture: string
     delivery_details: string
     description: string
-    status: 'pending' | 'progress' | 'completed'
     userId: number
     items: Item[]
   }
