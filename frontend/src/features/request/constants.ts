@@ -1,4 +1,4 @@
-const PREFECTURES = [
+export const PREFECTURES = [
   '北海道',
   '青森県',
   '岩手県',
@@ -47,5 +47,3 @@ const PREFECTURES = [
   '鹿児島県',
   '沖縄県',
 ]
-
-export { PREFECTURES }
