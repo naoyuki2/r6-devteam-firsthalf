@@ -1,4 +1,5 @@
 'use client'
+import { LandingClient } from '@/features/landing'
 import { Container, Button, Row, Col, Card } from 'react-bootstrap'
 import {
   ArrowRight,
@@ -6,8 +7,10 @@ import {
   Cart,
   TrainLightrailFront,
 } from 'react-bootstrap-icons'
+import Image from 'next/image'
 
 export default async function Landing() {
+  const { handleLoginClick, handleSignupClick } = LandingClient()
   return (
     <Container
       fluid
@@ -16,8 +19,12 @@ export default async function Landing() {
     >
       <header className="py-4">
         <nav className="d-flex justify-content-between align-items-center">
-          <img src="/logo.png" alt="Hakobun Logo" width="80" height="80" />
-          <Button variant="info" className="text-white">
+          <Image src="/logo.png" alt="Hakobun Logo" width={80} height={80} />
+          <Button
+            variant="info"
+            className="text-white"
+            onClick={handleLoginClick}
+          >
             ログイン
           </Button>
         </nav>
@@ -29,7 +36,12 @@ export default async function Landing() {
             Hakobun で簡単にお土産を代行してもらおう
           </h1>
           <p className="lead text-secondary mb-4">旅行のお土産で誰かの助けに</p>
-          <Button variant="info" size="lg" className="text-white px-4 py-2">
+          <Button
+            variant="info"
+            size="lg"
+            className="text-white px-4 py-2"
+            onClick={handleSignupClick}
+          >
             使ってみる <ArrowRight />
           </Button>
         </div>
