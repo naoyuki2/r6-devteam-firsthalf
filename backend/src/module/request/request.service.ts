@@ -16,7 +16,6 @@ type createRequestProps = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending' | 'progress' | 'completed'
   userId: number
   item: Item[]
 }
@@ -46,7 +45,6 @@ export class RequestService {
     delivery_prefecture,
     delivery_details,
     description,
-    status,
     userId,
     item,
   }: createRequestProps): Promise<Request> {
@@ -57,7 +55,6 @@ export class RequestService {
       delivery_prefecture,
       delivery_details,
       description,
-      status,
       user: { id: userId },
       items: item,
     })

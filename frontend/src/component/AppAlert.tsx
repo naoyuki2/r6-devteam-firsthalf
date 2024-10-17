@@ -13,7 +13,7 @@ export const AppAlert = ({
 }: AppAlertProps) => {
   return (
     <Alert
-      className={`position-fixed top-0 end-0 m-3 ${className}`}
+      className={`position-absolute top-0 end-0 m-3 ${className}`}
       {...bootstrapProps}
     >
       {message}
