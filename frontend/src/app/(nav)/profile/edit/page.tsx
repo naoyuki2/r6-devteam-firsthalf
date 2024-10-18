@@ -55,12 +55,22 @@ export default function EditProfilePage() {
       {/* キャンセルと保存ボタン */}
       <Row className="mb-4">
         <Col className="text-start">
-          <Button variant="outline-primary" size="sm" onClick={handleCancel}>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={handleCancel}
+            style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+          >
             キャンセル
           </Button>
         </Col>
         <Col className="text-end">
-          <Button variant="outline-primary" size="sm" onClick={handleSave}>
+          <Button
+            variant="outline-primary"
+            size="sm"
+            onClick={handleSave}
+            style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+          >
             保存
           </Button>
         </Col>
@@ -83,6 +93,7 @@ export default function EditProfilePage() {
             variant="outline-secondary"
             className="mt-3"
             onClick={triggerFileInput}
+            style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
           >
             アイコンを変更
           </Button>
@@ -101,19 +112,25 @@ export default function EditProfilePage() {
         </Col>
         <Col xs={9}>
           <Form.Group controlId="formName" className="mb-3">
-            <Form.Label>名前</Form.Label>
+            <Form.Label style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+              名前
+            </Form.Label>
             <Form.Control
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
             />
           </Form.Group>
           <Form.Group controlId="formEmail" className="mb-3">
-            <Form.Label>メールアドレス</Form.Label>
+            <Form.Label style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>
+              メールアドレス
+            </Form.Label>
             <Form.Control
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              style={{ fontSize: '1.1rem', fontWeight: 'bold' }}
             />
           </Form.Group>
         </Col>

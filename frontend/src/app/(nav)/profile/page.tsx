@@ -9,7 +9,11 @@ export default function ProfilePage() {
       <Row className="mb-4">
         <Col className="text-end">
           <Link href="/profile/edit" passHref>
-            <Button variant="outline-primary" size="sm">
+            <Button
+              variant="outline-primary"
+              size="sm"
+              style={{ fontSize: '1.1rem', fontWeight: 'bold' }} // 文字サイズと太さを変更
+            >
               編集
             </Button>
           </Link>
