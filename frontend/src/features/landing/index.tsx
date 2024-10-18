@@ -18,7 +18,7 @@ export const LandingClient = () => {
   }
 
   const handleSignupClick = () => {
-    router.push('/signup')
+    router.push('/home')
   }
 
   return (
