@@ -8,7 +8,7 @@ export default function ProfilePage() {
     <Container className="mt-4">
       <Row className="mb-4">
         <Col className="text-end">
-          <Link href="/exit" passHref>
+          <Link href="/profile/edit" passHref>
             <Button variant="outline-primary" size="sm">
               編集
             </Button>
