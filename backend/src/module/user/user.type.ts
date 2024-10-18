@@ -20,12 +20,8 @@ export namespace SignUp {
   }
 }
 
-export namespace GetById {
-  export const endpoint = `${root}/:id`
-
-  export type param = {
-    id: number
-  }
+export namespace GetUser {
+  export const endpoint = `${root}`
 
   export type res = {
     user: {
