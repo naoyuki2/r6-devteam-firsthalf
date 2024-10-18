@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
-import { useRouter } from 'next/navigation' // Next.jsのルーターを使用してページ遷移
+import { useRouter } from 'next/navigation'
 import { PersonCircle } from 'react-bootstrap-icons'
 
 export default function EditProfilePage() {
@@ -10,7 +10,8 @@ export default function EditProfilePage() {
   const [email, setEmail] = useState('sample@gmail.com')
   const [icon, setIcon] = useState<File | null>(null)
   const [iconPreview, setIconPreview] = useState<string | null>(null)
-  const router = useRouter() // ルーターを初期化
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const router = useRouter()
 
   const handleIconChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -25,7 +26,7 @@ export default function EditProfilePage() {
   }
 
   const handleSave = () => {
-    // ここで保存処理を行う。今回はローカルストレージを使用。
+    // 保存処理（例: APIへの送信）
     const profileData = {
       name,
       email,
@@ -40,7 +41,13 @@ export default function EditProfilePage() {
   }
 
   const handleCancel = () => {
-    router.push('/profile') // プロフィールページに遷移
+    router.push('/profile')
+  }
+
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click()
+    }
   }
 
   return (
@@ -72,11 +79,22 @@ export default function EditProfilePage() {
           ) : (
             <PersonCircle size={80} />
           )}
-          <Form.Group controlId="formFile" className="mt-3">
-            <Form.Label>アイコンを変更</Form.Label>
+          <Button
+            variant="outline-secondary"
+            className="mt-3"
+            onClick={triggerFileInput}
+          >
+            アイコンを変更
+          </Button>
+          <Form.Group
+            controlId="formFile"
+            className="mt-3"
+            style={{ display: 'none' }}
+          >
             <Form.Control
               type="file"
               accept="image/*"
+              ref={fileInputRef}
               onChange={handleIconChange}
             />
           </Form.Group>
