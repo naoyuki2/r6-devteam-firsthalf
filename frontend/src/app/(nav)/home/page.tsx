@@ -1,8 +1,8 @@
 import { AppLink } from '@/component/AppLink'
 import { apiClient } from '@/lib/axios'
-import Link from 'next/link'
 import { Container } from 'react-bootstrap'
 import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
+
 type Request = {
   id: number
   title: string
@@ -35,37 +35,35 @@ export default async function Home() {
 
   return (
     <Container>
-      <>
-        {requests.map((request: Request) => (
-          <AppLink href="#">
-            <div className="border-bottom border-opacity-25" key={request.id}>
-              <div className="d-flex">
-                <PersonCircle size={36} className="me-3 mt-2" />
-                <span className="fw-bold my-2 mt-2">{request.user.name}</span>
-                <span className="ms-auto my-2 mt-2"></span>
-              </div>
-              <p className="fw-bold text-truncate mb-2">{request.title}</p>
+      {requests.map((request: Request) => (
+        <AppLink href="#" key={request.id}>
+          <div className="border-bottom border-opacity-25">
+            <div className="d-flex">
+              <PersonCircle size={36} className="me-3 mt-2" />
+              <span className="fw-bold my-2 mt-2">{request.user.name}</span>
+              <span className="ms-auto my-2 mt-2"></span>
+            </div>
+            <p className="fw-bold text-truncate mb-2">{request.title}</p>
 
-              <div className="d-flex justify-content-evenly">
-                <div className="d-flex align-items-center">
-                  <div>
-                    <HouseDoor size={24} className="ms-2" />
-                    <p className="mb-2">HOME</p>
-                  </div>
-                  <span className="ms-3">{request.delivery_prefecture}</span>
+            <div className="d-flex justify-content-evenly">
+              <div className="d-flex align-items-center">
+                <div>
+                  <HouseDoor size={24} className="ms-2" />
+                  <p className="mb-2">HOME</p>
                 </div>
-                <div className="d-flex align-items-center">
-                  <div>
-                    <Shop size={24} className="ms-2" />
-                    <p className="mb-2">SHOP</p>
-                  </div>
-                  <span className="ms-3">{request.location_prefecture}</span>
+                <span className="ms-3">{request.delivery_prefecture}</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <div>
+                  <Shop size={24} className="ms-2" />
+                  <p className="mb-2">SHOP</p>
                 </div>
+                <span className="ms-3">{request.location_prefecture}</span>
               </div>
             </div>
-          </AppLink>
-        ))}
-      </>
+          </div>
+        </AppLink>
+      ))}
     </Container>
   )
 }
