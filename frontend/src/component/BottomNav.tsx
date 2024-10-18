@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import {
   ChatDots,
   HouseDoor,
@@ -15,12 +14,28 @@ export default function BottomNav() {
   ]
 
   return (
-      <nav className="position-sticky bottom-0 bg-light py-3 px-4 d-flex justify-content-between">
+    <div className="d-flex flex-column">
+      <div style={{ flex: 1, paddingBottom: '80px' }}>
+        <AppLink href="/request">
+          <PlusCircleFill
+            className="position-fixed text-info"
+            style={{
+              fontSize: '3rem',
+              right: '16px',
+              bottom: '80px',
+              zIndex: 10,
+            }}
+          />
+        </AppLink>
+      </div>
+
+      <nav className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between">
         {items.map((item, i) => (
           <AppLink key={i} href={item.href}>
             {item.icon}
           </AppLink>
         ))}
       </nav>
+    </div>
   )
 }
