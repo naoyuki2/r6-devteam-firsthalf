@@ -2,8 +2,12 @@ import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
 
-export default async function RequestDetail() {
-  const res = await apiClient.get('/requests/1') // ダイナミックルーティングでやるよ
+export default async function RequestDetail({
+  params,
+}: {
+  params: { id: string }
+}) {
+  const res = await apiClient.get(`/requests/${params.id}`) // ダイナミックルーティングでやるよ
   const { request } = res.data
 
   return (
@@ -37,8 +41,10 @@ export default async function RequestDetail() {
         {request.items.map((item: any) => (
           <div key={item.id} className="text-container">
             <p>商品名: {item.name}</p>
-            <p>数量: {item.quantity}</p>
-            <p>価格: ¥{item.price}</p>
+            <div className="">
+              <p className="mx-3">個数: {item.quantity}</p>
+              <p className="mx-3">価格: ¥{item.price}</p>
+            </div>
           </div>
         ))}
       </div>

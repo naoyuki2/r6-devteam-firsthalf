@@ -36,7 +36,7 @@ export default async function Home() {
   return (
     <Container>
       {requests.map((request: Request) => (
-        <AppLink href="#" key={request.id}>
+        <AppLink href={`request/${request.id}`} key={request.id}>
           <div className="border-bottom border-opacity-25">
             <div className="d-flex">
               <PersonCircle size={36} className="me-3 mt-2" />
