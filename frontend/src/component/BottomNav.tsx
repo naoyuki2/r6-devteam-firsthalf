@@ -18,12 +18,11 @@ export default function BottomNav() {
       <div style={{ flex: 1, paddingBottom: '80px' }}>
         <AppLink href="/request">
           <PlusCircleFill
-            className="position-fixed"
+            className="position-fixed text-info"
             style={{
               fontSize: '3rem',
               right: '16px',
               bottom: '80px',
-              color: '#007bff',
               zIndex: 10,
             }}
           />
