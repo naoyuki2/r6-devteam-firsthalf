@@ -14,19 +14,23 @@ export default function BottomNav() {
   ]
 
   return (
-    <div className="">
-      <AppLink href="/request">
-        <PlusCircleFill
-          style={{
-            fontSize: '3rem',
-            position: 'sticky',
-            right: '16px',
-            bottom: '80px',
-            color: '#007bff',
-          }}
-        />
-      </AppLink>
-      <nav className="position-sticky bottom-0 bg-light py-3 px-4 d-flex justify-content-between">
+    <div className="d-flex flex-column">
+      <div style={{ flex: 1, paddingBottom: '80px' }}>
+        <AppLink href="/request">
+          <PlusCircleFill
+            className="position-fixed"
+            style={{
+              fontSize: '3rem',
+              right: '16px',
+              bottom: '80px',
+              color: '#007bff',
+              zIndex: 10,
+            }}
+          />
+        </AppLink>
+      </div>
+
+      <nav className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between">
         {items.map((item, i) => (
           <AppLink key={i} href={item.href}>
             {item.icon}
