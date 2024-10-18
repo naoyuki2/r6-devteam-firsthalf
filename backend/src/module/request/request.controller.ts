@@ -41,6 +41,7 @@ export class RequestController {
       delivery_prefecture,
       delivery_details,
       description,
+      status,
       userId,
       items,
     } = req.body
@@ -52,6 +53,7 @@ export class RequestController {
       delivery_prefecture,
       delivery_details,
       description,
+      status,
       userId,
       item,
     })
