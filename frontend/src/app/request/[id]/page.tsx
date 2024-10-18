@@ -68,6 +68,7 @@ export default async function RequestDetail({
         <button className="btn btn-info" type="button">
           チャットする
         </button>
+        {/* AppButtonを使用したいがOnClickのせいでエラーが出ます */}
       </div>
     </Container>
   )
