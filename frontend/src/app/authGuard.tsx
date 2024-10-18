@@ -8,9 +8,9 @@ import { apiClient } from '@/lib/axios'
 import { getItem } from '@/utils/localStorage'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
+  const authPass = ['/request', '/profile', '/room', '/chat']
   const { currentUser, setCurrentUser } = useCurrentUserState()
   const pathname = usePathname()
-  console.log(pathname)
   const router = useRouter()
 
   const checkUser = useCallback(async () => {
@@ -34,7 +34,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   }, [setCurrentUser, router])
 
   useEffect(() => {
-    if (pathname == '/request' || pathname == 'profile') {
+    if (authPass.includes(pathname)) {
       checkUser()
     }
   }, [])
