@@ -1,5 +1,10 @@
 import Link from 'next/link'
-import { ChatDots, HouseDoor, Person } from 'react-bootstrap-icons'
+import {
+  ChatDots,
+  HouseDoor,
+  Person,
+  PlusCircleFill,
+} from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 
 export default function BottomNav() {
@@ -10,12 +15,26 @@ export default function BottomNav() {
   ]
 
   return (
-    <nav className="position-sticky bottom-0 bg-light py-3 px-4 d-flex justify-content-between">
-      {items.map((item, i) => (
-        <AppLink key={i} href={item.href}>
-          {item.icon}
-        </AppLink>
-      ))}
-    </nav>
+    <div className="position-relative">
+      <AppLink href="/request">
+        <PlusCircleFill
+          style={{
+            fontSize: '3rem',
+            position: 'absolute',
+            right: '16px',
+            bottom: '80px',
+            color: '#007bff',
+          }}
+        />
+      </AppLink>
+
+      <nav className="position-sticky bottom-0 bg-light py-3 px-4 d-flex justify-content-between">
+        {items.map((item, i) => (
+          <AppLink key={i} href={item.href}>
+            {item.icon}
+          </AppLink>
+        ))}
+      </nav>
+    </div>
   )
 }

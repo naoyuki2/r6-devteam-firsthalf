@@ -57,7 +57,6 @@ export class Request {
   @CreateDateColumn({
     update: false,
   })
-  @IsNotEmpty()
   created_at!: Date
 
   @OneToMany(() => Item, (item) => item.request, { cascade: true })
@@ -69,11 +68,9 @@ export class Request {
   @CreateDateColumn({
     update: true,
   })
-  @IsNotEmpty()
   updated_at!: Date
 
   @Column('date', { nullable: true })
-  @IsNotEmpty()
   completed_at: Date | null = null
 
   @ManyToOne(() => User, (user) => user.requests)
