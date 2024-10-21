@@ -50,10 +50,9 @@ export class RequestController {
       delivery_details,
       description,
       status,
-      userId,
       items,
     } = req.body
-    const userId = req.currentUser!.id
+    const userId = req.currentUserId!
     const item = await this.requestService.createItem({ items })
     const getRequest = await this.requestService.createRequest({
       title,
