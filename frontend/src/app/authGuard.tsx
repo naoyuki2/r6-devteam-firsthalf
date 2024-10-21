@@ -15,28 +15,27 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
 
   const checkUser = useCallback(async () => {
     const token = getItem('token')
+    if (!token) {
+      router.push('/login')
+      return
+    }
     try {
       const res = await apiClient.get('/user', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      const { user } = res.data
-      if (user) {
-        setCurrentUser(user)
-      } else {
-        router.push('/login')
-      }
+      if (!res.data.user) router.push('/login')
+      setCurrentUser(res.data.user)
     } catch (error) {
       console.error('Failed to fetch user account:', error)
       router.push('/login')
     }
-  }, [setCurrentUser, router])
+  }, [])
 
   useEffect(() => {
-    if (authPass.includes(pathname)) {
-      checkUser()
-    }
+    if (!authPass.includes(pathname)) return
+    checkUser()
   }, [])
 
   return <>{children}</>
