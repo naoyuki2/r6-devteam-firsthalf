@@ -1,6 +1,13 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Get, Controller, Req, Res, Post } from 'routing-controllers'
+import {
+  Get,
+  Controller,
+  Req,
+  Res,
+  Post,
+  Authorized,
+} from 'routing-controllers'
 import { Create, GetAll, GetById } from './request.type'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
@@ -29,6 +36,7 @@ export class RequestController {
     })
   }
 
+  @Authorized()
   @Post(Create.endpoint)
   async createRequest(
     @Req() req: Request<{}, {}, Create.req, {}>,
@@ -42,9 +50,9 @@ export class RequestController {
       delivery_details,
       description,
       status,
-      userId,
       items,
     } = req.body
+    const userId = req.currentUserId!
     const item = await this.requestService.createItem({ items })
     const getRequest = await this.requestService.createRequest({
       title,

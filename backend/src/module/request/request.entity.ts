@@ -39,8 +39,6 @@ export class Request {
   delivery_prefecture!: string
 
   @Column('varchar', { nullable: true })
-  @IsString()
-  @IsNotEmpty()
   delivery_details: string | null = null
 
   @Column('text')
@@ -51,7 +49,6 @@ export class Request {
     type: 'varchar',
     default: 'pending',
   })
-  @IsNotEmpty()
   status!: status
 
   @CreateDateColumn({
