@@ -15,29 +15,27 @@ export class RoomUserService {
     currentUserId,
     createRoomId,
   }: CreateRoomUserProps): Promise<RoomUser[]> {
+    //travel側の作成時、多分壊れます
     const roomUsers = [
       {
-        role: 'user',
+        role: RoomUserRole.requester,
         id: requestUserId,
       },
       {
-        role: 'currentUser',
+        role: RoomUserRole.carrier,
         id: currentUserId,
       },
     ]
     const createdRoomUsers: RoomUser[] = []
     for (const user of roomUsers) {
-      const role =
-        user.role === 'user' ? RoomUserRole.requester : RoomUserRole.carrier
-
       const roomUser = roomUserRepository.create({
-        role: role,
+        role: user.role,
         room: { id: createRoomId },
         user: { id: user.id },
       })
-      await roomUserRepository.insert(roomUser) //saveメソッドだとupdate処理が走りエラーになるのでinsertを使ってます
       createdRoomUsers.push(roomUser)
     }
+    await roomUserRepository.insert(createdRoomUsers) //saveメソッドだとupdate処理が走りエラーになるのでinsertを使ってます
     return createdRoomUsers
   }
 }
