@@ -8,6 +8,7 @@ import { apiClient } from '@/lib/axios'
 import { useRouter } from 'next/navigation'
 import { PREFECTURES } from './constants'
 import { AppTextArea } from '@/component/AppTextArea'
+import { getItem } from '@/utils/localStorage'
 
 type Item = {
   name: string
@@ -80,11 +81,15 @@ export default function RequestClient() {
       delivery_details: form.deliveryDetails,
       description: form.details,
       status: 'pending',
-      userId: 1, //ローカルストレージからtoken取得
       items: form.items,
     }
     try {
-      const res = await apiClient.post('/requests', args)
+      const token = getItem('token')
+      const res = await apiClient.post('/requests', args, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       if (res == null) return
       router.push('/home')
     } catch (e) {
