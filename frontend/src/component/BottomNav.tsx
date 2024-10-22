@@ -1,3 +1,5 @@
+'use client'
+
 import {
   ChatDots,
   HouseDoor,
@@ -5,12 +7,48 @@ import {
   PlusCircleFill,
 } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
+import { usePathname } from 'next/navigation'
 
 export default function BottomNav() {
+  const pathname = usePathname()
+
   const items = [
-    { icon: <HouseDoor style={{ fontSize: '2rem' }} />, href: '/' },
-    { icon: <ChatDots style={{ fontSize: '2rem' }} />, href: '/chat' },
-    { icon: <Person style={{ fontSize: '2rem' }} />, href: '/profile' },
+    {
+      icon: (
+        <HouseDoor
+          style={{
+            fontSize: '2rem',
+            color: pathname === '/home' ? 'white' : 'black',
+          }}
+        />
+      ),
+      href: '/home',
+      active: pathname === '/home',
+    },
+    {
+      icon: (
+        <ChatDots
+          style={{
+            fontSize: '2rem',
+            color: pathname === '/room' ? 'white' : 'black',
+          }}
+        />
+      ),
+      href: '/room',
+      active: pathname === '/room',
+    },
+    {
+      icon: (
+        <Person
+          style={{
+            fontSize: '2rem',
+            color: pathname === '/profile' ? 'white' : 'black',
+          }}
+        />
+      ),
+      href: '/profile',
+      active: pathname === '/profile',
+    },
   ]
 
   return (
@@ -32,7 +70,18 @@ export default function BottomNav() {
       <nav className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between">
         {items.map((item, i) => (
           <AppLink key={i} href={item.href}>
-            {item.icon}
+            <div
+              className={item.active ? 'bg-info' : ''}
+              style={{
+                borderRadius: '50%',
+                padding: '10px',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              {item.icon}
+            </div>
           </AppLink>
         ))}
       </nav>
