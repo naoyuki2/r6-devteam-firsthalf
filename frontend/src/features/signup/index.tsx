@@ -5,13 +5,15 @@ import { AppButton } from '@/component/AppButton'
 import { AppLinkText } from '@/component/AppLinkText'
 import { AppTextInput } from '@/component/AppTextInput'
 import { apiClient } from '@/lib/axios'
-import { useSetCurrentUser } from '@/lib/jotai/userState'
 import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 import { Form } from 'react-bootstrap'
 
 type Form = {
+  name: {
+    value: string
+  }
   email: {
     value: string
   }
@@ -20,8 +22,9 @@ type Form = {
   }
 }
 
-export const LoginClient = () => {
+export const SignUpClient = () => {
   const INITIAL_FORM: Form = {
+    name: { value: '' },
     email: { value: '' },
     password: { value: '' },
   }
@@ -29,8 +32,7 @@ export const LoginClient = () => {
   const router = useRouter()
   const [hasError, setHasError] = useState<boolean>(false)
   const [form, setForm] = useState<Form>(INITIAL_FORM)
-  const { email, password } = form
-  const setCurrentUser = useSetCurrentUser()
+  const { name, email, password } = form
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -40,17 +42,17 @@ export const LoginClient = () => {
     }))
   }
 
-  const handleLogin = async () => {
+  const handleSignUp = async () => {
     // TODO : バリデーション, ローディング
     const args: any = {
+      name: name.value,
       email: email.value,
       password: password.value,
     }
     try {
-      const res = await apiClient.post('/auth', args)
+      const res = await apiClient.post('/user', args)
       if (res == null) return
       setItem('token', res.data.token)
-      setCurrentUser(res.data.user)
       router.push('/home')
     } catch (e) {
       console.log(e)
@@ -61,11 +63,21 @@ export const LoginClient = () => {
   return (
     <>
       <AppAlert
-        message="ログインに失敗しました"
+        message="新規登録に失敗しました"
         variant="danger"
         show={hasError}
       />
       <Form>
+        <Form.Group controlId="email" className="mb-4">
+          <AppTextInput
+            label="ユーザーネーム"
+            type="text"
+            name="name"
+            placeholder="sample"
+            autoComplete="username"
+            onChange={handleInputChange}
+          />
+        </Form.Group>
         <Form.Group controlId="email" className="mb-4">
           <AppTextInput
             label="メールアドレス"
@@ -87,14 +99,14 @@ export const LoginClient = () => {
           />
         </Form.Group>
         <AppButton
-          text="ログイン"
-          onClick={handleLogin}
+          text="新規登録"
+          onClick={handleSignUp}
           className="w-100"
           variant="info"
         />
         <AppLinkText
-          text="アカウントをお持ちでない方はこちら"
-          href="/signup"
+          text="アカウントをお持ちの方はこちら"
+          href="/login"
           className="mt-3"
         />
       </Form>

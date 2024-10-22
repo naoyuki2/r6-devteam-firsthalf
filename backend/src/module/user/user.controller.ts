@@ -1,10 +1,18 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Post, Get, Req, Res } from 'routing-controllers'
+import {
+  Controller,
+  Post,
+  Get,
+  Req,
+  Res,
+  Authorized,
+} from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetById, SignUp } from './user.type'
+import { GetUser, SignUp } from './user.type'
+import { setCurrentUser } from 'src/middleware/setCurrentUser'
 
 @Controller()
 export class UserController {
@@ -21,12 +29,13 @@ export class UserController {
     return res.json({ user: userSerializer(getUser), token })
   }
 
-  @Get(GetById.endpoint)
-  async getById(
-    @Req() req: Request<GetById.param, {}, {}, {}>,
-    @Res() res: Response<GetById.res>,
+  @Get(GetUser.endpoint)
+  @Authorized()
+  async getUser(
+    @Req() req: Request<{}, {}, {}, {}>,
+    @Res() res: Response<GetUser.res>,
   ) {
-    const { id } = req.params
+    const id = req.currentUserId!
     const user = await this.userService.getById({ id })
     return res.json({ user: userSerializer(user) })
   }
