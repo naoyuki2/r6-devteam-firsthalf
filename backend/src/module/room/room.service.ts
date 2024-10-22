@@ -13,8 +13,6 @@ export class RoomService {
       request: { id: requestId },
     })
 
-    const saveRoom = await roomRepository.save(createRoom)
-
-    return saveRoom
+    return await roomRepository.save(createRoom)
   }
 }

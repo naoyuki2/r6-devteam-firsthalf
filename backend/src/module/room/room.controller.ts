@@ -23,21 +23,17 @@ export class RoomController {
     @Req() req: Request<{}, {}, Create.req, {}>,
     @Res() res: Response<Create.res>,
   ) {
-    const { requestId, userId } = req.body
-    const roomUsers = [
-      { role: 'user', id: userId },
-      { role: 'currentUser', id: req.currentUserId! },
-    ]
+    const { requestId, requestUserId } = req.body
     const createRoom = await this.roomService.createRoom({ requestId })
-    const createRoomId = createRoom.id
 
     const createRoomUser = await this.roomUserService.createRoomUser({
-      roomUsers,
-      createRoomId,
+      requestUserId: requestUserId,
+      currentUserId: req.currentUserId!,
+      createRoomId: createRoom.id,
     })
 
     return res.json({
-      createRoomId: createRoomId,
+      createRoomId: createRoom.id,
       requestId: createRoom.request.id,
       createRoomUser: createRoomUser,
     })
