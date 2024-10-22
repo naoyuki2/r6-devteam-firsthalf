@@ -1,4 +1,5 @@
 import { AppLink } from '@/component/AppLink'
+import { RequestCard } from '@/component/RequestCard'
 import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
@@ -36,33 +37,14 @@ export default async function Home() {
   return (
     <Container>
       {requests.map((request: Request) => (
-        <AppLink href={`request/${request.id}`} key={request.id}>
-          <div className="border-bottom border-opacity-25">
-            <div className="d-flex">
-              <PersonCircle size={36} className="me-3 mt-2" />
-              <span className="fw-bold my-2 mt-2">{request.user.name}</span>
-              <span className="ms-auto my-2 mt-2"></span>
-            </div>
-            <p className="fw-bold text-truncate mb-2">{request.title}</p>
-
-            <div className="d-flex justify-content-evenly">
-              <div className="d-flex align-items-center">
-                <div>
-                  <HouseDoor size={24} className="ms-2" />
-                  <p className="mb-2">HOME</p>
-                </div>
-                <span className="ms-3">{request.delivery_prefecture}</span>
-              </div>
-              <div className="d-flex align-items-center">
-                <div>
-                  <Shop size={24} className="ms-2" />
-                  <p className="mb-2">SHOP</p>
-                </div>
-                <span className="ms-3">{request.location_prefecture}</span>
-              </div>
-            </div>
-          </div>
-        </AppLink>
+        <RequestCard
+          key={request.id}
+          id={request.id}
+          username={request.user.name}
+          title={request.title}
+          delivery_prefecture={request.delivery_prefecture}
+          location_prefecture={request.location_prefecture}
+        />
       ))}
     </Container>
   )
