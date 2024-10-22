@@ -37,14 +37,14 @@ export default async function Home() {
   return (
     <Container>
       {requests.map((request: Request) => (
-        <AppLink href={`request/${request.id}`} key={request.id}>
-          <RequestCard
-            username={request.user.name}
-            title={request.title}
-            delivery_prefecture={request.delivery_prefecture}
-            location_prefecture={request.location_prefecture}
-          ></RequestCard>
-        </AppLink>
+        <RequestCard
+          key={request.id}
+          id={request.id}
+          username={request.user.name}
+          title={request.title}
+          delivery_prefecture={request.delivery_prefecture}
+          location_prefecture={request.location_prefecture}
+        />
       ))}
     </Container>
   )
