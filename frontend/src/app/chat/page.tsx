@@ -17,17 +17,17 @@ const Chat: React.FC = () => {
       type: 'other',
       content:
         'この度は依頼を受けていただきありがとうございます。○月○日の○時に○○駅で受け取りします。期間中はよろしくお願いいたします。何かあればご連絡ください。',
-      time: '12:30 PM',
+      time: '2024/10/22 12:30 PM',
     },
     {
       type: 'self',
       content: 'よろしくお願いいたします。受け取り場所把握しました。',
-      time: '12:32 PM',
+      time: '2024/10/22 12:32 PM',
     },
     {
       type: 'other',
       content: 'これからのスケジュールを教えていただけますか？',
-      time: '12:35 PM',
+      time: '2024/10/22 12:35 PM',
     },
   ])
   const [inputValue, setInputValue] = useState<string>('')
@@ -35,10 +35,16 @@ const Chat: React.FC = () => {
   // メッセージ送信時の処理
   const handleSend = () => {
     if (inputValue.trim() !== '') {
+      const now = new Date()
       const newMessage: Message = {
         type: 'self',
         content: inputValue,
-        time: new Date().toLocaleTimeString(),
+        time: `${now.getFullYear()}/${(now.getMonth() + 1)
+          .toString()
+          .padStart(2, '0')}/${now
+          .getDate()
+          .toString()
+          .padStart(2, '0')} ${now.toLocaleTimeString()}`, // 日付と時間を取得
       }
       setMessages([...messages, newMessage])
       setInputValue('')
@@ -85,7 +91,7 @@ const Chat: React.FC = () => {
               display: 'flex',
               justifyContent:
                 message.type === 'self' ? 'flex-end' : 'flex-start',
-              marginBottom: '30px',
+              marginBottom: '60px', // メッセージ間隔をさらに広げる
             }}
           >
             {message.type === 'other' && (
@@ -106,6 +112,7 @@ const Chat: React.FC = () => {
                 borderRadius: '8px',
                 maxWidth: '70%',
                 wordWrap: 'break-word',
+                paddingBottom: '50px', // 日付との間にさらに大きな余白を追加
                 position: 'relative',
               }}
             >
@@ -116,7 +123,7 @@ const Chat: React.FC = () => {
                   color: '#777',
                   position: 'absolute',
                   right: '10px',
-                  bottom: '-25px',
+                  bottom: '-40px', // 日時をメッセージのさらに外側に配置
                 }}
               >
                 {message.time}
