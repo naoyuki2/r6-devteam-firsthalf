@@ -92,6 +92,7 @@ export default function RequestClient() {
       })
       if (res == null) return
       router.push('/home')
+      router.refresh()
     } catch (e) {
       console.log(e)
       setHasError(true)
