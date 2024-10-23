@@ -14,7 +14,7 @@ import { Message } from '../message/message.entity'
 @Entity()
 export class Room {
   @PrimaryGeneratedColumn('uuid')
-  id!: String
+  id!: string
 
   @Column('date')
   created_at!: Date

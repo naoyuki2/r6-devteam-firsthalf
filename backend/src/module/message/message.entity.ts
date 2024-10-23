@@ -16,7 +16,7 @@ export class Message {
   id!: number
 
   @Column('text')
-  body!: String
+  body!: string
 
   @Column('date')
   created_at!: Date
