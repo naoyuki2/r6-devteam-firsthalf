@@ -17,8 +17,12 @@ export class RequestController {
   private requestService = new RequestService()
 
   @Get(GetAll.endpoint)
-  async getAll(@Req() _req: Request, @Res() res: Response<GetAll.res>) {
-    const requests = await this.requestService.getAll()
+  async getAll(
+    @Req() req: Request<{}, {}, {}, GetAll.param>,
+    @Res() res: Response<GetAll.res>,
+  ) {
+    const { userId } = req.query
+    const requests = await this.requestService.getAll({ userId })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })

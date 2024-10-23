@@ -2,7 +2,6 @@ import { AppDataSource } from '../../app-data-source'
 import { validateEntity } from '../../utils/validate'
 import { Request } from './request.entity'
 import { Item } from '../item/item.entity'
-
 const requestRepository = AppDataSource.getRepository(Request)
 
 type GetByIdProps = {
@@ -25,11 +24,23 @@ type createItemProps = {
   items: Item[]
 }
 
+type GetAllProps = {
+  userId: Number | undefined
+}
+
 export class RequestService {
-  async getAll(): Promise<Request[]> {
-    return await requestRepository.find({
-      relations: ['user', 'items'],
-    })
+  async getAll({ userId }: GetAllProps): Promise<Request[]> {
+    const qb = requestRepository
+      .createQueryBuilder('request')
+      .leftJoinAndSelect('request.user', 'user')
+      .leftJoinAndSelect('request.items', 'items')
+      .orderBy('request.id', 'DESC')
+
+    if (userId !== undefined) {
+      qb.where('user.id = :userId', { userId })
+    }
+
+    return await qb.getMany()
   }
 
   async getById({ id }: GetByIdProps): Promise<Request> {
