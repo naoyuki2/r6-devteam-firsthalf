@@ -7,11 +7,12 @@ import {
   Req,
   Res,
   Authorized,
+  Patch,
 } from 'routing-controllers'
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetUser, SignUp } from './user.type'
+import { GetUser, SignUp, Update } from './user.type'
 import { setCurrentUser } from 'src/middleware/setCurrentUser'
 
 @Controller()
@@ -37,6 +38,22 @@ export class UserController {
   ) {
     const id = req.currentUserId!
     const user = await this.userService.getById({ id })
+    return res.json({ user: userSerializer(user) })
+  }
+
+  @Patch(Update.endpoint)
+  @Authorized()
+  async update(
+    @Req() req: Request<{}, {}, Update.req, {}>,
+    @Res() res: Response<Update.res>,
+  ) {
+    const userId = req.currentUserId!
+    const { inputName, inputEmail } = req.body
+    const user = await this.userService.update({
+      userId,
+      inputName,
+      inputEmail,
+    })
     return res.json({ user: userSerializer(user) })
   }
 }
