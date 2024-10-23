@@ -6,18 +6,8 @@ const root = '/requests'
 export namespace GetAll {
   export const endpoint = root
 
-  export type res = {
-    requests: any //エラーが起こるのでanyにしてます
-  }
-}
-
-export namespace GetUserAll {
-  export const endpoint = (id?: number): string => {
-    return id ? `${root}/${id}` : `${root}/user/:id`
-  }
-
   export type param = {
-    id: number | undefined
+    userId: number | undefined
   }
 
   export type res = {

@@ -24,29 +24,23 @@ type createItemProps = {
   items: Item[]
 }
 
+type GetAllProps = {
+  userId: Number | undefined
+}
+
 export class RequestService {
-  async getAll(userId: Number | undefined): Promise<Request[]> {
-    const query = requestRepository
+  async getAll({ userId }: GetAllProps): Promise<Request[]> {
+    const qb = requestRepository
       .createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
       .leftJoinAndSelect('request.items', 'items')
       .orderBy('request.id', 'DESC')
 
     if (userId !== undefined) {
-      query.where('user.id = :userId', { userId })
+      qb.where('user.id = :userId', { userId })
     }
 
-    return await query.getMany()
-  }
-
-  async getUserAll({ id }: GetByIdProps): Promise<Request[]> {
-    return await requestRepository
-      .createQueryBuilder('request')
-      .leftJoinAndSelect('request.user', 'user')
-      .leftJoinAndSelect('request.items', 'items')
-      .where('user.id = :id', { id })
-      .orderBy('request.id', 'DESC')
-      .getMany()
+    return await qb.getMany()
   }
 
   async getById({ id }: GetByIdProps): Promise<Request> {
