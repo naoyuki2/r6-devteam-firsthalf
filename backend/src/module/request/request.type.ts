@@ -11,6 +11,20 @@ export namespace GetAll {
   }
 }
 
+export namespace GetUserAll {
+  export const endpoint = (id?: number): string => {
+    return id ? `${root}/${id}` : `${root}/user/:id`
+  }
+
+  export type param = {
+    id: number | undefined
+  }
+
+  export type res = {
+    requests: any //エラーが起こるのでanyにしてます
+  }
+}
+
 export namespace GetById {
   export const endpoint = (id?: number): string => {
     return id ? `${root}/${id}` : `${root}/:id`

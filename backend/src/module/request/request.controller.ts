@@ -8,7 +8,7 @@ import {
   Post,
   Authorized,
 } from 'routing-controllers'
-import { Create, GetAll, GetById } from './request.type'
+import { Create, GetAll, GetById, GetUserAll } from './request.type'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
 
@@ -17,8 +17,12 @@ export class RequestController {
   private requestService = new RequestService()
 
   @Get(GetAll.endpoint)
-  async getAll(@Req() _req: Request, @Res() res: Response<GetAll.res>) {
-    const requests = await this.requestService.getAll()
+  async getAll(
+    @Req() req: Request<{}, {}, {}, GetUserAll.param>,
+    @Res() res: Response<GetAll.res | GetUserAll.res>,
+  ) {
+    const { id } = req.query
+    const requests = await this.requestService.getAll(id)
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })
