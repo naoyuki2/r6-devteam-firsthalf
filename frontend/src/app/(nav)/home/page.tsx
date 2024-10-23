@@ -1,3 +1,4 @@
+import { AppAlert } from '@/component/AppAlert'
 import { AppLink } from '@/component/AppLink'
 import { RequestCard } from '@/component/RequestCard'
 import { apiClient } from '@/lib/axios'
@@ -31,21 +32,31 @@ type Request = {
 }
 
 export default async function Home() {
-  const res = await apiClient.get('/requests')
-  const { requests } = res.data
+  try {
+    const res = await apiClient.get('/requests')
+    const { requests } = res.data
 
-  return (
-    <Container>
-      {requests.map((request: Request) => (
-        <RequestCard
-          key={request.id}
-          id={request.id}
-          username={request.user.name}
-          title={request.title}
-          delivery_prefecture={request.delivery_prefecture}
-          location_prefecture={request.location_prefecture}
-        />
-      ))}
-    </Container>
-  )
+    return (
+      <Container>
+        {requests.map((request: Request) => (
+          <RequestCard
+            key={request.id}
+            id={request.id}
+            username={request.user.name}
+            title={request.title}
+            delivery_prefecture={request.delivery_prefecture}
+            location_prefecture={request.location_prefecture}
+          />
+        ))}
+      </Container>
+    )
+  } catch (error) {
+    return (
+      <AppAlert
+        variant="danger"
+        title="エラー"
+        message="リクエストの取得に失敗しました"
+      />
+    )
+  }
 }
