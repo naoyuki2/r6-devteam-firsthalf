@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetUser, SignUp, Update } from './user.type'
+import { GetUser, SignUp, UpdateUserParam } from './user.type'
 import { setCurrentUser } from 'src/middleware/setCurrentUser'
 
 @Controller()
@@ -41,15 +41,15 @@ export class UserController {
     return res.json({ user: userSerializer(user) })
   }
 
-  @Patch(Update.endpoint)
+  @Patch(UpdateUserParam.endpoint)
   @Authorized()
-  async update(
-    @Req() req: Request<{}, {}, Update.req, {}>,
-    @Res() res: Response<Update.res>,
+  async updateUserParam(
+    @Req() req: Request<{}, {}, UpdateUserParam.req, {}>,
+    @Res() res: Response<UpdateUserParam.res>,
   ) {
     const userId = req.currentUserId!
     const { inputName, inputEmail } = req.body
-    const user = await this.userService.update({
+    const user = await this.userService.updateUserParam({
       userId,
       inputName,
       inputEmail,

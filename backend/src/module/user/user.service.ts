@@ -39,10 +39,12 @@ export class UserService {
     return await userRepository.findOneByOrFail({ id })
   }
 
-  async update({ userId, inputName, inputEmail }: UpdateProps): Promise<User> {
-    const user = (await userRepository.findOne({
-      where: { id: userId },
-    })) as User
+  async updateUserParam({
+    userId,
+    inputName,
+    inputEmail,
+  }: UpdateProps): Promise<User> {
+    const user = await userRepository.findOneByOrFail({ id: userId })
     if (inputName !== undefined) {
       user.name = inputName
     }

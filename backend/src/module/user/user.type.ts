@@ -33,7 +33,7 @@ export namespace GetUser {
   }
 }
 
-export namespace Update {
+export namespace UpdateUserParam {
   export const endpoint = root
 
   export type req = {
