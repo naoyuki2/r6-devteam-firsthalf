@@ -19,8 +19,9 @@ export default function TopNav() {
             onClick={() => router.back()}
             style={{
               position: 'absolute',
+              fontSize: '32px',
               left: 16,
-              top: 24,
+              top: 16,
             }}
           />
         )}
