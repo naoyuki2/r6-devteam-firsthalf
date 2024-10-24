@@ -1,14 +1,41 @@
 import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
+import { useRouter } from 'next/navigation' // ページ遷移用
 
 export default async function RequestDetail({
   params,
 }: {
   params: { id: string }
 }) {
+  const router = useRouter()
+
+  // リクエスト詳細を取得
   const res = await apiClient.get(`/requests/${params.id}`) // ダイナミックルーティングでやるよ
   const { request } = res.data
+
+  // チャットルーム作成APIを呼び出す関数
+  const requestCreateRoom = async () => {
+    const args: any = {
+      requestId: request.id,
+      requestUserId: request.user.id,
+    }
+
+    // トークンの取得
+    const token = localStorage.getItem('token')
+    if (!token) {
+      console.error('Token is missing')
+      return
+    }
+
+    const res = await apiClient.post('/rooms', args, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    router.push('/chat')
+  }
 
   return (
     <Container>
@@ -48,12 +75,14 @@ export default async function RequestDetail({
           </div>
         ))}
       </div>
+
       <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
         詳細情報
       </p>
       <div className="d-flex justify-content-center w-auto mx-5 mb-3">
         <div className="text-container">{request.description}</div>
       </div>
+
       <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
         投稿者
       </p>
@@ -64,8 +93,13 @@ export default async function RequestDetail({
         ></PersonCircle>
         <span className="fw-bold my-2">{request.user.name}さん</span>
       </div>
+
       <div className="d-grid gap-2 col-10 mx-auto">
-        <button className="btn btn-info" type="button">
+        <button
+          className="btn btn-info"
+          type="button"
+          onClick={requestCreateRoom}
+        >
           チャットする
         </button>
         {/* AppButtonを使用したいがOnClickのせいでエラーが出ます */}
