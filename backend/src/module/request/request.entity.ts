@@ -6,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 import { User } from '../user/user.entity'
@@ -62,7 +63,7 @@ export class Request {
   @OneToMany(() => Room, (room) => room.request)
   rooms!: Room[]
 
-  @CreateDateColumn({
+  @UpdateDateColumn({
     update: true,
   })
   updated_at!: Date

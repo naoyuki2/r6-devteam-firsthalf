@@ -1,3 +1,4 @@
+import { CustomError } from '../../error/CustomError'
 import { AppDataSource } from '../../app-data-source'
 import { hashPassword } from '../../lib/hash'
 import { validateEntity, validatePassword } from '../../utils/validate'
@@ -15,6 +16,12 @@ type GetByIdProps = {
   id: number
 }
 
+type UpdateProps = {
+  userId: number
+  inputName: string | undefined
+  inputEmail: string | undefined
+}
+
 export class UserService {
   async signUp({ name, email, password }: SignUpProps): Promise<User> {
     validatePassword(password)
@@ -30,5 +37,23 @@ export class UserService {
 
   async getById({ id }: GetByIdProps): Promise<User> {
     return await userRepository.findOneByOrFail({ id })
+  }
+
+  async updateUserParam({
+    userId,
+    inputName,
+    inputEmail,
+  }: UpdateProps): Promise<User> {
+    const user = await userRepository.findOneByOrFail({ id: userId })
+    if (inputName !== undefined) {
+      user.name = inputName
+    }
+
+    if (inputEmail !== undefined) {
+      user.email = inputEmail
+    }
+
+    await validateEntity(user)
+    return await userRepository.save(user)
   }
 }
