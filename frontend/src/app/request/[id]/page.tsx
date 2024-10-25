@@ -1,3 +1,5 @@
+'use client'
+
 import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
