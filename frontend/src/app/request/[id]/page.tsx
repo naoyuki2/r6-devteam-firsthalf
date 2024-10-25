@@ -1,44 +1,16 @@
-'use client'
-
 import TopNav from '@/component/TopNav'
+import RequestDetailClient from '@/features/requestDetail'
 import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
-import { useRouter } from 'next/navigation' // ページ遷移用
 
 export default async function RequestDetail({
   params,
 }: {
   params: { id: string }
 }) {
-  const router = useRouter()
-
-  // リクエスト詳細を取得
-  const res = await apiClient.get(`/requests/${params.id}`) // ダイナミックルーティングでやるよ
+  const res = await apiClient.get(`/requests/${params.id}`)
   const { request } = res.data
-
-  // チャットルーム作成APIを呼び出す関数
-  const requestCreateRoom = async () => {
-    const args: any = {
-      requestId: request.id,
-      requestUserId: request.user.id,
-    }
-
-    // トークンの取得
-    const token = localStorage.getItem('token')
-    if (!token) {
-      console.error('Token is missing')
-      return
-    }
-
-    const res = await apiClient.post('/rooms', args, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-
-    router.push('/chat')
-  }
 
   return (
     <>
@@ -97,10 +69,7 @@ export default async function RequestDetail({
           <span className="fw-bold my-2">{request.user.name}さん</span>
         </div>
         <div className="d-grid gap-2 col-10 mx-auto">
-          <button className="btn btn-info" type="button">
-            チャットする
-          </button>
-          {/* AppButtonを使用したいがOnClickのせいでエラーが出ます */}
+          <RequestDetailClient request={request} />
         </div>
       </Container>
     </>
