@@ -1,4 +1,5 @@
 import TopNav from '@/component/TopNav'
+import RequestDetailClient from '@/features/requestDetail'
 import { apiClient } from '@/lib/axios'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
@@ -8,7 +9,7 @@ export default async function RequestDetail({
 }: {
   params: { id: string }
 }) {
-  const res = await apiClient.get(`/requests/${params.id}`) // ダイナミックルーティングでやるよ
+  const res = await apiClient.get(`/requests/${params.id}`)
   const { request } = res.data
 
   return (
@@ -68,10 +69,7 @@ export default async function RequestDetail({
           <span className="fw-bold my-2">{request.user.name}さん</span>
         </div>
         <div className="d-grid gap-2 col-10 mx-auto">
-          <button className="btn btn-info" type="button">
-            チャットする
-          </button>
-          {/* AppButtonを使用したいがOnClickのせいでエラーが出ます */}
+          <RequestDetailClient request={request} />
         </div>
       </Container>
     </>
