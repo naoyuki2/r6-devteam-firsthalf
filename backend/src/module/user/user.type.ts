@@ -32,3 +32,21 @@ export namespace GetUser {
     }
   }
 }
+
+export namespace UpdateUserParam {
+  export const endpoint = root
+
+  export type req = {
+    inputName: string | undefined
+    inputEmail: string | undefined
+  }
+
+  export type res = {
+    user: {
+      id: number
+      name: string
+      email: string
+      icon_image_url: string | null
+    }
+  }
+}

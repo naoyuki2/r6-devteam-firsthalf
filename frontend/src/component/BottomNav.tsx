@@ -50,22 +50,23 @@ export default function BottomNav() {
       active: pathname === '/profile',
     },
   ]
-
   return (
     <div className="d-flex flex-column">
-      <div style={{ flex: 1, paddingBottom: '80px' }}>
-        <AppLink href="/request">
-          <PlusCircleFill
-            className="position-fixed text-info"
-            style={{
-              fontSize: '3rem',
-              right: '16px',
-              bottom: '80px',
-              zIndex: 10,
-            }}
-          />
-        </AppLink>
-      </div>
+      {pathname === '/home' && (
+        <div style={{ flex: 1, paddingBottom: '80px' }}>
+          <AppLink href="/request">
+            <PlusCircleFill
+              className="position-fixed text-info"
+              style={{
+                fontSize: '3rem',
+                right: '16px',
+                bottom: '80px',
+                zIndex: 10,
+              }}
+            />
+          </AppLink>
+        </div>
+      )}
 
       <nav className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between">
         {items.map((item, i) => (

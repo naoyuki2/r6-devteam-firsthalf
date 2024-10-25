@@ -36,7 +36,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!authPass.includes(pathname)) return
     checkUser()
-  }, [])
+  }, [router, pathname])
 
   return <>{children}</>
 }
