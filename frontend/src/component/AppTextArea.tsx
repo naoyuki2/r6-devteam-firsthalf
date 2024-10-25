@@ -1,11 +1,11 @@
-import { Form, InputGroup } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 type AppTextAreaProps = {
   label?: string
   name: string
   placeholder: string
   autoComplete: string
-  onChange: (event: any) => void
+  onChange: (changeData: React.ChangeEvent<HTMLInputElement>) => void
   labelClassName?: string
   controlClassName?: string
   rows?: number

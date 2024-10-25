@@ -2,9 +2,10 @@
 
 import { useRouter } from 'next/navigation'
 import { apiClient } from '@/lib/axios'
+import { CreateRoomArgs, Request } from '@/types'
 
 type RequestDetailClientProps = {
-  request: any
+  request: Request
 }
 
 export default function RequestDetailClient({
@@ -13,7 +14,7 @@ export default function RequestDetailClient({
   const router = useRouter()
 
   const requestCreateRoom = async () => {
-    const args: any = {
+    const args: CreateRoomArgs = {
       requestId: request.id,
       requestUserId: request.user.id,
     }
@@ -29,7 +30,7 @@ export default function RequestDetailClient({
         Authorization: `Bearer ${token}`,
       },
     })
-
+    if (res == null) return
     router.push('/chat')
   }
 
