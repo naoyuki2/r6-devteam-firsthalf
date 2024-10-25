@@ -6,6 +6,7 @@ import { AppLinkText } from '@/component/AppLinkText'
 import { AppTextInput } from '@/component/AppTextInput'
 import { apiClient } from '@/lib/axios'
 import { useSetCurrentUser } from '@/lib/jotai/userState'
+import { LoginArgs } from '@/types'
 import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
@@ -42,7 +43,7 @@ export const LoginClient = () => {
 
   const handleLogin = async () => {
     // TODO : バリデーション, ローディング
-    const args: any = {
+    const args: LoginArgs = {
       email: email.value,
       password: password.value,
     }

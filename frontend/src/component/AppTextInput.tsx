@@ -1,4 +1,4 @@
-import { Form, InputGroup } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 type AppTextInputProps = {
   label?: string
@@ -6,7 +6,7 @@ type AppTextInputProps = {
   name: string
   placeholder: string
   autoComplete: string
-  onChange: (event: any) => void
+  onChange: (changeData: React.ChangeEvent<HTMLInputElement>) => void
   labelClassName?: string
   controlClassName?: string
 }

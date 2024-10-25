@@ -9,36 +9,22 @@ import { useRouter } from 'next/navigation'
 import { PREFECTURES } from './constants'
 import { AppTextArea } from '@/component/AppTextArea'
 import { getItem } from '@/utils/localStorage'
+import { CreateRequestArgs, Item } from '@/types'
 
-type Item = {
-  name: string
-  quantity: number
-  price: string
-}
-
-type Form = {
-  title: string
-  locationPrefecture: string
-  locationDetails: string
-  deliveryPrefecture: string
-  deliveryDetails: string
-  details: string
-  items: Item[]
-}
-
-const INITIAL_FORM: Form = {
+const INITIAL_FORM: CreateRequestArgs = {
   title: '',
-  locationPrefecture: '',
-  locationDetails: '',
-  deliveryPrefecture: '',
-  deliveryDetails: '',
-  details: '',
+  location_prefecture: '',
+  location_details: '',
+  delivery_prefecture: '',
+  delivery_details: '',
+  description: '',
+  status: 'pending',
   items: [{ name: '', quantity: 1, price: '' }],
 }
 
 export default function RequestClient() {
   const router = useRouter()
-  const [form, setForm] = useState<Form>(INITIAL_FORM)
+  const [form, setForm] = useState(INITIAL_FORM)
   const [hasError, setHasError] = useState<boolean>(false)
 
   const handleInputChange = (
@@ -73,13 +59,13 @@ export default function RequestClient() {
   }
 
   const requestCreate = async () => {
-    const args: any = {
+    const args: CreateRequestArgs = {
       title: form.title,
-      location_prefecture: form.locationPrefecture,
-      location_details: form.locationDetails,
-      delivery_prefecture: form.deliveryPrefecture,
-      delivery_details: form.deliveryDetails,
-      description: form.details,
+      location_prefecture: form.location_prefecture,
+      location_details: form.location_details,
+      delivery_prefecture: form.delivery_prefecture,
+      delivery_details: form.delivery_details,
+      description: form.description,
       status: 'pending',
       items: form.items,
     }
@@ -123,7 +109,7 @@ export default function RequestClient() {
             入手場所（都道府県）
           </Form.Label>
           <Form.Select
-            name="locationPrefecture"
+            name="location_prefecture"
             required
             onChange={handleInputChange}
           >
@@ -140,7 +126,7 @@ export default function RequestClient() {
           <AppTextInput
             label="入手場所（詳細情報）"
             type="text"
-            name="locationDetails"
+            name="location_details"
             placeholder="例）東京ビッグサイト"
             autoComplete="off"
             onChange={handleInputChange}
@@ -152,7 +138,7 @@ export default function RequestClient() {
             受け渡し場所（都道府県）
           </Form.Label>
           <Form.Select
-            name="deliveryPrefecture"
+            name="delivery_prefecture"
             required
             onChange={handleInputChange}
           >
@@ -169,7 +155,7 @@ export default function RequestClient() {
           <AppTextInput
             label="受け渡し場所（詳細情報）"
             type="text"
-            name="deliveryDetails"
+            name="delivery_details"
             placeholder="例）東京ビッグサイト"
             autoComplete="off"
             onChange={handleInputChange}
@@ -244,7 +230,7 @@ export default function RequestClient() {
         <Form.Group className="mb-3">
           <AppTextArea
             label="詳細情報"
-            name="details"
+            name="description"
             placeholder={`例）〇〇フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。\n\nTシャツ（黒、Lサイズ）`}
             autoComplete="off"
             rows={6}
