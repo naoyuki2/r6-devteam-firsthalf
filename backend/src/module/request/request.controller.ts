@@ -11,37 +11,37 @@ import {
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
 import {
-  CreateRequestEndpoint,
-  CreateRequestReq,
-  CreateRequestRes,
-  GetAllRequestsEndpoint,
-  GetAllRequestsParam,
-  GetAllRequestsRes,
-  GetRequestByIdEndpoint,
-  GetRequestByIdParam,
-  GetRequestByIdRes,
+  CreateEndpoint,
+  CreateReq,
+  CreateRes,
+  GetByIdEndpoint,
+  GetByIdParam,
+  GetByIdRes,
+  GetEndpoint,
+  GetQuery,
+  GetRes,
 } from './request.type'
 
 @Controller()
 export class RequestController {
   private requestService = new RequestService()
 
-  @Get(GetAllRequestsEndpoint)
-  async getAll(
-    @Req() req: Request<'', '', '', GetAllRequestsParam>,
-    @Res() res: Response<GetAllRequestsRes>,
+  @Get(GetEndpoint)
+  async get(
+    @Req() req: Request<'', '', '', GetQuery>,
+    @Res() res: Response<GetRes>,
   ) {
     const { userId } = req.query
-    const requests = await this.requestService.getAll({ userId })
+    const requests = await this.requestService.get({ userId })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })
   }
 
-  @Get(GetRequestByIdEndpoint)
+  @Get(GetByIdEndpoint)
   async getById(
-    @Req() req: Request<GetRequestByIdParam, '', '', ''>,
-    @Res() res: Response<GetRequestByIdRes>,
+    @Req() req: Request<GetByIdParam, '', '', ''>,
+    @Res() res: Response<GetByIdRes>,
   ) {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
@@ -51,10 +51,10 @@ export class RequestController {
   }
 
   @Authorized()
-  @Post(CreateRequestEndpoint)
-  async createRequest(
-    @Req() req: Request<'', '', CreateRequestReq, ''>,
-    @Res() res: Response<CreateRequestRes>,
+  @Post(CreateEndpoint)
+  async create(
+    @Req() req: Request<'', '', CreateReq, ''>,
+    @Res() res: Response<CreateRes>,
   ) {
     const {
       title,
@@ -67,8 +67,7 @@ export class RequestController {
       items,
     } = req.body
     const userId = req.currentUserId!
-    const item = await this.requestService.createItem({ items })
-    const getRequest = await this.requestService.createRequest({
+    const getRequest = await this.requestService.create({
       title,
       location_prefecture,
       location_details,
@@ -77,7 +76,7 @@ export class RequestController {
       description,
       status,
       userId,
-      item,
+      items,
     })
     return res.json({ request: requestSerializer(getRequest) })
   }

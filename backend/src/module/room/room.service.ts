@@ -3,12 +3,12 @@ import { Room } from './room.entity'
 
 const roomRepository = AppDataSource.getRepository(Room)
 
-type CreateRoomProps = {
+type CreateProps = {
   requestId: number
 }
 
 export class RoomService {
-  async createRoom({ requestId }: CreateRoomProps): Promise<Room> {
+  async create({ requestId }: CreateProps): Promise<Room> {
     const createRoom = roomRepository.create({
       request: { id: requestId },
     })
