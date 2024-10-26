@@ -1,20 +1,18 @@
 const root = '/auth'
 
-export namespace SignIn {
-  export const endpoint = root
+export const SignInEndpoint = root
 
-  export type req = {
+export type SignInReq = {
+  email: string
+  password: string
+}
+
+export type SignInRes = {
+  user: {
+    id: number
+    name: string
     email: string
-    password: string
+    icon_image_url: string | null
   }
-
-  export type res = {
-    user: {
-      id: number
-      name: string
-      email: string
-      icon_image_url: string | null
-    }
-    token: string
-  }
+  token: string
 }

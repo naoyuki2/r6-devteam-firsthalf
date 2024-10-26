@@ -6,7 +6,7 @@ const roomUserRepository = AppDataSource.getRepository(RoomUser)
 type CreateRoomUserProps = {
   requestUserId: number
   currentUserId: number
-  createRoomId: String
+  createRoomId: string
 }
 
 export class RoomUserService {

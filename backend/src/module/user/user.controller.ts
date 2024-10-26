@@ -12,17 +12,25 @@ import {
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetUser, SignUp, UpdateUserParam } from './user.type'
-import { setCurrentUser } from 'src/middleware/setCurrentUser'
+import {
+  GetUserEndpoint,
+  GetUserRes,
+  SignUpEndpoint,
+  SignUpReq,
+  SignUpRes,
+  UpdateUserParamEndpoint,
+  UpdateUserParamReq,
+  UpdateUserParamRes,
+} from './user.type'
 
 @Controller()
 export class UserController {
   private userService = new UserService()
 
-  @Post(SignUp.endpoint)
+  @Post(SignUpEndpoint)
   async signUp(
-    @Req() req: Request<{}, {}, SignUp.req, {}>,
-    @Res() res: Response<SignUp.res>,
+    @Req() req: Request<'', '', SignUpReq, ''>,
+    @Res() res: Response<SignUpRes>,
   ) {
     const { name, email, password } = req.body
     const getUser = await this.userService.signUp({ name, email, password })
@@ -30,22 +38,22 @@ export class UserController {
     return res.json({ user: userSerializer(getUser), token })
   }
 
-  @Get(GetUser.endpoint)
+  @Get(GetUserEndpoint)
   @Authorized()
   async getUser(
-    @Req() req: Request<{}, {}, {}, {}>,
-    @Res() res: Response<GetUser.res>,
+    @Req() req: Request<'', '', '', ''>,
+    @Res() res: Response<GetUserRes>,
   ) {
     const id = req.currentUserId!
     const user = await this.userService.getById({ id })
     return res.json({ user: userSerializer(user) })
   }
 
-  @Patch(UpdateUserParam.endpoint)
+  @Patch(UpdateUserParamEndpoint)
   @Authorized()
   async updateUserParam(
-    @Req() req: Request<{}, {}, UpdateUserParam.req, {}>,
-    @Res() res: Response<UpdateUserParam.res>,
+    @Req() req: Request<'', '', UpdateUserParamReq, ''>,
+    @Res() res: Response<UpdateUserParamRes>,
   ) {
     const userId = req.currentUserId!
     const { inputName, inputEmail } = req.body

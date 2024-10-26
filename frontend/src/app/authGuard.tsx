@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useCallback, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
@@ -6,7 +8,7 @@ import { apiClient } from '@/lib/axios'
 import { getItem } from '@/utils/localStorage'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
-  const authPass = useMemo(() => ['/request', '/profile', '/room', '/chat'], []) // useMemoでauthPassをラップ
+  const authPass = useMemo(() => ['/request', '/profile', '/room', '/chat'], [])
   const setCurrentUser = useSetCurrentUser()
   const pathname = usePathname()
   const router = useRouter()

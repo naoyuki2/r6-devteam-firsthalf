@@ -25,7 +25,7 @@ type createItemProps = {
 }
 
 type GetAllProps = {
-  userId: Number | undefined
+  userId: number | undefined
 }
 
 export class RequestService {
