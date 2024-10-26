@@ -18,9 +18,9 @@ export type SignUpRes = {
   token: string
 }
 
-export const GetUserEndpoint = `${root}`
+export const GetEndpoint = `${root}`
 
-export type GetUserRes = {
+export type GetRes = {
   user: {
     id: number
     name: string
@@ -31,12 +31,12 @@ export type GetUserRes = {
 
 export const UpdateUserParamEndpoint = root
 
-export type UpdateUserParamReq = {
+export type UpdateParamReq = {
   inputName: string | undefined
   inputEmail: string | undefined
 }
 
-export type UpdateUserParamRes = {
+export type UpdateParamRes = {
   user: {
     id: number
     name: string

@@ -2,30 +2,29 @@ import { Item } from '../item/item.entity'
 
 const root = '/requests'
 
-export const GetAllRequestsEndpoint = root
+export const GetEndpoint = root
 
-export type GetAllRequestsParam = {
+export type GetQuery = {
   userId: number | undefined
 }
 
-export type GetAllRequestsRes = {
+export type GetRes = {
   requests: unknown
 }
 
-export const GetRequestByIdEndpoint = `${root}/:id`
+export const GetByIdEndpoint = `${root}/:id`
 
-export type GetRequestByIdParam = {
+export type GetByIdParam = {
   id: number
 }
 
-export type GetRequestByIdRes = {
+export type GetByIdRes = {
   request: unknown
 }
 
-// Create
-export const CreateRequestEndpoint = root
+export const CreateEndpoint = root
 
-export type CreateRequestReq = {
+export type CreateReq = {
   title: string
   location_prefecture: string
   location_details: string
@@ -36,6 +35,6 @@ export type CreateRequestReq = {
   items: Item[]
 }
 
-export type CreateRequestRes = {
+export type CreateRes = {
   request: unknown
 }

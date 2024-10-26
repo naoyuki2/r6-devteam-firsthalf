@@ -15,7 +15,7 @@ type GetByIdProps = {
   id: number
 }
 
-type UpdateProps = {
+type UpdateParamProps = {
   userId: number
   inputName: string | undefined
   inputEmail: string | undefined
@@ -38,11 +38,11 @@ export class UserService {
     return await userRepository.findOneByOrFail({ id })
   }
 
-  async updateUserParam({
+  async updateParam({
     userId,
     inputName,
     inputEmail,
-  }: UpdateProps): Promise<User> {
+  }: UpdateParamProps): Promise<User> {
     const user = await userRepository.findOneByOrFail({ id: userId })
     if (inputName !== undefined) {
       user.name = inputName

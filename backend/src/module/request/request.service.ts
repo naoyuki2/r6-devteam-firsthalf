@@ -4,11 +4,15 @@ import { Request } from './request.entity'
 import { Item } from '../item/item.entity'
 const requestRepository = AppDataSource.getRepository(Request)
 
+type GetProps = {
+  userId: number | undefined
+}
+
 type GetByIdProps = {
   id: number
 }
 
-type createRequestProps = {
+type createProps = {
   title: string
   location_prefecture: string
   location_details: string
@@ -17,19 +21,11 @@ type createRequestProps = {
   description: string
   status: 'pending' | 'progress' | 'completed'
   userId: number
-  item: Item[]
-}
-
-type createItemProps = {
   items: Item[]
 }
 
-type GetAllProps = {
-  userId: number | undefined
-}
-
 export class RequestService {
-  async getAll({ userId }: GetAllProps): Promise<Request[]> {
+  async get({ userId }: GetProps): Promise<Request[]> {
     const qb = requestRepository
       .createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
@@ -50,7 +46,7 @@ export class RequestService {
     })
   }
 
-  async createRequest({
+  async create({
     title,
     location_prefecture,
     location_details,
@@ -59,8 +55,8 @@ export class RequestService {
     description,
     status,
     userId,
-    item,
-  }: createRequestProps): Promise<Request> {
+    items,
+  }: createProps): Promise<Request> {
     const request = requestRepository.create({
       title,
       location_prefecture,
@@ -70,20 +66,9 @@ export class RequestService {
       description,
       status,
       user: { id: userId },
-      items: item,
+      items,
     })
     await validateEntity(request)
     return await requestRepository.save(request)
-  }
-
-  async createItem({ items }: createItemProps) {
-    const item = []
-
-    for (let i: number = 0; i < items.length; i++) {
-      const l = items[i]
-      item.push(l)
-    }
-
-    return item
   }
 }
