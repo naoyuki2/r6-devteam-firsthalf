@@ -6,8 +6,12 @@ export const validatePassword = (password: string): void => {
     throw new CustomError('Password must be at least 8 characters long', 422)
 }
 
-export const validateEntity = async (entity: any): Promise<void> => {
+export const validateEntity = async <T extends object>(
+  entity: T,
+): Promise<void> => {
   const errors = await validate(entity)
   console.log(errors)
-  if (errors.length > 0) throw new CustomError('Entity validation failed', 422)
+  if (errors.length > 0) {
+    throw new CustomError('Entity validation failed', 422)
+  }
 }

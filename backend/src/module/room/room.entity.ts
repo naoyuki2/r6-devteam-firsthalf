@@ -1,4 +1,3 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import {
   Column,
   CreateDateColumn,
@@ -15,7 +14,7 @@ import { Message } from '../message/message.entity'
 @Entity()
 export class Room {
   @PrimaryGeneratedColumn('uuid')
-  id!: String
+  id!: string
 
   @CreateDateColumn({
     update: false,

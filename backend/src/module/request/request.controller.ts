@@ -8,18 +8,28 @@ import {
   Post,
   Authorized,
 } from 'routing-controllers'
-import { Create, GetAll, GetById } from './request.type'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
+import {
+  CreateRequestEndpoint,
+  CreateRequestReq,
+  CreateRequestRes,
+  GetAllRequestsEndpoint,
+  GetAllRequestsParam,
+  GetAllRequestsRes,
+  GetRequestByIdEndpoint,
+  GetRequestByIdParam,
+  GetRequestByIdRes,
+} from './request.type'
 
 @Controller()
 export class RequestController {
   private requestService = new RequestService()
 
-  @Get(GetAll.endpoint)
+  @Get(GetAllRequestsEndpoint)
   async getAll(
-    @Req() req: Request<{}, {}, {}, GetAll.param>,
-    @Res() res: Response<GetAll.res>,
+    @Req() req: Request<'', '', '', GetAllRequestsParam>,
+    @Res() res: Response<GetAllRequestsRes>,
   ) {
     const { userId } = req.query
     const requests = await this.requestService.getAll({ userId })
@@ -28,10 +38,10 @@ export class RequestController {
     })
   }
 
-  @Get(GetById.endpoint)
+  @Get(GetRequestByIdEndpoint)
   async getById(
-    @Req() req: Request<GetById.param, {}, {}, {}>,
-    @Res() res: Response<GetById.res>,
+    @Req() req: Request<GetRequestByIdParam, '', '', ''>,
+    @Res() res: Response<GetRequestByIdRes>,
   ) {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
@@ -41,10 +51,10 @@ export class RequestController {
   }
 
   @Authorized()
-  @Post(Create.endpoint)
+  @Post(CreateRequestEndpoint)
   async createRequest(
-    @Req() req: Request<{}, {}, Create.req, {}>,
-    @Res() res: Response<Create.res>,
+    @Req() req: Request<'', '', CreateRequestReq, ''>,
+    @Res() res: Response<CreateRequestRes>,
   ) {
     const {
       title,

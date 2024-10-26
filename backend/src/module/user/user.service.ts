@@ -1,4 +1,3 @@
-import { CustomError } from '../../error/CustomError'
 import { AppDataSource } from '../../app-data-source'
 import { hashPassword } from '../../lib/hash'
 import { validateEntity, validatePassword } from '../../utils/validate'
