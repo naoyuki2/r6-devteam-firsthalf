@@ -1,4 +1,3 @@
-import { roomSerializer } from '../room/room.serializer'
 import { userSerializer } from '../user/user.serializer'
 import { RoomUser } from './room_user.entity'
 
