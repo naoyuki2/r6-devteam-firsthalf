@@ -5,6 +5,8 @@ import { AppButton } from '@/component/AppButton'
 import { AppLinkText } from '@/component/AppLinkText'
 import { AppTextInput } from '@/component/AppTextInput'
 import { apiClient } from '@/lib/axios'
+import { useSetCurrentUser } from '@/lib/jotai/userState'
+import { LoginArgs } from '@/types'
 import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
@@ -29,6 +31,7 @@ export const LoginClient = () => {
   const [hasError, setHasError] = useState<boolean>(false)
   const [form, setForm] = useState<Form>(INITIAL_FORM)
   const { email, password } = form
+  const setCurrentUser = useSetCurrentUser()
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -40,7 +43,7 @@ export const LoginClient = () => {
 
   const handleLogin = async () => {
     // TODO : バリデーション, ローディング
-    const args: any = {
+    const args: LoginArgs = {
       email: email.value,
       password: password.value,
     }
@@ -48,6 +51,7 @@ export const LoginClient = () => {
       const res = await apiClient.post('/auth', args)
       if (res == null) return
       setItem('token', res.data.token)
+      setCurrentUser(res.data.user)
       router.push('/home')
     } catch (e) {
       console.log(e)

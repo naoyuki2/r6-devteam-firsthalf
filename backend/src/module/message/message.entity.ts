@@ -1,11 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import { Room } from '../room/room.entity'
 import { User } from '../user/user.entity'
@@ -16,7 +9,7 @@ export class Message {
   id!: number
 
   @Column('text')
-  body!: String
+  body!: string
 
   @Column('date')
   created_at!: Date

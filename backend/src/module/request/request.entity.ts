@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, ValidateIf } from 'class-validator'
+import { IsNotEmpty, IsString } from 'class-validator'
 import {
   Column,
   Entity,
@@ -6,6 +6,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm'
 
 import { User } from '../user/user.entity'
@@ -39,8 +40,6 @@ export class Request {
   delivery_prefecture!: string
 
   @Column('varchar', { nullable: true })
-  @IsString()
-  @IsNotEmpty()
   delivery_details: string | null = null
 
   @Column('text')
@@ -51,13 +50,11 @@ export class Request {
     type: 'varchar',
     default: 'pending',
   })
-  @IsNotEmpty()
   status!: status
 
   @CreateDateColumn({
     update: false,
   })
-  @IsNotEmpty()
   created_at!: Date
 
   @OneToMany(() => Item, (item) => item.request, { cascade: true })
@@ -66,14 +63,12 @@ export class Request {
   @OneToMany(() => Room, (room) => room.request)
   rooms!: Room[]
 
-  @CreateDateColumn({
+  @UpdateDateColumn({
     update: true,
   })
-  @IsNotEmpty()
   updated_at!: Date
 
   @Column('date', { nullable: true })
-  @IsNotEmpty()
   completed_at: Date | null = null
 
   @ManyToOne(() => User, (user) => user.requests)
