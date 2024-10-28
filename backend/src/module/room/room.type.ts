@@ -1,19 +1,11 @@
 import { RoomUser } from '../room_user/room_user.entity'
-import { Message } from '../message/message.entity'
-import { Request } from '../request/request.entity'
+import { roomSerializer } from './room.serializer'
 const root = '/rooms'
 
 export const GetByIdEndpoint = root
 
 export type GetByIdRes = {
-  rooms: {
-    id: string
-    created_at: Date
-    isClosed: boolean
-    request: Request
-    room_users: RoomUser[]
-    messages: Message[]
-  }[]
+  rooms: ReturnType<typeof roomSerializer>[]
 }
 
 export const CreateEndpoint = root

@@ -17,10 +17,12 @@ import {
   GetByIdEndpoint,
   GetByIdRes,
 } from './room.type'
+import { RoomUserService } from '../room_user/room_user.service'
 
 @Controller()
 export class RoomController {
   private roomService = new RoomService()
+  private roomUserService = new RoomUserService()
 
   @Authorized()
   @Get(GetByIdEndpoint)
