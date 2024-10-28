@@ -7,6 +7,7 @@ import { AuthController } from './module/auth/auth.controller'
 import { ErrorHandler } from './middleware/errorHandler'
 import { setCurrentUser } from './middleware/setCurrentUser'
 import cors from 'cors'
+import { RoomController } from './module/room/room.controller'
 
 const PORT = 3030
 
@@ -26,10 +27,15 @@ app.use(express.urlencoded({ extended: false }))
 app.use(setCurrentUser)
 
 useExpressServer(app, {
-  controllers: [RequestController, UserController, AuthController],
+  controllers: [
+    RequestController,
+    UserController,
+    AuthController,
+    RoomController,
+  ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
-  authorizationChecker: (action: Action, roles: string[]) => {
+  authorizationChecker: (action: Action) => {
     return action.request.currentUserId
   },
 })

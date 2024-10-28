@@ -2,7 +2,7 @@ import { Button, ButtonProps } from 'react-bootstrap'
 
 type AppButtonProps = {
   text: string
-  onClick: (event: any) => void
+  onClick: () => void
   className?: string
 } & ButtonProps
 

@@ -1,69 +1,36 @@
-import { AppLink } from '@/component/AppLink'
+import { AppAlert } from '@/component/AppAlert'
+import { RequestCard } from '@/component/RequestCard'
 import { apiClient } from '@/lib/axios'
+import { Request } from '@/types'
 import { Container } from 'react-bootstrap'
-import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
-
-type Request = {
-  id: number
-  title: string
-  location_prefecture: string
-  location_details: string
-  delivery_prefecture: string
-  delivery_details: string
-  description: string
-  status: string
-  completed_at: Date
-  created_at: Date
-  updated_at: Date
-  user: {
-    id: number
-    name: string
-    email: string
-    icon_image_url: string
-  }
-  items: {
-    id: number
-    name: string
-    quantity: number
-    price: number
-  }[]
-}
 
 export default async function Home() {
-  const res = await apiClient.get('/requests')
-  const { requests } = res.data
+  try {
+    const res = await apiClient.get('/requests')
+    const { requests } = res.data
 
-  return (
-    <Container>
-      {requests.map((request: Request) => (
-        <AppLink href="#" key={request.id}>
-          <div className="border-bottom border-opacity-25">
-            <div className="d-flex">
-              <PersonCircle size={36} className="me-3 mt-2" />
-              <span className="fw-bold my-2 mt-2">{request.user.name}</span>
-              <span className="ms-auto my-2 mt-2"></span>
-            </div>
-            <p className="fw-bold text-truncate mb-2">{request.title}</p>
-
-            <div className="d-flex justify-content-evenly">
-              <div className="d-flex align-items-center">
-                <div>
-                  <HouseDoor size={24} className="ms-2" />
-                  <p className="mb-2">HOME</p>
-                </div>
-                <span className="ms-3">{request.delivery_prefecture}</span>
-              </div>
-              <div className="d-flex align-items-center">
-                <div>
-                  <Shop size={24} className="ms-2" />
-                  <p className="mb-2">SHOP</p>
-                </div>
-                <span className="ms-3">{request.location_prefecture}</span>
-              </div>
-            </div>
-          </div>
-        </AppLink>
-      ))}
-    </Container>
-  )
+    return (
+      <Container>
+        {requests.map((request: Request) => (
+          <RequestCard
+            key={request.id}
+            id={request.id}
+            username={request.user.name}
+            title={request.title}
+            delivery_prefecture={request.delivery_prefecture}
+            location_prefecture={request.location_prefecture}
+          />
+        ))}
+      </Container>
+    )
+  } catch (error) {
+    console.log(error)
+    return (
+      <AppAlert
+        variant="danger"
+        title="エラー"
+        message="リクエストの取得に失敗しました"
+      />
+    )
+  }
 }

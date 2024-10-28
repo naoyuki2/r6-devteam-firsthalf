@@ -1,22 +1,23 @@
 import { Form } from 'react-bootstrap'
 
-type AppTextInputProps = {
+type AppTextAreaProps = {
   label?: string
-  type: string
   name: string
   placeholder: string
   autoComplete: string
   onChange: (changeData: React.ChangeEvent<HTMLInputElement>) => void
   labelClassName?: string
   controlClassName?: string
+  rows?: number
 }
 
-export const AppTextInput = ({
+export const AppTextArea = ({
   label,
   labelClassName,
   controlClassName,
+  rows = 3,
   ...props
-}: AppTextInputProps) => {
+}: AppTextAreaProps) => {
   return (
     <>
       {label && (
@@ -26,7 +27,12 @@ export const AppTextInput = ({
           {label}
         </Form.Label>
       )}
-      <Form.Control {...props} className={controlClassName}></Form.Control>
+      <Form.Control
+        as="textarea"
+        rows={rows}
+        className={controlClassName}
+        {...props}
+      />
     </>
   )
 }

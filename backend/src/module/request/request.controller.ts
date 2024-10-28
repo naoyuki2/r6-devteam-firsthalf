@@ -1,26 +1,47 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Get, Controller, Req, Res, Post } from 'routing-controllers'
-import { Create, GetAll, GetById } from './request.type'
+import {
+  Get,
+  Controller,
+  Req,
+  Res,
+  Post,
+  Authorized,
+} from 'routing-controllers'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
+import {
+  CreateEndpoint,
+  CreateReq,
+  CreateRes,
+  GetByIdEndpoint,
+  GetByIdParam,
+  GetByIdRes,
+  GetEndpoint,
+  GetQuery,
+  GetRes,
+} from './request.type'
 
 @Controller()
 export class RequestController {
   private requestService = new RequestService()
 
-  @Get(GetAll.endpoint)
-  async getAll(@Req() _req: Request, @Res() res: Response<GetAll.res>) {
-    const requests = await this.requestService.getAll()
+  @Get(GetEndpoint)
+  async get(
+    @Req() req: Request<'', '', '', GetQuery>,
+    @Res() res: Response<GetRes>,
+  ) {
+    const { userId } = req.query
+    const requests = await this.requestService.get({ userId })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })
   }
 
-  @Get(GetById.endpoint())
+  @Get(GetByIdEndpoint)
   async getById(
-    @Req() req: Request<GetById.param, {}, {}, {}>,
-    @Res() res: Response<GetById.res>,
+    @Req() req: Request<GetByIdParam, '', '', ''>,
+    @Res() res: Response<GetByIdRes>,
   ) {
     const { id } = req.params
     const request = await this.requestService.getById({ id })
@@ -29,10 +50,11 @@ export class RequestController {
     })
   }
 
-  @Post(Create.endpoint)
-  async createRequest(
-    @Req() req: Request<{}, {}, Create.req, {}>,
-    @Res() res: Response<Create.res>,
+  @Authorized()
+  @Post(CreateEndpoint)
+  async create(
+    @Req() req: Request<'', '', CreateReq, ''>,
+    @Res() res: Response<CreateRes>,
   ) {
     const {
       title,
@@ -41,19 +63,20 @@ export class RequestController {
       delivery_prefecture,
       delivery_details,
       description,
-      userId,
+      status,
       items,
     } = req.body
-    const item = await this.requestService.createItem({ items })
-    const getRequest = await this.requestService.createRequest({
+    const userId = req.currentUserId!
+    const getRequest = await this.requestService.create({
       title,
       location_prefecture,
       location_details,
       delivery_prefecture,
       delivery_details,
       description,
+      status,
       userId,
-      item,
+      items,
     })
     return res.json({ request: requestSerializer(getRequest) })
   }

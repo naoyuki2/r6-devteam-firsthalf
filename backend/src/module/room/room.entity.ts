@@ -1,6 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import {
   Column,
+  CreateDateColumn,
   Entity,
   ManyToOne,
   OneToMany,
@@ -16,7 +16,9 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
-  @Column('date')
+  @CreateDateColumn({
+    update: false,
+  })
   created_at!: Date
 
   @Column({ default: false })

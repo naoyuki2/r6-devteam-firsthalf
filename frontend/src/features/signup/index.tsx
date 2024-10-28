@@ -5,6 +5,7 @@ import { AppButton } from '@/component/AppButton'
 import { AppLinkText } from '@/component/AppLinkText'
 import { AppTextInput } from '@/component/AppTextInput'
 import { apiClient } from '@/lib/axios'
+import { SignUpArgs } from '@/types'
 import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
@@ -44,7 +45,7 @@ export const SignUpClient = () => {
 
   const handleSignUp = async () => {
     // TODO : バリデーション, ローディング
-    const args: any = {
+    const args: SignUpArgs = {
       name: name.value,
       email: email.value,
       password: password.value,
