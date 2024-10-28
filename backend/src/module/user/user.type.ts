@@ -33,6 +33,20 @@ export namespace GetUser {
   }
 }
 
+export namespace GetUserById {
+  export const endpoint = `${root}/:id`
+
+  export type param = { id: number }
+  export type res = {
+    user: {
+      id: number
+      name: string
+      email: string
+      icon_image_url: string | null
+    }
+  }
+}
+
 export namespace UpdateUserParam {
   export const endpoint = root
 

@@ -12,7 +12,7 @@ import {
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetUser, SignUp, UpdateUserParam } from './user.type'
+import { GetUser, GetUserById, SignUp, UpdateUserParam } from './user.type'
 import { setCurrentUser } from 'src/middleware/setCurrentUser'
 
 @Controller()
@@ -37,6 +37,16 @@ export class UserController {
     @Res() res: Response<GetUser.res>,
   ) {
     const id = req.currentUserId!
+    const user = await this.userService.getById({ id })
+    return res.json({ user: userSerializer(user) })
+  }
+
+  @Get(GetUserById.endpoint)
+  async getUserById(
+    @Req() req: Request<GetUserById.param, {}, {}, {}>,
+    @Res() res: Response<GetUserById.res>,
+  ) {
+    const { id } = req.params
     const user = await this.userService.getById({ id })
     return res.json({ user: userSerializer(user) })
   }

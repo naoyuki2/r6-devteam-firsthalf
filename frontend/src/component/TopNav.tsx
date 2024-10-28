@@ -9,7 +9,8 @@ import { usePathname, useRouter } from 'next/navigation'
 export default function TopNav() {
   const pathname = usePathname()
   const router = useRouter()
-  const isArrowShow = /^\/request\/\d+$/.test(pathname)
+  const isArrowShow =
+    /^\/request\/\d+$/.test(pathname) || /^\/user\/\d+$/.test(pathname)
 
   return (
     <nav className="position-sticky top-0 bg-info shadow px-3 py-2">
