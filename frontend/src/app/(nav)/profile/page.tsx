@@ -4,10 +4,13 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { PersonCircle, HouseDoor, Shop } from 'react-bootstrap-icons'
 import Link from 'next/link'
+import Image from 'next/image' // next/imageをインポート
 import { useCurrentUser } from '@/lib/jotai/userState' // グローバルステートからユーザー情報を取得
 
 export default function ProfilePage() {
   const currentUser = useCurrentUser() // 現在のユーザー情報を取得
+
+  // const icon = <SomeIconComponent />; // 未使用のicon変数をコメントアウト
 
   return (
     <Container className="mt-4">
