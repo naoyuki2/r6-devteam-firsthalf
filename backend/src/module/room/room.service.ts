@@ -15,10 +15,14 @@ type GetByRoomUserIdProps = {
 
 export class RoomService {
   async getByRoom({ id }: GetByRoomIdProps): Promise<Room> {
-    return await roomRepository.findOneByOrFail({ id })
+    return await roomRepository.findOneOrFail({
+      where: { id: id },
+    })
   }
 
-  async getByRoomUser({ userId }: GetByRoomUserIdProps): Promise<RoomUser> {
-    return await roomUserRepository.findOneByOrFail({ user: { id: userId } })
+  async getByRoomUser({ userId }: GetByRoomUserIdProps): Promise<RoomUser[]> {
+    return await roomUserRepository.find({
+      where: { user: { id: userId } },
+    })
   }
 }

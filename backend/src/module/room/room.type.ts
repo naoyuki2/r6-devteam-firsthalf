@@ -6,18 +6,14 @@ const root = '/rooms'
 export namespace GetById {
   export const endpoint = root
 
-  export type req = {
-    userId: number
-  }
-
   export type res = {
-    room: {
+    rooms: {
       id: string
       created_at: Date
       isClosed: boolean
       request: Request
       room_users: RoomUser[]
       messages: Message[]
-    }
+    }[]
   }
 }
