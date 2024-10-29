@@ -14,8 +14,10 @@ import {
   CreateEndpoint,
   CreateReq,
   CreateRes,
-  GetByIdEndpoint,
-  GetByIdRes,
+  GetByUserRes,
+  GetByRoomEndpoint,
+  GetByRoomParam,
+  GetByUserIdEndpoint,
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
 
@@ -25,8 +27,8 @@ export class RoomController {
   private roomUserService = new RoomUserService()
 
   @Authorized()
-  @Get(GetByIdEndpoint)
-  async getById(@Req() req: Request, @Res() res: Response<GetByIdRes>) {
+  @Get(GetByUserIdEndpoint)
+  async getByUserId(@Req() req: Request, @Res() res: Response<GetByUserRes>) {
     const userId = req.currentUserId!
     const rooms = []
     const roomUsers = await this.roomService.getByRoomUser({ userId })
@@ -39,6 +41,15 @@ export class RoomController {
     return res.json({
       rooms: rooms.map((room) => roomSerializer(room)),
     })
+  }
+
+  @Authorized()
+  @Get(GetByRoomEndpoint)
+  async getByRoomId(
+    @Req() req: Request<GetByRoomParam, '', '', ''>,
+    @Res() res: Response<GetByUserRes>,
+  ) {
+    const { id } = req.params
   }
 
   @Authorized()
