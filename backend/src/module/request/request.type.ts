@@ -1,4 +1,5 @@
 import { Item } from '../item/item.entity'
+import { requestSerializer } from './request.serializer'
 
 const root = '/requests'
 
@@ -9,7 +10,7 @@ export type GetQuery = {
 }
 
 export type GetRes = {
-  requests: unknown
+  requests: ReturnType<typeof requestSerializer>[]
 }
 
 export const GetByIdEndpoint = `${root}/:id`
