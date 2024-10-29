@@ -38,7 +38,7 @@ useExpressServer(app, {
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
-  authorizationChecker: (action: Action, roles: string[]) => {
+  authorizationChecker: (action: Action) => {
     return action.request.currentUserId
   },
 })
