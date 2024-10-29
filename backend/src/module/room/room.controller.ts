@@ -49,7 +49,7 @@ export class RoomController {
   ) {
     const { requestId, requestUserId } = req.body
     const createRoom = await this.roomService.create({ requestId })
-    const createRoomUser = await this.roomUserService.create({
+    await this.roomUserService.create({
       requestUserId: requestUserId,
       currentUserId: req.currentUserId!,
       createRoomId: createRoom.id,
@@ -57,8 +57,6 @@ export class RoomController {
 
     return res.json({
       createRoomId: createRoom.id,
-      requestId: createRoom.request.id,
-      createRoomUser: createRoomUser,
     })
   }
 }

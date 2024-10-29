@@ -1,5 +1,5 @@
-import { RoomUser } from '../room_user/room_user.entity'
 import { roomSerializer } from './room.serializer'
+
 const root = '/rooms'
 
 export const GetByIdEndpoint = root
@@ -17,6 +17,4 @@ export type CreateReq = {
 
 export type CreateRes = {
   createRoomId: string
-  requestId: number
-  createRoomUser: RoomUser[]
 }
