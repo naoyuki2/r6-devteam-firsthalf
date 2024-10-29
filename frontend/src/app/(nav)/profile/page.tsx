@@ -4,7 +4,6 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { PersonCircle, HouseDoor, Shop } from 'react-bootstrap-icons'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useCurrentUser } from '@/lib/jotai/userState'
 
 export default function ProfilePage() {
