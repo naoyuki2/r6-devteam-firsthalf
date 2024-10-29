@@ -26,8 +26,6 @@ export class RoomController {
 
     return res.json({
       createRoomId: createRoom.id,
-      requestId: createRoom.request.id,
-      createRoomUser: createRoomUser,
     })
   }
 }

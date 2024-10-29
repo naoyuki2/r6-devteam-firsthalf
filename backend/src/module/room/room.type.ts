@@ -1,5 +1,3 @@
-import { RoomUser } from '../room_user/room_user.entity'
-
 const root = '/rooms'
 
 export const CreateEndpoint = root
@@ -11,6 +9,4 @@ export type CreateReq = {
 
 export type CreateRes = {
   createRoomId: string
-  requestId: number
-  createRoomUser: RoomUser[]
 }
