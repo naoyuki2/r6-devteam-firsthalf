@@ -43,23 +43,23 @@ export default async function RequestDetail({
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
           欲しいもの
         </p>
-        <div className="d-flex justify-content-center w-auto mx-5 mb-3">
+        <div className="d-flex flex-column align-items-center w-auto mx-5 mb-3">
           {request.items.map((item) => (
-            <div key={item.id} className="text-container">
-              <p>商品名: {item.name}</p>
-              <div className="">
-                <p className="mx-3">個数: {item.quantity}</p>
-                <p className="mx-3">価格: ¥{item.price}</p>
-              </div>
+            <div key={item.id} className="d-flex flex-wrap mb-2">
+              <p className="me-3">商品名: {item.name}</p>
+              <p className="me-3">個数: {item.quantity}</p>
+              <p>価格: ¥{item.price}</p>
             </div>
           ))}
         </div>
+
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
           詳細情報
         </p>
         <div className="d-flex justify-content-center w-auto mx-5 mb-3">
           <div className="text-container">{request.description}</div>
         </div>
+
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
           投稿者
         </p>
@@ -72,6 +72,7 @@ export default async function RequestDetail({
             <span className="fw-bold my-2">{request.user.name}さん</span>
           </AppLink>
         </div>
+
         <div className="d-grid gap-2 col-10 mx-auto">
           <RequestDetailClient request={request} />
         </div>
