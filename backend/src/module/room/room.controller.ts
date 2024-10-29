@@ -29,7 +29,7 @@ export class RoomController {
   async getById(@Req() req: Request, @Res() res: Response<GetByIdRes>) {
     const userId = req.currentUserId!
     const rooms = []
-    const roomUsers = await this.roomService.getByRoomUser({ userId })
+    const roomUsers = await this.roomUserService.getByRoomUser({ userId })
     for (let i: number = 0; i < roomUsers.length; i++) {
       const room_user = roomUsers[i]
       const { id } = room_user.room
