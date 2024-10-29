@@ -29,6 +29,21 @@ export type GetRes = {
   }
 }
 
+export const GetByIdEndpoint = `${root}/:id`
+
+export type GetByIdParam = {
+  id: number
+}
+
+export type GetByIdRes = {
+  user: {
+    id: number
+    name: string
+    email: string
+    icon_image_url: string | null
+  }
+}
+
 export const UpdateUserParamEndpoint = root
 
 export type UpdateParamReq = {

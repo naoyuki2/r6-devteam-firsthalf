@@ -1,3 +1,4 @@
+import { AppLink } from '@/component/AppLink'
 import TopNav from '@/component/TopNav'
 import RequestDetailClient from '@/features/requestDetail'
 import { apiClient } from '@/lib/axios'
@@ -63,11 +64,13 @@ export default async function RequestDetail({
           投稿者
         </p>
         <div className="d-flex justify-content-center w-auto mb-3">
-          <PersonCircle
-            className="bi bi-person-circle me-3"
-            style={{ fontSize: '3rem' }}
-          ></PersonCircle>
-          <span className="fw-bold my-2">{request.user.name}さん</span>
+          <AppLink href={`../user/${request.user.id}`}>
+            <PersonCircle
+              className="bi bi-person-circle me-3"
+              style={{ fontSize: '3rem' }}
+            ></PersonCircle>
+            <span className="fw-bold my-2">{request.user.name}さん</span>
+          </AppLink>
         </div>
         <div className="d-grid gap-2 col-10 mx-auto">
           <RequestDetailClient request={request} />
