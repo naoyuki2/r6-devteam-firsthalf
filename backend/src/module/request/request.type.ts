@@ -1,48 +1,40 @@
-import { Request } from './request.entity'
-import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
+
 const root = '/requests'
 
-export namespace GetAll {
-  export const endpoint = root
+export const GetEndpoint = root
 
-  export type param = {
-    userId: number | undefined
-  }
-
-  export type res = {
-    requests: any //エラーが起こるのでanyにしてます
-  }
+export type GetQuery = {
+  userId: number | undefined
 }
 
-export namespace GetById {
-  export const endpoint = (id?: number): string => {
-    return id ? `${root}/${id}` : `${root}/:id`
-  }
-  export type param = {
-    id: number
-  }
-
-  export type res = {
-    request: any //エラーが起こるのでanyにしてます
-  }
+export type GetRes = {
+  requests: unknown
 }
 
-export namespace Create {
-  export const endpoint = root
+export const GetByIdEndpoint = `${root}/:id`
 
-  export type req = {
-    title: string
-    location_prefecture: string
-    location_details: string
-    delivery_prefecture: string
-    delivery_details: string
-    description: string
-    status: 'pending' | 'progress' | 'completed'
-    items: Item[]
-  }
+export type GetByIdParam = {
+  id: number
+}
 
-  export type res = {
-    request: any
-  }
+export type GetByIdRes = {
+  request: unknown
+}
+
+export const CreateEndpoint = root
+
+export type CreateReq = {
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  status: 'pending' | 'progress' | 'completed'
+  items: Item[]
+}
+
+export type CreateRes = {
+  request: unknown
 }

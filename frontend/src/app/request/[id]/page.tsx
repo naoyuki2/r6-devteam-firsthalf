@@ -1,6 +1,8 @@
 import { AppLink } from '@/component/AppLink'
 import TopNav from '@/component/TopNav'
+import RequestDetailClient from '@/features/requestDetail'
 import { apiClient } from '@/lib/axios'
+import { Request } from '@/types'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
 
@@ -9,8 +11,8 @@ export default async function RequestDetail({
 }: {
   params: { id: string }
 }) {
-  const res = await apiClient.get(`/requests/${params.id}`) // ダイナミックルーティングでやるよ
-  const { request } = res.data
+  const res = await apiClient.get(`/requests/${params.id}`)
+  const { request } = res.data as { request: Request }
 
   return (
     <>
@@ -42,7 +44,7 @@ export default async function RequestDetail({
           欲しいもの
         </p>
         <div className="d-flex justify-content-center w-auto mx-5 mb-3">
-          {request.items.map((item: any) => (
+          {request.items.map((item) => (
             <div key={item.id} className="text-container">
               <p>商品名: {item.name}</p>
               <div className="">
@@ -71,10 +73,7 @@ export default async function RequestDetail({
           </AppLink>
         </div>
         <div className="d-grid gap-2 col-10 mx-auto">
-          <button className="btn btn-info" type="button">
-            チャットする
-          </button>
-          {/* AppButtonを使用したいがOnClickのせいでエラーが出ます */}
+          <RequestDetailClient request={request} />
         </div>
       </Container>
     </>

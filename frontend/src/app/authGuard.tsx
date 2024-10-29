@@ -1,15 +1,15 @@
 'use client'
 
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useMemo } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode } from 'react'
-import { useCurrentUserState } from '@/lib/jotai/userState'
+import { useSetCurrentUser } from '@/lib/jotai/userState'
 import { apiClient } from '@/lib/axios'
 import { getItem } from '@/utils/localStorage'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
-  const authPass = ['/request', '/profile', '/room', '/chat']
-  const { currentUser, setCurrentUser } = useCurrentUserState()
+  const authPass = useMemo(() => ['/request', '/profile', '/room', '/chat'], [])
+  const setCurrentUser = useSetCurrentUser()
   const pathname = usePathname()
   const router = useRouter()
 
@@ -31,12 +31,12 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       console.error('Failed to fetch user account:', error)
       router.push('/login')
     }
-  }, [])
+  }, [router, setCurrentUser])
 
   useEffect(() => {
     if (!authPass.includes(pathname)) return
     checkUser()
-  }, [router, pathname])
+  }, [authPass, pathname, checkUser])
 
   return <>{children}</>
 }

@@ -1,66 +1,61 @@
 const root = '/user'
 
-export namespace SignUp {
-  export const endpoint = root
+export const SignUpEndpoint = root
 
-  export type req = {
+export type SignUpReq = {
+  name: string
+  email: string
+  password: string
+}
+
+export type SignUpRes = {
+  user: {
+    id: number
     name: string
     email: string
-    password: string
+    icon_image_url: string | null
   }
+  token: string
+}
 
-  export type res = {
-    user: {
-      id: number
-      name: string
-      email: string
-      icon_image_url: string | null
-    }
-    token: string
+export const GetEndpoint = `${root}`
+
+export type GetRes = {
+  user: {
+    id: number
+    name: string
+    email: string
+    icon_image_url: string | null
   }
 }
 
-export namespace GetUser {
-  export const endpoint = `${root}`
+export const GetByIdEndpoint = `${root}/:id`
 
-  export type res = {
-    user: {
-      id: number
-      name: string
-      email: string
-      icon_image_url: string | null
-    }
+export type GetByIdParam = {
+  id: number
+}
+
+export type GetByIdRes = {
+  user: {
+    id: number
+    name: string
+    email: string
+    icon_image_url: string | null
   }
 }
 
-export namespace GetUserById {
-  export const endpoint = `${root}/:id`
+export const UpdateUserParamEndpoint = root
 
-  export type param = { id: number }
-  export type res = {
-    user: {
-      id: number
-      name: string
-      email: string
-      icon_image_url: string | null
-    }
-  }
+export type UpdateParamReq = {
+  inputName: string | undefined
+  inputEmail: string | undefined
 }
 
-export namespace UpdateUserParam {
-  export const endpoint = root
-
-  export type req = {
-    inputName: string | undefined
-    inputEmail: string | undefined
-  }
-
-  export type res = {
-    user: {
-      id: number
-      name: string
-      email: string
-      icon_image_url: string | null
-    }
+export type UpdateParamRes = {
+  user: {
+    id: number
+    name: string
+    email: string
+    icon_image_url: string | null
   }
 }

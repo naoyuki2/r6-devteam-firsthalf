@@ -12,17 +12,29 @@ import {
 import { UserService } from './user.service'
 import { generateToken } from '../../utils/token'
 import { userSerializer } from './user.serializer'
-import { GetUser, GetUserById, SignUp, UpdateUserParam } from './user.type'
 import { setCurrentUser } from 'src/middleware/setCurrentUser'
+import {
+  GetByIdEndpoint,
+  GetByIdParam,
+  GetByIdRes,
+  GetEndpoint,
+  GetRes,
+  SignUpEndpoint,
+  SignUpReq,
+  SignUpRes,
+  UpdateParamReq,
+  UpdateParamRes,
+  UpdateUserParamEndpoint,
+} from './user.type'
 
 @Controller()
 export class UserController {
   private userService = new UserService()
 
-  @Post(SignUp.endpoint)
+  @Post(SignUpEndpoint)
   async signUp(
-    @Req() req: Request<{}, {}, SignUp.req, {}>,
-    @Res() res: Response<SignUp.res>,
+    @Req() req: Request<'', '', SignUpReq, ''>,
+    @Res() res: Response<SignUpRes>,
   ) {
     const { name, email, password } = req.body
     const getUser = await this.userService.signUp({ name, email, password })
@@ -30,36 +42,36 @@ export class UserController {
     return res.json({ user: userSerializer(getUser), token })
   }
 
-  @Get(GetUser.endpoint)
+  @Get(GetEndpoint)
   @Authorized()
   async getUser(
-    @Req() req: Request<{}, {}, {}, {}>,
-    @Res() res: Response<GetUser.res>,
+    @Req() req: Request<'', '', '', ''>,
+    @Res() res: Response<GetRes>,
   ) {
     const id = req.currentUserId!
     const user = await this.userService.getById({ id })
     return res.json({ user: userSerializer(user) })
   }
 
-  @Get(GetUserById.endpoint)
+  @Get(GetByIdEndpoint)
   async getUserById(
-    @Req() req: Request<GetUserById.param, {}, {}, {}>,
-    @Res() res: Response<GetUserById.res>,
+    @Req() req: Request<GetByIdParam, {}, {}, {}>,
+    @Res() res: Response<GetByIdRes>,
   ) {
     const { id } = req.params
     const user = await this.userService.getById({ id })
     return res.json({ user: userSerializer(user) })
   }
 
-  @Patch(UpdateUserParam.endpoint)
+  @Patch(UpdateUserParamEndpoint)
   @Authorized()
-  async updateUserParam(
-    @Req() req: Request<{}, {}, UpdateUserParam.req, {}>,
-    @Res() res: Response<UpdateUserParam.res>,
+  async updateParam(
+    @Req() req: Request<'', '', UpdateParamReq, ''>,
+    @Res() res: Response<UpdateParamRes>,
   ) {
     const userId = req.currentUserId!
     const { inputName, inputEmail } = req.body
-    const user = await this.userService.updateUserParam({
+    const user = await this.userService.updateParam({
       userId,
       inputName,
       inputEmail,

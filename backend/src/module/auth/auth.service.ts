@@ -1,5 +1,4 @@
 import { AppDataSource } from '../../app-data-source'
-import { CustomError } from '../../error/CustomError'
 import { verifyPassword } from '../../lib/hash'
 import { User } from '../user/user.entity'
 

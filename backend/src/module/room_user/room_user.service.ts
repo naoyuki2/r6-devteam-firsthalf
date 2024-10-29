@@ -3,18 +3,18 @@ import { role as RoomUserRole, RoomUser } from './room_user.entity'
 
 const roomUserRepository = AppDataSource.getRepository(RoomUser)
 
-type CreateRoomUserProps = {
+type CreateProps = {
   requestUserId: number
   currentUserId: number
-  createRoomId: String
+  createRoomId: string
 }
 
 export class RoomUserService {
-  async createRoomUser({
+  async create({
     requestUserId,
     currentUserId,
     createRoomId,
-  }: CreateRoomUserProps): Promise<RoomUser[]> {
+  }: CreateProps): Promise<RoomUser[]> {
     //travel側の作成時、多分壊れます
     const roomUsers = [
       {

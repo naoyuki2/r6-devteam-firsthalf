@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from 'express'
-import { UserService } from '../module/user/user.service'
 import { verifyToken, decodeToken } from '../utils/token'
 
 export const setCurrentUser = async (
