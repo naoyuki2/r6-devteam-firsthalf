@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
   })
 
   // 切断イベント受信
-  socket.on('disconnect', (reason) => {})
+  socket.on('disconnect', () => {})
 })
 
 // サーバーの起動
