@@ -15,6 +15,7 @@ export default async function Home() {
           <RequestCard
             key={request.id}
             id={request.id}
+            userId={request.user.id}
             username={request.user.name}
             title={request.title}
             delivery_prefecture={request.delivery_prefecture}
