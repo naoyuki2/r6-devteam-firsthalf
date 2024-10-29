@@ -41,6 +41,7 @@ export class RoomController {
     })
   }
 
+  @Authorized()
   @Post(CreateEndpoint)
   async create(
     @Req() req: Request<'', '', CreateReq, ''>,
