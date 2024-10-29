@@ -25,7 +25,7 @@ export default function EditProfilePage() {
   }
 
   const handleCancel = () => {
-    router.push('/profile') // プロフィールページに遷移
+    router.push('/edit/profile') // プロフィールページに遷移
   }
 
   return (
