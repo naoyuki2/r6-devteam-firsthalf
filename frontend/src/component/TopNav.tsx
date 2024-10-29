@@ -11,6 +11,9 @@ export default function TopNav() {
   const router = useRouter()
   const isArrowShow =
     /^\/request\/\d+$/.test(pathname) || /^\/user\/\d+$/.test(pathname)
+  //下記のルートの際に戻るボタンを配置する
+  // request/?
+  // user/?
 
   return (
     <nav className="position-sticky top-0 bg-info shadow px-3 py-2">
