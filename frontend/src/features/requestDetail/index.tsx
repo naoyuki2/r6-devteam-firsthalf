@@ -32,7 +32,7 @@ export default function RequestDetailClient({
     })
     if (res == null) return
     const roomId = res.data.createRoomId
-    router.push(`/chat?RoomId=${roomId}`)
+    router.push(`/room?roomId=${roomId}`)
   }
 
   return (
