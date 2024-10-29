@@ -3,13 +3,17 @@ import { apiClient } from '@/lib/axios'
 import { getItem } from '@/utils/localStorage'
 import { useEffect, useState } from 'react'
 import io, { Socket } from 'socket.io-client'
+import { useSearchParams } from 'next/navigation'
 
 let socket: Socket | undefined
 
-const ChatClient = ({ roomId }: { roomId: string }) => {
+const ChatClient = () => {
   const [message, setMessage] = useState('')
   const [chat, setChat] = useState<string[]>([])
   const [userName, setUserName] = useState<string | null>(null)
+
+  const searchParams = useSearchParams()
+  const roomId = searchParams.get('RoomId') || ''
 
   useEffect(() => {
     const fetchUser = async () => {
