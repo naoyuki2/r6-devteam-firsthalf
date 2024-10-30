@@ -1,6 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
-import { PersonCircle, HouseDoor, Shop } from 'react-bootstrap-icons'
+import { PersonCircle } from 'react-bootstrap-icons'
 import Link from 'next/link'
 import { RequestCard } from '@/component/RequestCard'
 import { apiClient } from '@/lib/axios'
