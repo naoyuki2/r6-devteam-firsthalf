@@ -8,6 +8,7 @@ import { ErrorHandler } from './middleware/errorHandler'
 import { setCurrentUser } from './middleware/setCurrentUser'
 import cors from 'cors'
 import { RoomController } from './module/room/room.controller'
+import { MessageController } from './module/message/message.controller'
 
 const PORT = 3030
 
@@ -32,6 +33,7 @@ useExpressServer(app, {
     UserController,
     AuthController,
     RoomController,
+    MessageController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
