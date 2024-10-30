@@ -14,7 +14,11 @@ export type GetByRoomParam = {
   id: string
 }
 
-export const GetByRoomEndpoint = `${root}/:id`
+export type GetByRoomRes = {
+  room: ReturnType<typeof roomSerializer>
+}
+
+export const GetByRoomIdEndpoint = `${root}/:id`
 
 export type CreateReq = {
   requestId: number
