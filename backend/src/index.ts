@@ -8,6 +8,8 @@ import { ErrorHandler } from './middleware/errorHandler'
 import { setCurrentUser } from './middleware/setCurrentUser'
 import cors from 'cors'
 import { RoomController } from './module/room/room.controller'
+
+import { MessageController } from './module/message/message.controller'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { ClientToServerEvents, ServerToClientEvents } from './utils/soket.type'
@@ -35,6 +37,7 @@ useExpressServer(app, {
     UserController,
     AuthController,
     RoomController,
+    MessageController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
