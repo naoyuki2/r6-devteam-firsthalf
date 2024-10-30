@@ -33,7 +33,7 @@ export default function RequestDetailClient({
     })
     if (res == null) return
     const roomId = res.data.createRoomId
-    router.push(`/room?roomId=${roomId}`)
+    router.push(`/room/${roomId}`)
   }
 
   // ログイン状態確認
