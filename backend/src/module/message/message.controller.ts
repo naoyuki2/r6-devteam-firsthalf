@@ -2,14 +2,14 @@ import 'reflect-metadata'
 import { Request, Response } from 'express'
 import { Controller, Req, Res, Post, Authorized } from 'routing-controllers'
 import { MessageService } from './message.service'
-import { SendEndpoint, CreateReq, CreateRes } from './message.type'
+import { CreateEndpoint, CreateReq, CreateRes } from './message.type'
 import { messageSerializer } from './message.serializer'
 
 @Controller()
 export class MessageController {
   private messageService = new MessageService()
   @Authorized()
-  @Post(SendEndpoint)
+  @Post(CreateEndpoint)
   async create(
     @Req() req: Request<'', '', CreateReq, ''>,
     @Res() res: Response<CreateRes>,

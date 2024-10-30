@@ -1,8 +1,8 @@
 import { messageSerializer } from './message.serializer'
 
-const root = '/message'
+const root = '/messages'
 
-export const SendEndpoint = root
+export const CreateEndpoint = root
 
 export type CreateReq = {
   body: string

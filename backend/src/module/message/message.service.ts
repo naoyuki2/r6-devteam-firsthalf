@@ -1,7 +1,7 @@
 import { AppDataSource } from '../../app-data-source'
 import { Message } from './message.entity'
 
-type CreateMessageProps = {
+type CreateProps = {
   body: string
   roomId: string
   userId: number
@@ -10,7 +10,7 @@ type CreateMessageProps = {
 const messageRepository = AppDataSource.getRepository(Message)
 
 export class MessageService {
-  async create({ body, roomId, userId }: CreateMessageProps): Promise<Message> {
+  async create({ body, roomId, userId }: CreateProps): Promise<Message> {
     const createMessage = messageRepository.create({
       body,
       room: { id: roomId },
