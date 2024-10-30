@@ -9,7 +9,7 @@ type GetByRoomIdProps = {
   id: string
 }
 
-type GetByRoomUserIdProps = {
+type GetByUserIdProps = {
   userId: number
 }
 
@@ -18,20 +18,19 @@ type CreateProps = {
 }
 
 export class RoomService {
-  async getByRoom({ id }: GetByRoomIdProps): Promise<Room> {
+  async getByRoomId({ id }: GetByRoomIdProps): Promise<Room> {
     return await roomRepository.findOneOrFail({
       where: { id: id },
       relations: ['room_users', 'room_users.user', 'messages'],
     })
   }
 
-  async getByRoomUser({ userId }: GetByRoomUserIdProps): Promise<RoomUser[]> {
+  async getByUserId({ userId }: GetByUserIdProps): Promise<RoomUser[]> {
     return await roomUserRepository.find({
       where: { user: { id: userId } },
       relations: ['room'],
     })
   }
-
   async create({ requestId }: CreateProps): Promise<Room> {
     const createRoom = roomRepository.create({
       request: { id: requestId },

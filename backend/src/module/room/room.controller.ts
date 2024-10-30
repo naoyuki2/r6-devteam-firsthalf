@@ -14,8 +14,11 @@ import {
   CreateEndpoint,
   CreateReq,
   CreateRes,
-  GetByIdEndpoint,
-  GetByIdRes,
+  GetByUserIdEndpoint,
+  GetByRoomIdEndpoint,
+  GetByUserIdRes,
+  GetByRoomIdParam,
+  GetByRoomIdRes,
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
 
@@ -25,20 +28,31 @@ export class RoomController {
   private roomUserService = new RoomUserService()
 
   @Authorized()
-  @Get(GetByIdEndpoint)
-  async getById(@Req() req: Request, @Res() res: Response<GetByIdRes>) {
+  @Get(GetByUserIdEndpoint)
+  async getByUserId(@Req() req: Request, @Res() res: Response<GetByUserIdRes>) {
     const userId = req.currentUserId!
     const rooms = []
-    const roomUsers = await this.roomService.getByRoomUser({ userId })
+    const roomUsers = await this.roomService.getByUserId({ userId })
     for (let i: number = 0; i < roomUsers.length; i++) {
       const room_user = roomUsers[i]
       const { id } = room_user.room
-      const room = await this.roomService.getByRoom({ id })
+      const room = await this.roomService.getByRoomId({ id })
       rooms.push(room)
     }
     return res.json({
       rooms: rooms.map((room) => roomSerializer(room)),
     })
+  }
+
+  @Authorized()
+  @Get(GetByRoomIdEndpoint)
+  async getByRoomId(
+    @Req() req: Request<GetByRoomIdParam, '', '', ''>,
+    @Res() res: Response<GetByRoomIdRes>,
+  ) {
+    const { id } = req.params
+    const room = await this.roomService.getByRoomId({ id })
+    return res.json({ room: roomSerializer(room) })
   }
 
   @Authorized()
@@ -49,7 +63,7 @@ export class RoomController {
   ) {
     const { requestId, requestUserId } = req.body
     const createRoom = await this.roomService.create({ requestId })
-    const createRoomUser = await this.roomUserService.create({
+    await this.roomUserService.create({
       requestUserId: requestUserId,
       currentUserId: req.currentUserId!,
       createRoomId: createRoom.id,
@@ -57,8 +71,6 @@ export class RoomController {
 
     return res.json({
       createRoomId: createRoom.id,
-      requestId: createRoom.request.id,
-      createRoomUser: createRoomUser,
     })
   }
 }
