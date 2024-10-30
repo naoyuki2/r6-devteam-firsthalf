@@ -19,7 +19,7 @@ const ChatClient = () => {
     const fetchUser = async () => {
       try {
         const token = getItem('token')
-        const res = await apiClient.get('/user', {
+        const res = await apiClient.get('/users', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
