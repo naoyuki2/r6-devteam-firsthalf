@@ -22,7 +22,6 @@ export const CreateEndpoint = root
 
 export type CreateReq = {
   requestId: number
-  requestUserId: number
 }
 
 export type CreateRes = {
