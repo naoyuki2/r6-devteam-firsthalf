@@ -8,7 +8,15 @@ import { apiClient } from '@/lib/axios'
 import { getItem } from '@/utils/localStorage'
 
 export default function AuthGuard({ children }: { children: ReactNode }) {
-  const authPass = useMemo(() => ['/request', '/profile', '/room', '/chat'], [])
+  const authPass = useMemo(
+    () => [
+      '/request',
+      '/profile',
+      '/room/b6398bdd-76f5-4592-9f46-f609e2293491', //一時的に変更
+      '/chat',
+    ],
+    []
+  )
   const setCurrentUser = useSetCurrentUser()
   const pathname = usePathname()
   const router = useRouter()
