@@ -20,7 +20,7 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
       return
     }
     try {
-      const res = await apiClient.get('/user', {
+      const res = await apiClient.get('/users', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
