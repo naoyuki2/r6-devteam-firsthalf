@@ -17,6 +17,7 @@ export default async function Home() {
             id={request.id}
             userId={request.user.id}
             username={request.user.name}
+            created_at={new Date(request.created_at).toLocaleString()}
             title={request.title}
             delivery_prefecture={request.delivery_prefecture}
             location_prefecture={request.location_prefecture}
