@@ -21,11 +21,13 @@ import {
   GetByRoomIdRes,
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
+import { RequestService } from '../request/request.service'
 
 @Controller()
 export class RoomController {
   private roomService = new RoomService()
   private roomUserService = new RoomUserService()
+  private requestService = new RequestService()
 
   @Authorized()
   @Get(GetByUserIdEndpoint)
@@ -61,16 +63,27 @@ export class RoomController {
     @Req() req: Request<'', '', CreateReq, ''>,
     @Res() res: Response<CreateRes>,
   ) {
-    const { requestId, requestUserId } = req.body
-    const createRoom = await this.roomService.create({ requestId })
-    await this.roomUserService.create({
-      requestUserId: requestUserId,
-      currentUserId: req.currentUserId!,
-      createRoomId: createRoom.id,
-    })
+    const { requestId } = req.body
+    const room = await this.roomService.getByRequestId({ requestId })
+    if (room == null) {
+      const id = requestId
+      const request = await this.requestService.getById({ id })
+      const requestUserId = request.user.id
+      const createRoom = await this.roomService.create({ requestId })
+      await this.roomUserService.create({
+        requestUserId: requestUserId,
+        currentUserId: req.currentUserId!,
+        createRoomId: createRoom.id,
+      })
 
-    return res.json({
-      createRoomId: createRoom.id,
-    })
+      return res.json({
+        createRoomId: createRoom.id,
+      })
+    } else {
+      const roomRequest = room!.id
+      return res.json({
+        createRoomId: roomRequest,
+      })
+    }
   }
 }
