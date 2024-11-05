@@ -58,6 +58,13 @@ export default function RequestClient() {
     }))
   }
 
+  const removeField = (index: number) => {
+    setForm((prev) => ({
+      ...prev,
+      items: prev.items.filter((_, i) => i !== index),
+    }))
+  }
+
   const requestCreate = async () => {
     const args: CreateRequestArgs = {
       title: form.title,
@@ -214,18 +221,25 @@ export default function RequestClient() {
                 />
               </Col>
             </Row>
+            <div className="text-end mb-3">
+              <AppButton
+                text="追加"
+                onClick={addField}
+                className="outline-info"
+                variant="outline-info"
+              />
+              {form.items.length > 1 && (
+                <AppButton
+                  text="削除"
+                  onClick={() => removeField(index)}
+                  className="outline-danger ms-2"
+                  variant="outline-danger"
+                />
+              )}
+            </div>
             <hr />
           </div>
         ))}
-
-        <div className="text-end mb-3">
-          <AppButton
-            text="追加"
-            onClick={addField}
-            className="outline-info"
-            variant="outline-info"
-          />
-        </div>
 
         <Form.Group className="mb-3">
           <AppTextArea
