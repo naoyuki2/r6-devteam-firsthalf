@@ -3,7 +3,7 @@ import io, { Socket } from 'socket.io-client'
 export type MessageProps = {
   roomId: string
   body: string
-  userId: number
+  userName: string
 }
 
 let socket: Socket | undefined
@@ -19,9 +19,9 @@ export const joinRoom = (roomId: string) => {
   socket?.emit('joinRoom', { roomId })
 }
 
-export const sendMessage = ({ roomId, body, userId }: MessageProps) => {
+export const sendMessage = ({ roomId, body, userName }: MessageProps) => {
   initializeSocket()
-  socket?.emit('sendMessage', { roomId, message: body, userId })
+  socket?.emit('sendMessage', { roomId, message: body, userName })
 }
 
 export const receiveMessage = (callback: (message: string) => void) => {

@@ -1,73 +1,69 @@
 'use client'
-import { apiClient } from '@/lib/axios'
-import { useCurrentUser } from '@/lib/jotai/userState'
-import { getItem } from '@/utils/localStorage'
 import { useEffect, useState } from 'react'
-import io, { Socket } from 'socket.io-client'
+import { apiClient } from '@/lib/axios'
+import { useCurrentUser, User } from '@/lib/jotai/userState'
+import { getItem } from '@/utils/localStorage'
+import {
+  disconnectSocket,
+  receiveMessage,
+  sendMessage,
+  joinRoom,
+} from '@/utils/socket'
 
-let socket: Socket | undefined
+type roomUser = {
+  user: User
+}
 
 const ChatClient = ({ roomId }: { roomId: string }) => {
   const currentUser = useCurrentUser()
   const [message, setMessage] = useState('')
   const [chat, setChat] = useState<string[]>([])
-  const [roomData, setRoomData] = useState<JSON | null>(null)
-  const [otherUser, setOtherUser] = useState<{
-    id: number
-    name: string
-  } | null>(null)
+  const [otherUser, setOtherUser] = useState<User>()
 
   useEffect(() => {
-    const fetchData = async () => {
+    //ページ更新時にjoinを行わないといけない
+    joinRoom(roomId)
+    return () => {
+      disconnectSocket()
+    }
+  }, [roomId])
+
+  useEffect(() => {
+    const token = getItem('token') //useSWRだとlocalStorageでerror
+    const fetchRoomData = async () => {
       try {
-        const token = getItem('token')
-        const resRoom = await apiClient.get(`/rooms/${roomId}`, {
+        const res = await apiClient.get(`/rooms/${roomId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         })
-        setRoomData(resRoom.data.room)
 
-        const roomUsers = resRoom.data.room.room_users
-        const otherUserInfo = roomUsers.find(
-          (roomUser: any) => roomUser.user.id !== currentUser?.id
-        )
-
-        if (otherUserInfo) {
-          setOtherUser({
-            id: otherUserInfo.user.id,
-            name: otherUserInfo.user.name,
-          })
-        }
+        const otherUser = res.data.room.room_users.find(
+          (roomUser: roomUser) => roomUser.user.id !== currentUser?.id
+        )?.user
+        setOtherUser(otherUser)
       } catch (error) {
-        console.error('ユーザー情報の取得に失敗しました:', error)
+        console.error('Failed to fetch room data:', error)
       }
     }
 
-    fetchData()
+    if (token) fetchRoomData()
+  }, [roomId, currentUser?.id])
 
-    socket = io('http://localhost:3030')
-
-    // ルームに参加
-    socket.emit('joinRoom', { roomId })
-
-    // サーバーからメッセージを受け取る
-    socket.on('message', (message: string) => {
+  useEffect(() => {
+    receiveMessage((message) => {
       setChat((prevChat) => [...prevChat, message])
     })
+  }, [])
 
-    return () => {
-      socket?.disconnect()
-    }
-  }, [roomId, currentUser])
-
-  // メッセージを送信する関数
-  const sendMessage = () => {
-    if (message.trim() && socket && currentUser?.name) {
-      const userName = currentUser.name
-      socket.emit('sendMessage', { roomId, message, userName })
-      setChat((prevChat) => [...prevChat])
-      setMessage('') // 入力をクリア
+  const handleSendMessage = () => {
+    if (message.trim() && currentUser?.id) {
+      sendMessage({
+        roomId,
+        body: message,
+        userName: currentUser.name,
+      })
+      setMessage('')
     }
   }
 
@@ -95,7 +91,7 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
         disabled={!currentUser}
       />
       <button
-        onClick={sendMessage}
+        onClick={handleSendMessage}
         style={{ padding: '10px', marginLeft: '10px' }}
         disabled={!currentUser}
       >
