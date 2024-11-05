@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react'
 import { PersonCircle } from 'react-bootstrap-icons'
 import { getItem } from '@/utils/localStorage'
 
-// utils/localStorage.ts からインポート
-
 interface Room {
   id: string
   created_at: string
@@ -25,7 +23,7 @@ export default function Room() {
 
     const fetchRooms = async () => {
       try {
-        const token = getItem('token') // ここも utils の getItem を使用
+        const token = getItem('token')
         if (!token) throw new Error('Token not found')
 
         const response = await fetch('http://localhost:3030/rooms', {
@@ -48,8 +46,9 @@ export default function Room() {
         )
 
         setRooms(uniqueRooms)
-      } catch (error: any) {
-        setError(error.message)
+      } catch (error: unknown) {
+        // `any`の代わりに `unknown`を使用
+        setError((error as Error).message)
       } finally {
         setLoading(false)
       }
