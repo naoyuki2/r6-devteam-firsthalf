@@ -58,14 +58,12 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
 io.on('connection', (socket) => {
   // ルームに参加する処理
   socket.on('joinRoom', ({ roomId }) => {
-    console.log('joinするよ:', roomId)
     socket.join(roomId)
   })
 
   // クライアントからのメッセージ受信処理
   socket.on('sendMessage', ({ roomId, message, userName }) => {
     // ルーム内の全員にメッセージを送信
-    console.log('メッセージ送信:', roomId,message,userName)
     io.to(roomId).emit('message', `${userName}: ${message}`)
   })
 
