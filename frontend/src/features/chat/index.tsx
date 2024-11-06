@@ -14,6 +14,11 @@ type roomUser = {
   user: User
 }
 
+type messageParam = {
+  body: string
+  roomId: string
+}
+
 const ChatClient = ({ roomId }: { roomId: string }) => {
   const currentUser = useCurrentUser()
   const [message, setMessage] = useState('')
@@ -56,14 +61,30 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
     })
   }, [])
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
+    const token = getItem('token')
+    const args: messageParam = {
+      body: message,
+      roomId: roomId,
+    }
+
     if (message.trim() && currentUser?.id) {
       sendMessage({
         roomId,
         body: message,
         userName: currentUser.name,
       })
-      setMessage('')
+
+      try {
+        await apiClient.post(`/messages`, args, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        setMessage('') // メッセージ送信後、入力フィールドをクリア
+      } catch (error) {
+        console.error('Failed to send message to DB:', error)
+      }
     }
   }
 
