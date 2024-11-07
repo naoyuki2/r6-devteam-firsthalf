@@ -16,7 +16,7 @@ export default function TopNav() {
   // user/?
 
   return (
-    <nav className="position-sticky top-0 bg-info shadow px-3 py-2">
+    <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
       <div className="d-flex justify-content-center">
         {isArrowShow && (
           <ArrowLeft
