@@ -22,6 +22,7 @@ import {
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
 import { RequestService } from '../request/request.service'
+import { error } from 'console'
 
 @Controller()
 export class RoomController {
@@ -64,9 +65,13 @@ export class RoomController {
     @Res() res: Response<CreateRes>,
   ) {
     const { requestId } = req.body
+    const id = requestId
+    const request = await this.requestService.getById({ id })
+    const requestUserId = request.user.id
     const userId = req.currentUserId!
+    if (requestId == userId) throw new Error()
     const rooms = await this.roomService.getByRequestId({ requestId })
-    if (typeof rooms !== undefined) {
+    if (rooms && rooms.length > 0) {
       for (let i: number = 0; i < rooms!.length; i++) {
         const room = rooms![i]
         const roomId = room.id
@@ -80,9 +85,6 @@ export class RoomController {
       }
     }
 
-    const id = requestId
-    const request = await this.requestService.getById({ id })
-    const requestUserId = request.user.id
     const createRoom = await this.roomService.create({ requestId })
     await this.roomUserService.create({
       requestUserId: requestUserId,
