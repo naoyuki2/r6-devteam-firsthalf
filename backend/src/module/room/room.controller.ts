@@ -69,7 +69,7 @@ export class RoomController {
     const request = await this.requestService.getById({ id })
     const requestUserId = request.user.id
     const userId = req.currentUserId!
-    if (requestId == userId) throw new Error()
+    if (requestId == userId) console.error('エラーある')
     const rooms = await this.roomService.getByRequestId({ requestId })
     if (rooms && rooms.length > 0) {
       for (let i: number = 0; i < rooms!.length; i++) {
