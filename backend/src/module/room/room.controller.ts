@@ -64,26 +64,34 @@ export class RoomController {
     @Res() res: Response<CreateRes>,
   ) {
     const { requestId } = req.body
-    const room = await this.roomService.getByRequestId({ requestId })
-    if (room == null) {
-      const id = requestId
-      const request = await this.requestService.getById({ id })
-      const requestUserId = request.user.id
-      const createRoom = await this.roomService.create({ requestId })
-      await this.roomUserService.create({
-        requestUserId: requestUserId,
-        currentUserId: req.currentUserId!,
-        createRoomId: createRoom.id,
-      })
-
-      return res.json({
-        createRoomId: createRoom.id,
-      })
-    } else {
-      const roomRequest = room!.id
-      return res.json({
-        createRoomId: roomRequest,
-      })
+    const userId = req.currentUserId!
+    const rooms = await this.roomService.getByRequestId({ requestId })
+    if (typeof rooms !== undefined) {
+      for (let i: number = 0; i < rooms!.length; i++) {
+        const room = rooms![i]
+        const roomId = room.id
+        const room_user = await this.roomUserService.getByRoomUser({
+          roomId,
+          userId,
+        })
+        if (room_user !== null) {
+          return res.json({ Room: room })
+        }
+      }
     }
+
+    const id = requestId
+    const request = await this.requestService.getById({ id })
+    const requestUserId = request.user.id
+    const createRoom = await this.roomService.create({ requestId })
+    await this.roomUserService.create({
+      requestUserId: requestUserId,
+      currentUserId: req.currentUserId!,
+      createRoomId: createRoom.id,
+    })
+
+    return res.json({
+      Room: createRoom,
+    })
   }
 }

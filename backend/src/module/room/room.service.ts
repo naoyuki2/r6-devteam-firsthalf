@@ -38,8 +38,8 @@ export class RoomService {
 
   async getByRequestId({
     requestId,
-  }: GetByRequestIdProps): Promise<Room | null> {
-    return await roomRepository.findOne({
+  }: GetByRequestIdProps): Promise<Room[] | undefined> {
+    return await roomRepository.find({
       where: { request: { id: requestId } },
     })
   }
@@ -48,7 +48,6 @@ export class RoomService {
     const createRoom = roomRepository.create({
       request: { id: requestId },
     })
-
     return await roomRepository.save(createRoom)
   }
 }

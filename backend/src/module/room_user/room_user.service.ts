@@ -9,6 +9,11 @@ type CreateProps = {
   createRoomId: string
 }
 
+type GetByRoomUserProps = {
+  roomId: string
+  userId: number
+}
+
 export class RoomUserService {
   async create({
     requestUserId,
@@ -37,5 +42,14 @@ export class RoomUserService {
     }
     await roomUserRepository.insert(createdRoomUsers) //saveメソッドだとupdate処理が走りエラーになるのでinsertを使ってます
     return createdRoomUsers
+  }
+
+  async getByRoomUser({
+    roomId,
+    userId,
+  }: GetByRoomUserProps): Promise<RoomUser | null> {
+    return await roomUserRepository.findOne({
+      where: { user: { id: userId }, room: { id: roomId } },
+    })
   }
 }

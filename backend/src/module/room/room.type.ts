@@ -1,3 +1,4 @@
+import { Room } from './room.entity'
 import { roomSerializer } from './room.serializer'
 
 const root = '/rooms'
@@ -25,5 +26,5 @@ export type CreateReq = {
 }
 
 export type CreateRes = {
-  createRoomId: string
+  Room: Room
 }
