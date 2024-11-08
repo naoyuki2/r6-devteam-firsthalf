@@ -22,7 +22,6 @@ import {
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
 import { RequestService } from '../request/request.service'
-import { error } from 'console'
 import { CustomError } from 'src/error/CustomError'
 
 @Controller()
