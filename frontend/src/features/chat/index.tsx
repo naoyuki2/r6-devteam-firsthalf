@@ -26,7 +26,6 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
   const [otherUser, setOtherUser] = useState<User>()
 
   useEffect(() => {
-    //ページ更新時にjoinを行わないといけない
     joinRoom(roomId)
     return () => {
       disconnectSocket()
@@ -34,7 +33,7 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
   }, [roomId])
 
   useEffect(() => {
-    const token = getItem('token') //useSWRだとlocalStorageでerror
+    const token = getItem('token')
     const fetchRoomData = async () => {
       try {
         const res = await apiClient.get(`/rooms/${roomId}`, {
@@ -62,29 +61,14 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
   }, [])
 
   const handleSendMessage = async () => {
-    const token = getItem('token')
-    const args: messageParam = {
-      body: message,
-      roomId: roomId,
-    }
-
     if (message.trim() && currentUser?.id) {
       sendMessage({
         roomId,
         body: message,
         userName: currentUser.name,
+        userId: currentUser.id,
       })
-
-      try {
-        await apiClient.post(`/messages`, args, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setMessage('') // メッセージ送信後、入力フィールドをクリア
-      } catch (error) {
-        console.error('Failed to send message to DB:', error)
-      }
+      setMessage('') // メッセージ送信後、入力フィールドをクリア
     }
   }
 

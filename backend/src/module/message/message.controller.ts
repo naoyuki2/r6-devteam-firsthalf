@@ -8,14 +8,12 @@ import { messageSerializer } from './message.serializer'
 @Controller()
 export class MessageController {
   private messageService = new MessageService()
-  @Authorized()
   @Post(CreateEndpoint)
   async create(
     @Req() req: Request<'', '', CreateReq, ''>,
     @Res() res: Response<CreateRes>,
   ) {
-    const { body, roomId } = req.body
-    const userId = req.currentUserId!
+    const { body, roomId, userId } = req.body
     const message = await this.messageService.create({
       body,
       roomId,

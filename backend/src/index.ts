@@ -12,7 +12,11 @@ import { RoomController } from './module/room/room.controller'
 import { MessageController } from './module/message/message.controller'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-import { ClientToServerEvents, ServerToClientEvents } from './utils/soket.type'
+import {
+  ClientToServerEvents,
+  create,
+  ServerToClientEvents,
+} from './utils/socket.type'
 
 const PORT = 3030
 
@@ -62,8 +66,8 @@ io.on('connection', (socket) => {
   })
 
   // クライアントからのメッセージ受信処理
-  socket.on('sendMessage', ({ roomId, message, userName }) => {
-    // ルーム内の全員にメッセージを送信
+  socket.on('sendMessage', ({ roomId, message, userName, userId }) => {
+    create(roomId, message, userId)
     io.to(roomId).emit('message', `${userName}: ${message}`)
   })
 

@@ -4,6 +4,7 @@ export type MessageProps = {
   roomId: string
   body: string
   userName: string
+  userId: number
 }
 
 let socket: Socket | undefined
@@ -19,9 +20,14 @@ export const joinRoom = (roomId: string) => {
   socket?.emit('joinRoom', { roomId })
 }
 
-export const sendMessage = ({ roomId, body, userName }: MessageProps) => {
+export const sendMessage = ({
+  roomId,
+  body,
+  userName,
+  userId,
+}: MessageProps) => {
   initializeSocket()
-  socket?.emit('sendMessage', { roomId, message: body, userName })
+  socket?.emit('sendMessage', { roomId, message: body, userName, userId })
 }
 
 export const receiveMessage = (callback: (message: string) => void) => {
