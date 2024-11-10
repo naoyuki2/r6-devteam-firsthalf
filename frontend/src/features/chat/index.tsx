@@ -14,11 +14,6 @@ type roomUser = {
   user: User
 }
 
-type messageParam = {
-  body: string
-  roomId: string
-}
-
 const ChatClient = ({ roomId }: { roomId: string }) => {
   const currentUser = useCurrentUser()
   const [message, setMessage] = useState('')
