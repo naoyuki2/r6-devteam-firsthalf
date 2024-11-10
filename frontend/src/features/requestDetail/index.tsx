@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { apiClient } from '@/lib/axios'
 import { CreateRoomArgs, Request } from '@/types'
+import { useCurrentUser } from '@/lib/jotai/userState'
 import { getItem } from '@/utils/localStorage' // getItem を追加
 
 type RequestDetailClientProps = {
@@ -13,6 +14,8 @@ export default function RequestDetailClient({
   request,
 }: RequestDetailClientProps) {
   const router = useRouter()
+  const currentUser = useCurrentUser()
+  const isChatShow = request.user.id == currentUser?.id
 
   const requestCreateRoom = async () => {
     const token = getItem('token') // getItem 関数で token を取得
@@ -36,6 +39,8 @@ export default function RequestDetailClient({
     router.push(`/room/${roomId}`)
   }
 
+  if (isChatShow) return <></>
+        
   // ログイン状態確認
   const isLoggedIn = !!getItem('token')
 

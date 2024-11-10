@@ -17,6 +17,8 @@ import {
   create,
   ServerToClientEvents,
 } from './utils/socket.type'
+import { CustomError } from './error/CustomError'
+
 
 const PORT = 3030
 
@@ -46,7 +48,9 @@ useExpressServer(app, {
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
   authorizationChecker: (action: Action) => {
-    return action.request.currentUserId
+    const currentUserId = action.request.currentUserId
+    if (currentUserId == null) throw new CustomError('Unauthorized user', 401)
+    return currentUserId
   },
 })
 
