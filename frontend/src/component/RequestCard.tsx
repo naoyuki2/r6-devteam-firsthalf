@@ -5,7 +5,7 @@ type RequestCardProps = {
   id: number
   userId: number
   username: string
-  created_at?: string
+  created_at: Date
   title: string
   delivery_prefecture: string
   location_prefecture: string
@@ -28,7 +28,7 @@ export const RequestCard = ({
           <span className="fw-bold my-2 mt-2">{username}</span>
           <span className="ms-auto my-2 mt-2"></span>
         </AppLink>
-        <span>{created_at}</span>
+        <span>{new Date(created_at).toLocaleString()}</span>
       </div>
       <AppLink href={`/request/${id}`}>
         <p className="fw-bold text-truncate mb-2">{title}</p>
