@@ -8,12 +8,9 @@ import {
 } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 import { usePathname } from 'next/navigation'
-import { useCurrentUser } from '@/lib/jotai/userState'
 
 export default function BottomNav() {
   const pathname = usePathname()
-  const currentUser = useCurrentUser()
-  console.log(currentUser?.id)
   const items = [
     {
       icon: (
@@ -48,8 +45,8 @@ export default function BottomNav() {
           }}
         />
       ),
-      href: `/profile/${currentUser?.id ?? ''}`,
-      active: pathname === `/profile/${currentUser?.id ?? ''}`,
+      href: `/profile`,
+      active: pathname === `/profile`,
     },
   ]
   return (
