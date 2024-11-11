@@ -11,7 +11,6 @@ import { usePathname } from 'next/navigation'
 
 export default function BottomNav() {
   const pathname = usePathname()
-
   const items = [
     {
       icon: (
@@ -46,8 +45,8 @@ export default function BottomNav() {
           }}
         />
       ),
-      href: '/profile',
-      active: pathname === '/profile',
+      href: `/profile`,
+      active: pathname === `/profile`,
     },
   ]
   return (
