@@ -10,7 +10,7 @@ export default async function ProfilePage({
 }: {
   params: { id: string }
 }) {
-  const resUser = await apiClient.get(`/user/${params.id}`)
+  const resUser = await apiClient.get(`/users/${params.id}`)
   const { user } = resUser.data
   const resReq = await apiClient.get(`/requests?userId=${user.id}`)
   const { requests } = resReq.data
