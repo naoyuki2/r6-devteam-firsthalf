@@ -51,7 +51,7 @@ export const SignUpClient = () => {
       password: password.value,
     }
     try {
-      const res = await apiClient.post('/user', args)
+      const res = await apiClient.post('/users', args)
       if (res == null) return
       setItem('token', res.data.token)
       router.push('/home')

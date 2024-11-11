@@ -1,4 +1,4 @@
-const root = '/user'
+const root = '/users'
 
 export const SignUpEndpoint = root
 
