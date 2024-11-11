@@ -68,10 +68,11 @@ export default function RequestClient() {
     }))
   }
 
+  // idが未使用であるESLint警告が出るが、重大な問題ではないためコメントアウトで無視
   const removeIdFromItems = (
     items: { id: number; name: string; quantity: number; price: string }[]
   ) => {
-    return items.map(({ id, ...rest }) => rest)
+    return items.map(({ id, ...rest }) => rest) // eslint-disable-line @typescript-eslint/no-unused-vars
   }
 
   const requestCreate = async () => {
