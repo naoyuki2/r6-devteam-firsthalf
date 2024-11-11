@@ -4,10 +4,10 @@ import React from 'react'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { PersonCircle, HouseDoor, Shop } from 'react-bootstrap-icons'
 import Link from 'next/link'
-import { useCurrentUser } from '@/lib/jotai/userState' // グローバルステートからユーザー情報を取得
+import { useCurrentUser } from '@/lib/jotai/userState'
 
 export default function ProfilePage() {
-  const currentUser = useCurrentUser() // 現在のユーザー情報を取得
+  const currentUser = useCurrentUser()
 
   return (
     <Container className="mt-4">
@@ -26,7 +26,6 @@ export default function ProfilePage() {
           <PersonCircle size={80} />
         </Col>
         <Col xs={9}>
-          {/* グローバルステートから取得したユーザー名とメールアドレスを表示 */}
           <h4 className="fw-bold">{currentUser?.name ?? 'ゲスト'}</h4>
           <p className="text-muted">
             {currentUser?.email ?? 'example@example.com'}
