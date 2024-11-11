@@ -43,6 +43,7 @@ export const ProfileClient = () => {
           id={request.id}
           userId={request.user.id}
           username={request.user.name}
+          created_at={request.created_at}
           title={request.title}
           delivery_prefecture={request.delivery_prefecture}
           location_prefecture={request.location_prefecture}
