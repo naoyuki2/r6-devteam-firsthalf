@@ -21,11 +21,14 @@ import {
   GetByRoomIdRes,
 } from './room.type'
 import { RoomUserService } from '../room_user/room_user.service'
+import { RequestService } from '../request/request.service'
+import { CustomError } from '../../error/CustomError'
 
 @Controller()
 export class RoomController {
   private roomService = new RoomService()
   private roomUserService = new RoomUserService()
+  private requestService = new RequestService()
 
   @Authorized()
   @Get(GetByUserIdEndpoint)
@@ -61,16 +64,42 @@ export class RoomController {
     @Req() req: Request<'', '', CreateReq, ''>,
     @Res() res: Response<CreateRes>,
   ) {
-    const { requestId, requestUserId } = req.body
-    const createRoom = await this.roomService.create({ requestId })
+    const { requestId } = req.body
+    const currentUserId = req.currentUserId!
+
+    const request = await this.requestService.getById({ id: requestId })
+
+    if (request.user.id === currentUserId)
+      throw new CustomError(
+        'Please use a different userId to create a new room.',
+        400,
+      )
+
+    const rooms = await this.roomService.getByRequestId({ requestId })
+    if (rooms && rooms.length > 0) {
+      for (let i: number = 0; i < rooms!.length; i++) {
+        const room = rooms[i]
+        const roomId = room.id
+        const room_user = await this.roomUserService.getByRoomUser({
+          roomId,
+          userId: currentUserId,
+        })
+        if (room_user !== null) {
+          return res.json({ Room: room })
+        }
+      }
+    }
+
+    const newRoom = await this.roomService.create({ requestId })
+
     await this.roomUserService.create({
-      requestUserId: requestUserId,
+      requestUserId: request.user.id,
       currentUserId: req.currentUserId!,
-      createRoomId: createRoom.id,
+      createRoomId: newRoom.id,
     })
 
     return res.json({
-      createRoomId: createRoom.id,
+      Room: newRoom,
     })
   }
 }

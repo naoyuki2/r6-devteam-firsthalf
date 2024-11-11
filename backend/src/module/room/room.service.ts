@@ -13,6 +13,10 @@ type GetByUserIdProps = {
   userId: number
 }
 
+type GetByRequestIdProps = {
+  requestId: number
+}
+
 type CreateProps = {
   requestId: number
 }
@@ -31,11 +35,19 @@ export class RoomService {
       relations: ['room'],
     })
   }
+
+  async getByRequestId({
+    requestId,
+  }: GetByRequestIdProps): Promise<Room[] | undefined> {
+    return await roomRepository.find({
+      where: { request: { id: requestId } },
+    })
+  }
+
   async create({ requestId }: CreateProps): Promise<Room> {
     const createRoom = roomRepository.create({
       request: { id: requestId },
     })
-
     return await roomRepository.save(createRoom)
   }
 }
