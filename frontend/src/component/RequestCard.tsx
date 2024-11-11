@@ -5,7 +5,7 @@ type RequestCardProps = {
   id: number
   userId: number
   username: string
-  created_at: string
+  created_at?: string
   title: string
   delivery_prefecture: string
   location_prefecture: string
