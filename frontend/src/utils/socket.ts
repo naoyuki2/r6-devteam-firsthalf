@@ -1,10 +1,12 @@
 import io, { Socket } from 'socket.io-client'
 
 export type MessageProps = {
-  roomId: string
-  body: string
-  userName: string
-  userId: number
+  message: {
+    roomId: string
+    userName: string
+    body: string
+    created_at: Date
+  }
 }
 
 let socket: Socket | undefined
@@ -20,19 +22,16 @@ export const joinRoom = (roomId: string) => {
   socket?.emit('joinRoom', { roomId })
 }
 
-export const sendMessage = ({
-  roomId,
-  body,
-  userName,
-  userId,
-}: MessageProps) => {
+export const sendMessage = ({ message }: MessageProps) => {
   initializeSocket()
-  socket?.emit('sendMessage', { roomId, message: body, userName, userId })
+  socket?.emit('sendMessage', {
+    message,
+  })
 }
 
 export const receiveMessage = (callback: (message: string) => void) => {
   initializeSocket()
-  socket?.on('message', callback)
+  socket?.on('receive', callback)
 }
 
 export const disconnectSocket = () => {

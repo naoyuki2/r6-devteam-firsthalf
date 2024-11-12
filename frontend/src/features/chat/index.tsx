@@ -57,17 +57,21 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
 
   const handleSendMessage = async () => {
     if (inputMessage.trim() && currentUser?.id) {
-      sendMessage({
-        roomId,
+      const args = {
         body: inputMessage,
-        userName: currentUser.name,
+        roomId: roomId,
         userId: currentUser.id,
-      })
+      }
+      try {
+        const res = await apiClient.post('/messages', args)
+        sendMessage({ message: res.data.message })
+      } catch (error) {
+        console.error('Failed to send message:', error)
+      }
       setInputMessage('') // メッセージ送信後、入力フィールドをクリア
     }
   }
 
-  console.log(messageList)
   return (
     <div>
       <h3>チャット相手: {otherUser?.name ?? '不明'}</h3>
