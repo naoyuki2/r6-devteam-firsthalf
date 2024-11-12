@@ -16,8 +16,8 @@ type roomUser = {
 
 const ChatClient = ({ roomId }: { roomId: string }) => {
   const currentUser = useCurrentUser()
-  const [message, setMessage] = useState('')
-  const [chat, setChat] = useState<string[]>([])
+  const [inputMessage, setInputMessage] = useState<string>('')
+  const [messageList, setMessageList] = useState<string[]>([])
   const [otherUser, setOtherUser] = useState<User>()
 
   useEffect(() => {
@@ -51,22 +51,23 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
 
   useEffect(() => {
     receiveMessage((message) => {
-      setChat((prevChat) => [...prevChat, message])
+      setMessageList((prevChat) => [...prevChat, message])
     })
   }, [])
 
   const handleSendMessage = async () => {
-    if (message.trim() && currentUser?.id) {
+    if (inputMessage.trim() && currentUser?.id) {
       sendMessage({
         roomId,
-        body: message,
+        body: inputMessage,
         userName: currentUser.name,
         userId: currentUser.id,
       })
-      setMessage('') // メッセージ送信後、入力フィールドをクリア
+      setInputMessage('') // メッセージ送信後、入力フィールドをクリア
     }
   }
 
+  console.log(messageList)
   return (
     <div>
       <h3>チャット相手: {otherUser?.name ?? '不明'}</h3>
@@ -79,13 +80,13 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
           marginBottom: '10px',
         }}
       >
-        {chat.map((msg, index) => (
+        {messageList.map((msg, index) => (
           <p key={index}>{msg}</p>
         ))}
       </div>
       <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
+        value={inputMessage}
+        onChange={(e) => setInputMessage(e.target.value)}
         placeholder="メッセージを入力"
         style={{ padding: '10px', width: '80%' }}
         disabled={!currentUser}
