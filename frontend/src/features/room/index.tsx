@@ -5,7 +5,7 @@ import { PersonCircle } from 'react-bootstrap-icons'
 import { getItem } from '@/utils/localStorage'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { apiClient } from '@/lib/axios'
-import { Card, Row, Col, Spinner, Alert } from 'react-bootstrap'
+import { Card, Row, Col, Spinner, Alert, Container } from 'react-bootstrap'
 
 interface Room {
   id: string
@@ -49,9 +49,15 @@ export function RoomClient() {
 
   if (loading) return <Spinner animation="border" />
   if (error) return <Alert variant="danger">Error: {error}</Alert>
+  if (rooms.length === 0)
+    return <Alert variant="info">ルームがありません</Alert>
 
   return (
-    <>
+    <Container
+      fluid
+      className="d-flex flex-column align-items-start"
+      style={{ height: '100vh', paddingTop: '0.5rem' }}
+    >
       {rooms.map((room) => {
         const lastMessage =
           room.messages.length > 0
@@ -80,6 +86,6 @@ export function RoomClient() {
           </Card>
         )
       })}
-    </>
+    </Container>
   )
 }
