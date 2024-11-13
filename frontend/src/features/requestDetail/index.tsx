@@ -36,11 +36,11 @@ export default function RequestDetailClient({
     })
     if (res == null) return
     const roomId = res.data.createRoomId
-    router.push(`/room/${roomId}`)
+    router.push(`/chat/${roomId}`)
   }
 
   if (isChatShow) return <></>
-        
+
   // ログイン状態確認
   const isLoggedIn = !!getItem('token')
 

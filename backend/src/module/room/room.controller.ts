@@ -37,10 +37,15 @@ export class RoomController {
       const room_user = roomUsers[i]
       const { id } = room_user.room
       const room = await this.roomService.getByRoomId({ id })
-      rooms.push(room)
+      const otherUser = room.room_users.find(
+        (roomUser) => roomUser.user.id !== userId,
+      )!.user
+      rooms.push({ room, otherUser })
     }
     return res.json({
-      rooms: rooms.map((room) => roomSerializer(room)),
+      rooms: rooms.map(({ room, otherUser }) =>
+        roomSerializer(room, otherUser),
+      ),
     })
   }
 
@@ -52,7 +57,10 @@ export class RoomController {
   ) {
     const { id } = req.params
     const room = await this.roomService.getByRoomId({ id })
-    return res.json({ room: roomSerializer(room) })
+    const otherUser = room.room_users.find(
+      (roomUser) => roomUser.user.id !== req.currentUserId,
+    )!.user // エラー出たらここ怪しいかも
+    return res.json({ room: roomSerializer(room, otherUser) })
   }
 
   @Authorized()

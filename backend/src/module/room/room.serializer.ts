@@ -1,13 +1,10 @@
-import { messageSerializer } from '../message/message.serializer'
-import { room_userSerializer } from '../room_user/room_user.serializer'
+import { User } from '../user/user.entity'
+import { userSerializer } from '../user/user.serializer'
 import { Room } from './room.entity'
 
-export const roomSerializer = (room: Room) => ({
+export const roomSerializer = (room: Room, otherUser: User) => ({
   id: room.id,
   created_at: room.created_at,
   isClosed: room.isClosed,
-  room_users: room.room_users.map((room_user) =>
-    room_userSerializer(room_user),
-  ),
-  messages: room.messages.map((message) => messageSerializer(message)),
+  otherUser: userSerializer(otherUser),
 })
