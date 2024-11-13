@@ -1,4 +1,4 @@
-import { createMessageSerializer } from './message.serializer'
+import { messageSerializer } from './message.serializer'
 
 const root = '/messages'
 
@@ -11,5 +11,5 @@ export type CreateReq = {
 }
 
 export type CreateRes = {
-  message: ReturnType<typeof createMessageSerializer>
+  message: ReturnType<typeof messageSerializer>
 }

@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { Controller, Req, Res, Post } from 'routing-controllers'
 import { MessageService } from './message.service'
 import { CreateEndpoint, CreateReq, CreateRes } from './message.type'
-import { createMessageSerializer } from './message.serializer'
+import { messageSerializer } from './message.serializer'
 
 @Controller()
 export class MessageController {
@@ -19,6 +19,6 @@ export class MessageController {
       roomId,
       userId,
     })
-    return res.json({ message: createMessageSerializer(message) })
+    return res.json({ message: messageSerializer(message) })
   }
 }

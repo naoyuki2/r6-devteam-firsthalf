@@ -12,7 +12,7 @@ import { RoomController } from './module/room/room.controller'
 import { MessageController } from './module/message/message.controller'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
-import { ClientToServerEvents, ServerToClientEvents } from './utils/socket'
+import { ClientToServerEvents, ServerToClientEvents } from './lib/socket.type'
 import { CustomError } from './error/CustomError'
 
 const PORT = 3030
@@ -65,11 +65,8 @@ io.on('connection', (socket) => {
   })
 
   // クライアントからのメッセージ受信処理
-  socket.on('sendMessage', (data) => {
-    io.to(data.message.roomId).emit(
-      'receive',
-      `${data.message.userName}: ${data.message.body}: ${data.message.created_at}`,
-    )
+  socket.on('sendMessage', ({ message }) => {
+    io.to(message.roomId).emit('receiveMessage', { message })
   })
 
   // 切断イベント受信

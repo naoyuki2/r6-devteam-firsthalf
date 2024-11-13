@@ -6,6 +6,7 @@ import { getItem } from '@/utils/localStorage'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { apiClient } from '@/lib/axios'
 import { Card, Row, Col, Spinner, Alert } from 'react-bootstrap'
+import { AppLink } from '@/component/AppLink'
 
 interface Room {
   id: string
@@ -63,20 +64,22 @@ export function RoomClient() {
 
         return (
           <Card key={room.id} className="mb-3" style={{ width: '100%' }}>
-            <Card.Body className="z-0">
-              <Row className="align-items-center">
-                <Col xs="auto">
-                  <PersonCircle size={48} />
-                </Col>
-                <Col className="text-truncate">
-                  <p className="mb-0">{otherUser?.name || 'Unknown'}</p>
-                  <p className="text-truncate">{lastMessage}</p>
-                </Col>
-                <Col xs="auto" className="text-muted text-end">
-                  {new Date(room.created_at).toLocaleTimeString()}
-                </Col>
-              </Row>
-            </Card.Body>
+            <AppLink href={`/chat/${room.id}`}>
+              <Card.Body className="z-0">
+                <Row className="align-items-center">
+                  <Col xs="auto">
+                    <PersonCircle size={48} />
+                  </Col>
+                  <Col className="text-truncate">
+                    <p className="mb-0">{otherUser?.name || 'Unknown'}</p>
+                    <p className="text-truncate">{lastMessage}</p>
+                  </Col>
+                  <Col xs="auto" className="text-muted text-end">
+                    {new Date(room.created_at).toLocaleTimeString()}
+                  </Col>
+                </Row>
+              </Card.Body>
+            </AppLink>
           </Card>
         )
       })}

@@ -1,13 +1,9 @@
+import {
+  JoinRoomProps,
+  ReceiveMessageProps,
+  SendMessageProps,
+} from '@/types/socket.type'
 import io, { Socket } from 'socket.io-client'
-
-export type MessageProps = {
-  message: {
-    roomId: string
-    userName: string
-    body: string
-    created_at: Date
-  }
-}
 
 let socket: Socket | undefined
 
@@ -17,21 +13,23 @@ const initializeSocket = () => {
   }
 }
 
-export const joinRoom = (roomId: string) => {
+export const joinRoom = ({ roomId }: JoinRoomProps) => {
   initializeSocket()
   socket?.emit('joinRoom', { roomId })
 }
 
-export const sendMessage = ({ message }: MessageProps) => {
+export const sendMessage = ({ message }: SendMessageProps) => {
   initializeSocket()
   socket?.emit('sendMessage', {
     message,
   })
 }
 
-export const receiveMessage = (callback: (message: string) => void) => {
+export const receiveMessage = (
+  callback: ({ message }: ReceiveMessageProps) => void
+) => {
   initializeSocket()
-  socket?.on('receive', callback)
+  socket?.on('receiveMessage', callback)
 }
 
 export const disconnectSocket = () => {
