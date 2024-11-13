@@ -35,7 +35,6 @@ export function RoomClient() {
         if (!res) {
           throw new Error(`Error: ${res}`)
         }
-        console.log(res.data.rooms)
         setRooms(res.data.rooms)
       } catch (error: unknown) {
         setError((error as Error).message)
