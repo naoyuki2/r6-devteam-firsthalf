@@ -21,8 +21,8 @@ import {
   GetEndpoint,
   GetQuery,
   GetRes,
+  UpdateEndpoint,
   UpdateReq,
-  UpdateRequestParamEndpoint,
   UpdateRes,
 } from './request.type'
 import { CustomError } from '../../error/CustomError'
@@ -86,7 +86,7 @@ export class RequestController {
     return res.json({ request: requestSerializer(getRequest) })
   }
 
-  @Patch(UpdateRequestParamEndpoint)
+  @Patch(UpdateEndpoint)
   @Authorized()
   async update(
     @Req() req: Request<'', '', UpdateReq, ''>,
@@ -103,40 +103,33 @@ export class RequestController {
       inputStatus,
     } = req.body
     const request = await this.requestService.getById({ id: requestId })
-    const userId = req.currentUserId!
-    if (request.user.id !== userId) {
+    console.log('requestUserId', request.user.id)
+    console.log('currentUserId', req.currentUserId)
+    if (request.user.id !== req.currentUserId!)
       throw new CustomError('Please verify the ID and try again.', 401)
-    }
-    if (inputTitle !== undefined) {
-      request.title = inputTitle
-    }
 
-    if (inputLocation_prefecture !== undefined) {
-      request.location_prefecture = inputLocation_prefecture
-    }
+    Object.assign(request, {
+      ...(inputTitle !== undefined && { title: inputTitle }),
+      ...(inputLocation_prefecture !== undefined && {
+        location_prefecture: inputLocation_prefecture,
+      }),
+      ...(inputLocation_details !== undefined && {
+        location_details: inputLocation_details,
+      }),
+      ...(inputDelivery_prefecture !== undefined && {
+        delivery_prefecture: inputDelivery_prefecture,
+      }),
+      ...(inputDelivery_details !== undefined && {
+        delivery_details: inputDelivery_details,
+      }),
+      ...(inputDescription !== undefined && { description: inputDescription }),
+      ...(inputStatus !== undefined && { status: inputStatus }),
+    })
 
-    if (inputLocation_details !== undefined) {
-      request.location_details = inputLocation_details
-    }
-
-    if (inputDelivery_prefecture !== undefined) {
-      request.delivery_prefecture = inputDelivery_prefecture
-    }
-
-    if (inputDelivery_details !== undefined) {
-      request.delivery_details = inputDelivery_details
-    }
-
-    if (inputDescription !== undefined) {
-      request.description = inputDescription
-    }
-
-    if (inputStatus !== undefined) {
-      request.status = inputStatus
-    }
     const updateRequest = await this.requestService.update({
       request,
     })
+
     return res.json({ request: requestSerializer(updateRequest) })
   }
 }

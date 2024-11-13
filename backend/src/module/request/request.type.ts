@@ -37,10 +37,10 @@ export type CreateReq = {
 }
 
 export type CreateRes = {
-  request: unknown
+  request: ReturnType<typeof requestSerializer>
 }
 
-export const UpdateRequestParamEndpoint = root
+export const UpdateEndpoint = root
 
 export type UpdateReq = {
   requestId: number
