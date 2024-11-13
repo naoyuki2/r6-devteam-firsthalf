@@ -19,6 +19,7 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
   const [inputMessage, setInputMessage] = useState<string>('')
   const [messageList, setMessageList] = useState<string[]>([])
   const [otherUser, setOtherUser] = useState<User>()
+  const token = getItem('token')
 
   useEffect(() => {
     joinRoom(roomId)
@@ -28,48 +29,48 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
   }, [roomId])
 
   useEffect(() => {
-    const token = getItem('token')
-    const fetchRoomData = async () => {
-      try {
-        const res = await apiClient.get(`/rooms/${roomId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-
-        const otherUser = res.data.room.room_users.find(
-          (roomUser: roomUser) => roomUser.user.id !== currentUser?.id
-        )?.user
-        setOtherUser(otherUser)
-      } catch (error) {
-        console.error('Failed to fetch room data:', error)
-      }
-    }
-
-    if (token) fetchRoomData()
-  }, [roomId, currentUser?.id])
-
-  useEffect(() => {
     receiveMessage((message) => {
       setMessageList((prevChat) => [...prevChat, message])
     })
   }, [])
 
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() && currentUser?.id) {
-      const args = {
-        body: inputMessage,
-        roomId: roomId,
-        userId: currentUser.id,
-      }
-      try {
-        const res = await apiClient.post('/messages', args)
-        sendMessage({ message: res.data.message })
-      } catch (error) {
-        console.error('Failed to send message:', error)
-      }
-      setInputMessage('') // メッセージ送信後、入力フィールドをクリア
+  useEffect(() => {
+    if (token) fetchRoomData()
+  }, [roomId, currentUser?.id])
+
+  const fetchRoomData = async () => {
+    try {
+      const res = await apiClient.get(`/rooms/${roomId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      const otherUser = res.data.room.room_users.find(
+        (roomUser: roomUser) => roomUser.user.id !== currentUser?.id
+      )?.user
+
+      setOtherUser(otherUser)
+    } catch (error) {
+      console.error('Failed to fetch room data:', error)
     }
+  }
+
+  const handleSendMessage = async () => {
+    if (inputMessage.trim() === '' || currentUser?.id === undefined) return
+
+    const args = {
+      body: inputMessage,
+      roomId: roomId,
+      userId: currentUser.id,
+    }
+    try {
+      const res = await apiClient.post('/messages', args)
+      sendMessage({ message: res.data.message })
+    } catch (error) {
+      console.error('Failed to send message:', error)
+    }
+    setInputMessage('') // メッセージ送信後、入力フィールドをクリア
   }
 
   return (
