@@ -24,6 +24,10 @@ type createProps = {
   items: Item[]
 }
 
+type updateProps = {
+  request: Request
+}
+
 export class RequestService {
   async get({ userId }: GetProps): Promise<Request[]> {
     const qb = requestRepository
@@ -68,6 +72,11 @@ export class RequestService {
       user: { id: userId },
       items,
     })
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async update({ request }: updateProps): Promise<Request> {
     await validateEntity(request)
     return await requestRepository.save(request)
   }
