@@ -1,19 +1,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { apiClient } from '@/lib/axios'
 import { useCurrentUser } from '@/lib/jotai/userState'
-import {
-  disconnectSocket,
-  receiveMessage,
-  sendMessage,
-  joinRoom,
-} from '@/utils/socket'
+import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
 import TopNav from '@/component/TopNav'
 import { Container, Spinner } from 'react-bootstrap'
 import { MessageList } from '@/types'
-import { useRoom } from './utils'
 import { AppAlert } from '@/component/AppAlert'
+import { useRoom } from './hooks'
+import { handleSendMessage } from './utils'
 
 const ChatClient = ({ roomId }: { roomId: string }) => {
   const { room, error, isLoading } = useRoom(roomId)
@@ -41,29 +36,6 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
       ])
     })
   }, [])
-
-  const handleSendMessage = async () => {
-    if (inputMessage.trim() === '' || currentUser?.id === undefined) return
-
-    const createMessageArgs = {
-      body: inputMessage,
-      roomId: roomId,
-      userId: currentUser.id,
-    }
-    try {
-      const res = await apiClient.post('/messages', createMessageArgs)
-      sendMessage({
-        message: {
-          ...res.data.message,
-          roomId: roomId,
-          userId: currentUser.id,
-        },
-      })
-    } catch (error) {
-      console.error('Failed to send message:', error)
-    }
-    setInputMessage('')
-  }
 
   if (isLoading) return <Spinner animation="border" />
   if (error)
@@ -96,7 +68,14 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
             disabled={!currentUser}
           />
           <button
-            onClick={handleSendMessage}
+            onClick={() =>
+              handleSendMessage({
+                inputMessage,
+                roomId: room.id,
+                currentUser,
+                setInputMessage,
+              })
+            }
             style={{ padding: '10px', marginLeft: '10px' }}
             disabled={!currentUser}
           >
