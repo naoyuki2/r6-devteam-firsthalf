@@ -48,6 +48,17 @@ export type CreateRequestArgs = {
   items: Item[]
 }
 
+export type CreateRequestForm = {
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  status: 'pending'
+  items: { id: number; name: string; quantity: number; price: string }[]
+}
+
 export type Item = {
   name: string
   quantity: number
