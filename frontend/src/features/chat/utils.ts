@@ -6,14 +6,12 @@ type HandleSendMessageProps = {
   inputMessage: string
   roomId: string
   currentUser: User | null
-  setInputMessage: (input: string) => void
 }
 
 export const handleSendMessage = async ({
   inputMessage,
   roomId,
   currentUser,
-  setInputMessage,
 }: HandleSendMessageProps) => {
   if (inputMessage.trim() === '' || currentUser?.id === undefined) return
 
@@ -34,5 +32,4 @@ export const handleSendMessage = async ({
   } catch (error) {
     console.error('Failed to send message:', error)
   }
-  setInputMessage('')
 }

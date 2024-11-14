@@ -68,14 +68,14 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
             disabled={!currentUser}
           />
           <button
-            onClick={() =>
-              handleSendMessage({
+            onClick={async () => {
+              await handleSendMessage({
                 inputMessage,
                 roomId: room.id,
                 currentUser,
-                setInputMessage,
               })
-            }
+              setInputMessage('')
+            }}
             style={{ padding: '10px', marginLeft: '10px' }}
             disabled={!currentUser}
           >
