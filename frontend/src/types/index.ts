@@ -67,7 +67,6 @@ export type Item = {
 
 export type CreateRoomArgs = {
   requestId: number
-  requestUserId: number
 }
 
 export type Room = {

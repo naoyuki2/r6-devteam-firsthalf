@@ -93,7 +93,7 @@ export class RoomController {
           userId: currentUserId,
         })
         if (room_user !== null) {
-          return res.json({ Room: room })
+          return res.json({ room })
         }
       }
     }
@@ -107,7 +107,7 @@ export class RoomController {
     })
 
     return res.json({
-      Room: newRoom,
+      room: newRoom,
     })
   }
 }

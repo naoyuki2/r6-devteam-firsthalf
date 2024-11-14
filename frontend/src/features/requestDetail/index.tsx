@@ -26,7 +26,6 @@ export default function RequestDetailClient({
 
     const args: CreateRoomArgs = {
       requestId: request.id,
-      requestUserId: request.user.id,
     }
 
     const res = await apiClient.post('/rooms', args, {
@@ -35,7 +34,7 @@ export default function RequestDetailClient({
       },
     })
     if (res == null) return
-    const roomId = res.data.createRoomId
+    const roomId = res.data.room.id
     router.push(`/chat/${roomId}`)
   }
 
