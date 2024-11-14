@@ -7,6 +7,7 @@ export const CreateEndpoint = root
 export type CreateReq = {
   body: string
   roomId: string
+  userId: number
 }
 
 export type CreateRes = {

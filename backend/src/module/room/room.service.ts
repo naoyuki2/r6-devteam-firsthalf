@@ -25,7 +25,7 @@ export class RoomService {
   async getByRoomId({ id }: GetByRoomIdProps): Promise<Room> {
     return await roomRepository.findOneOrFail({
       where: { id: id },
-      relations: ['room_users', 'room_users.user', 'messages'],
+      relations: ['room_users', 'room_users.user'],
     })
   }
 
