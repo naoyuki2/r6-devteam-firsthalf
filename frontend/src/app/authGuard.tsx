@@ -1,12 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
-import { ReactNode } from 'react'
 import { User, useSetCurrentUser } from '@/lib/jotai/userState'
 import { fetchWithToken } from '@/lib/axios'
 import useSWR from 'swr'
 import { AppAlert } from '@/component/AppAlert'
+import { Spinner } from 'react-bootstrap'
 
 const isAuthorizedPath = (pathname: string): boolean => {
   const basePaths = ['/request', '/profile', '/chat', '/room']
@@ -38,12 +38,15 @@ export default function AuthGuard({ children }: { children: ReactNode }) {
   const { user, error, isLoading } = useUser()
 
   useEffect(() => {
-    if (isLoading) return
-    if (!isAuthorizedPath(pathname)) return
-    if (!user) router.push('/login')
-    setCurrentUser(user)
-  }, [user, setCurrentUser, isLoading, pathname, router])
+    if (user) setCurrentUser(user)
+  }, [user, setCurrentUser])
 
+  if (isLoading) return <Spinner animation="border" />
+  if (!isAuthorizedPath(pathname)) return <>{children}</>
+  if (!user) {
+    router.push('/login')
+    return null
+  }
   if (error)
     return (
       <AppAlert variant="danger" message="ユーザー情報の取得に失敗しました" />
