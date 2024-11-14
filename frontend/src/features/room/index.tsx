@@ -1,7 +1,7 @@
 'use client'
 
 import { PersonCircle } from 'react-bootstrap-icons'
-import { Card, Row, Col, Spinner, Alert } from 'react-bootstrap'
+import { Card, Row, Col, Spinner } from 'react-bootstrap'
 import { AppLink } from '@/component/AppLink'
 import { AppAlert } from '@/component/AppAlert'
 import { useRoomList } from './utils'
