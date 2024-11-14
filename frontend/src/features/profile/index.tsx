@@ -1,29 +1,20 @@
 'use client'
 
 import { RequestCard } from '@/component/RequestCard'
-import { apiClient } from '@/lib/axios'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { Request } from '@/types'
-import { useEffect, useState } from 'react'
-import { Col, Row } from 'react-bootstrap'
+import { Col, Row, Spinner } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
+import { useRequest } from './hooks'
+import { AppAlert } from '@/component/AppAlert'
 
 export const ProfileClient = () => {
   const currentUser = useCurrentUser()
-  const [requestList, setRequestList] = useState<Request[]>([])
+  const { requestList, error, isLoading } = useRequest(currentUser?.id)
 
-  const fetchRequestByUserId = async () => {
-    try {
-      const res = await apiClient.get(`/requests?userId=${currentUser?.id}`)
-      setRequestList(res.data.requests)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  useEffect(() => {
-    if (currentUser?.id) fetchRequestByUserId()
-  }, [currentUser?.id])
+  if (isLoading) return <Spinner animation="border" />
+  if (error)
+    return <AppAlert variant="danger" message="依頼の取得に失敗しました" />
 
   return (
     <>
@@ -37,18 +28,23 @@ export const ProfileClient = () => {
           <div className="d-flex"></div>
         </Col>
       </Row>
-      {requestList.map((request: Request) => (
-        <RequestCard
-          key={request.id}
-          id={request.id}
-          userId={request.user.id}
-          username={request.user.name}
-          created_at={request.created_at}
-          title={request.title}
-          delivery_prefecture={request.delivery_prefecture}
-          location_prefecture={request.location_prefecture}
-        />
-      ))}
+
+      {!requestList || requestList.length === 0 ? (
+        <p>依頼がありません</p>
+      ) : (
+        requestList.map((request: Request) => (
+          <RequestCard
+            key={request.id}
+            id={request.id}
+            userId={request.user.id}
+            username={request.user.name}
+            created_at={request.created_at}
+            title={request.title}
+            delivery_prefecture={request.delivery_prefecture}
+            location_prefecture={request.location_prefecture}
+          />
+        ))
+      )}
     </>
   )
 }
