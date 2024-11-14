@@ -19,4 +19,14 @@ export class MessageService {
 
     return messageRepository.save(createMessage)
   }
+
+  async getById(roomId: string): Promise<Message[]> {
+    const qb = messageRepository
+      .createQueryBuilder('message')
+      .leftJoinAndSelect('message.room', 'room')
+      .leftJoinAndSelect('message.user', 'user')
+      .where('room.id = :roomId', { roomId })
+      .orderBy('message.created_at', 'ASC')
+    return await qb.getMany()
+  }
 }

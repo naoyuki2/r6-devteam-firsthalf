@@ -1,9 +1,17 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post } from 'routing-controllers'
+import { Controller, Req, Res, Post, Get } from 'routing-controllers'
 import { MessageService } from './message.service'
-import { CreateEndpoint, CreateReq, CreateRes } from './message.type'
+import {
+  CreateEndpoint,
+  CreateReq,
+  CreateRes,
+  GetByIdEndpoint,
+  GetByIdParam,
+  GetByIdRes,
+} from './message.type'
 import { messageSerializer } from './message.serializer'
+import { Message } from './message.entity'
 
 @Controller()
 export class MessageController {
@@ -20,5 +28,18 @@ export class MessageController {
       userId,
     })
     return res.json({ message: messageSerializer(message) })
+  }
+  @Get(GetByIdEndpoint)
+  async getById(
+    @Req() req: Request<GetByIdParam, '', '', ''>,
+    @Res() res: Response<GetByIdRes>,
+  ) {
+    const { id } = req.params
+    const getMessages = await this.messageService.getById(id)
+    return res.json({
+      messages: getMessages.map((message: Message) =>
+        messageSerializer(message),
+      ),
+    })
   }
 }
