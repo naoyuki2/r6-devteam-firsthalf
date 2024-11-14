@@ -35,7 +35,7 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
         },
       ])
     })
-  }, [])
+  }, [currentUser?.id])
 
   if (isLoading) return <Spinner animation="border" />
   if (error)
