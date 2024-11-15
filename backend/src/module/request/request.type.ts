@@ -6,7 +6,10 @@ const root = '/requests'
 export const GetEndpoint = root
 
 export type GetQuery = {
-  userId: number | undefined
+  filter: {
+    status: 'pending' | 'progress' | 'completed'
+    userId: number | undefined
+  }
 }
 
 export type GetRes = {

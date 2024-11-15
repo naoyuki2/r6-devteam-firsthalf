@@ -6,7 +6,7 @@ import { Container } from 'react-bootstrap'
 
 export default async function Home() {
   try {
-    const res = await apiClient.get('/requests')
+    const res = await apiClient.get('/requests?filter[status]=pending')
     const { requests } = res.data
 
     return (

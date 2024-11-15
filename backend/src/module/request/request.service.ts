@@ -5,6 +5,7 @@ import { Item } from '../item/item.entity'
 const requestRepository = AppDataSource.getRepository(Request)
 
 type GetProps = {
+  status: 'pending' | 'progress' | 'completed'
   userId: number | undefined
 }
 
@@ -25,7 +26,7 @@ type createProps = {
 }
 
 export class RequestService {
-  async get({ userId }: GetProps): Promise<Request[]> {
+  async get({ userId, status }: GetProps): Promise<Request[]> {
     const qb = requestRepository
       .createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
@@ -34,6 +35,10 @@ export class RequestService {
 
     if (userId !== undefined) {
       qb.where('user.id = :userId', { userId })
+    }
+
+    if (status == 'pending') {
+      qb.where('status = :status', { status })
     }
 
     return await qb.getMany()

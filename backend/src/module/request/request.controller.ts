@@ -31,8 +31,8 @@ export class RequestController {
     @Req() req: Request<'', '', '', GetQuery>,
     @Res() res: Response<GetRes>,
   ) {
-    const { userId } = req.query
-    const requests = await this.requestService.get({ userId })
+    const { userId, status } = req.query.filter
+    const requests = await this.requestService.get({ userId, status })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })

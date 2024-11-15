@@ -14,7 +14,9 @@ export const ProfileClient = () => {
 
   const fetchRequestByUserId = async () => {
     try {
-      const res = await apiClient.get(`/requests?userId=${currentUser?.id}`)
+      const res = await apiClient.get(
+        `/requests?filter[userId]=${currentUser?.id}`
+      )
       setRequestList(res.data.requests)
     } catch (error) {
       console.error(error)
