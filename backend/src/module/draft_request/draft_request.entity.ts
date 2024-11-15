@@ -51,6 +51,9 @@ export class DraftRequest {
   })
   status!: status
 
+  @Column({ default: false })
+  action!: boolean
+
   @CreateDateColumn({
     update: false,
   })
