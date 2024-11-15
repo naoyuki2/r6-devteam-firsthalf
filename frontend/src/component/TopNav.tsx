@@ -15,6 +15,8 @@ export default function TopNav() {
   // request/?
   // user/?
 
+  const isChatPage = /^\/chat\/\d+$/.test(pathname)
+
   return (
     <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
       <div className="d-flex justify-content-center">
