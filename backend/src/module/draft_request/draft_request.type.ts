@@ -2,10 +2,10 @@ import { draft_requestSerializer } from './draft_request.serializer'
 
 const root = '/draft_requests'
 
-export const CreateByIdEndpoint = `${root}/:id`
+export const CreateByIdEndpoint = `${root}/:roomId`
 
 export type CreateByIdParam = {
-  requestId: number
+  roomId: string
 }
 
 export type CreateByIdRes = {

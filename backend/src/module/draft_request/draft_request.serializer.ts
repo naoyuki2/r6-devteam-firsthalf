@@ -1,9 +1,8 @@
-import { Item } from '../item/item.entity'
-import { itemSerializer } from '../item/itemSerializer'
-import { userSerializer } from '../user/user.serializer'
+import { DraftItem } from '../draft_item/draft_item.entity'
+import { draftItemSerializer } from '../draft_item/draft_item.serializer'
+import { DraftRequest } from './draft_request.entity'
 
-export const draft_requestSerializer = (request: any) => ({
-  //DraftRequestにのちのち変更
+export const draft_requestSerializer = (request: DraftRequest) => ({
   id: request.id,
   title: request.title,
   location_prefecture: request.location_prefecture,
@@ -15,7 +14,8 @@ export const draft_requestSerializer = (request: any) => ({
   completed_at: request.completed_at,
   created_at: request.created_at,
   updated_at: request.updated_at,
-  user: userSerializer(request.user),
-  items: request.items.map((item: Item) => itemSerializer(item)),
-  roomId: request.roomId,
+  draft_item: request.draft_items.map((draft_item: DraftItem) =>
+    draftItemSerializer(draft_item),
+  ),
+  roomId: request.room.id,
 })
