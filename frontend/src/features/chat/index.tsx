@@ -4,17 +4,16 @@ import { useEffect, useState } from 'react'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
 import TopNav from '@/component/TopNav'
-import { Container, Spinner } from 'react-bootstrap'
-import { MessageList } from '@/types'
-import { AppAlert } from '@/component/AppAlert'
-import { useRoom } from './hooks'
+import { Container } from 'react-bootstrap'
+import { MessageList, Room } from '@/types'
 import { handleSendMessage } from './utils'
+import { ChatMessage } from '@/component/ChatMessage'
 
-const ChatClient = ({ roomId }: { roomId: string }) => {
-  const { room, error, isLoading } = useRoom(roomId)
+const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
   const [messageList, setMessageList] = useState<MessageList[]>([])
   const [inputMessage, setInputMessage] = useState<string>('')
+  const roomId = room.id
 
   useEffect(() => {
     joinRoom({ roomId })
@@ -37,29 +36,13 @@ const ChatClient = ({ roomId }: { roomId: string }) => {
     })
   }, [currentUser?.id])
 
-  if (isLoading) return <Spinner animation="border" />
-  if (error)
-    return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
-
   return (
     <>
       <TopNav />
       <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
         <div>
           <h3>チャット相手: {room.otherUser.name ?? '不明'}</h3>
-          <div
-            style={{
-              height: '300px',
-              overflowY: 'scroll',
-              border: '1px solid #ddd',
-              padding: '10px',
-              marginBottom: '10px',
-            }}
-          >
-            {messageList.map((msg) => (
-              <p key={msg.id}>{msg.body}</p>
-            ))}
-          </div>
+          <ChatMessage messageList={messageList} roomId={room.id} setMessageList={setMessageList}/>
           <input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
