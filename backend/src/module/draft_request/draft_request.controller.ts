@@ -1,10 +1,13 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post } from 'routing-controllers'
+import { Controller, Req, Res, Post, Delete } from 'routing-controllers'
 import {
   CreateByIdEndpoint,
   CreateByIdParam,
   CreateByIdRes,
+  RejectEndpoint,
+  RejectParam,
+  RejectRes,
 } from './draft_request.type'
 import { DraftRequestService } from './draft_request.service'
 import { draft_requestSerializer } from './draft_request.serializer'
@@ -26,6 +29,19 @@ export class DraftRequestController {
 
     return res.json({
       draft_request: draft_requestSerializer(draft_request),
+    })
+  }
+
+  @Delete(RejectEndpoint)
+  async reject(
+    @Req() req: Request<RejectParam, '', '', ''>,
+    @Res() res: Response<RejectRes>,
+  ) {
+    const draftRequestId = req.params.requestId
+    const rejectFlag = await this.draft_requestService.reject(draftRequestId)
+
+    return res.json({
+      success: rejectFlag,
     })
   }
 }
