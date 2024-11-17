@@ -4,6 +4,7 @@ const root = '/draft_requests'
 
 export const CreateByIdEndpoint = `${root}/:roomId`
 export const RejectEndpoint = `${root}/:requestId/reject`
+export const ApproveEndpoint = `${root}/:roomId/approve`
 
 export type CreateByIdParam = {
   roomId: string
@@ -19,4 +20,12 @@ export type RejectParam = {
 
 export type RejectRes = {
   success: boolean
+}
+
+export type ApproveParam = {
+  roomId: string
+}
+
+export type ApproveRes = {
+  draft_request: ReturnType<typeof draft_requestSerializer>
 }

@@ -22,6 +22,25 @@ export class DraftRequestService {
     await draftRequestRepository.remove(draftRequest)
     return true
   }
+
+  async delete(roomId: string): Promise<DraftRequest> {
+    const qb = draftRequestRepository
+      .createQueryBuilder('draft_request')
+      .leftJoinAndSelect('draft_request.draft_items', 'draft_items')
+      .where('draft_request.roomId = :roomId', { roomId })
+      .orderBy('draft_request.created_at', 'ASC')
+    const draftRequests = await qb.getMany()
+
+    console.log('draftRequests:', draftRequests)
+    const requestsToDelete = draftRequests.slice(0, -1)
+    await draftRequestRepository.remove(requestsToDelete)
+    const latestRequest = draftRequests[draftRequests.length - 1]
+    console.log('latestRequest:', latestRequest)
+    latestRequest.action = true
+    await draftRequestRepository.save(latestRequest)
+
+    return latestRequest
+  }
 }
 
 function RequestToDraftRequest(room: Room): DraftRequest {

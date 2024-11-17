@@ -2,6 +2,9 @@ import 'reflect-metadata'
 import { Request, Response } from 'express'
 import { Controller, Req, Res, Post, Delete } from 'routing-controllers'
 import {
+  ApproveEndpoint,
+  ApproveParam,
+  ApproveRes,
   CreateByIdEndpoint,
   CreateByIdParam,
   CreateByIdRes,
@@ -42,6 +45,19 @@ export class DraftRequestController {
 
     return res.json({
       success: rejectFlag,
+    })
+  }
+
+  @Delete(ApproveEndpoint)
+  async delete(
+    @Req() req: Request<ApproveParam, '', '', ''>,
+    @Res() res: Response<ApproveRes>,
+  ) {
+    const draftRequestId = req.params.roomId
+    const draftRequest = await this.draft_requestService.delete(draftRequestId)
+
+    return res.json({
+      draft_request: draft_requestSerializer(draftRequest),
     })
   }
 }
