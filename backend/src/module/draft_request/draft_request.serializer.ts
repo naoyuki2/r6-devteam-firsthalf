@@ -17,5 +17,6 @@ export const draft_requestSerializer = (request: DraftRequest) => ({
   draft_item: request.draft_items.map((draft_item: DraftItem) =>
     draftItemSerializer(draft_item),
   ),
+  action: request.action,
   roomId: request.room.id,
 })
