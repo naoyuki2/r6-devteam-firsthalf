@@ -50,6 +50,8 @@ export class DraftRequestService {
     const newDraftRequest = draftRequestRepository.create({
       ...existingDraftRequest,
       id: undefined,
+      created_at: undefined,
+      updated_at: undefined,
     })
 
     return await draftRequestRepository.save(newDraftRequest)

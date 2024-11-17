@@ -47,8 +47,6 @@ export class DraftRequestController {
       items,
     )
 
-    console.log('UpdateRequest:', updateRequest)
-
     return res.json({
       draft_request: draft_requestSerializer(updateRequest),
     })
