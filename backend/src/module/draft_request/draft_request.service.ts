@@ -25,10 +25,11 @@ export class DraftRequestService {
 
   async delete(roomId: string): Promise<DraftRequest> {
     const qb = draftRequestRepository
-      .createQueryBuilder('draft_request')
-      .leftJoinAndSelect('draft_request.draft_items', 'draft_items')
-      .where('draft_request.roomId = :roomId', { roomId })
-      .orderBy('draft_request.created_at', 'ASC')
+    .createQueryBuilder('draft_request')
+    .leftJoinAndSelect('draft_request.draft_items', 'draft_items')
+    .leftJoinAndSelect('draft_request.room', 'room') 
+    .where('room.id = :roomId', { roomId }) 
+    .orderBy('draft_request.created_at', 'ASC')
     const draftRequests = await qb.getMany()
 
     console.log('draftRequests:', draftRequests)
