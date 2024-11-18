@@ -1,3 +1,4 @@
+import { DraftItem } from '../draft_item/draft_item.entity'
 import { draft_requestSerializer } from './draft_request.serializer'
 
 const root = '/draft_requests'
@@ -20,4 +21,24 @@ export type RejectParam = {
 
 export type RejectRes = {
   success: boolean
+}
+
+export const ProposeUpEndpoint = `${root}/:requestId/propose`
+
+export type ProposeUpParam = {
+  draftRequestId: number
+}
+
+export type ProposeUpRes = {
+  draft_request: ReturnType<typeof draft_requestSerializer>
+}
+
+export type ProposeUpBody = {
+  title: string | undefined
+  location_prefecture: string | undefined
+  location_details: string | undefined
+  delivery_prefecture: string | undefined
+  delivery_details: string | undefined
+  description: string | undefined
+  draft_items: DraftItem[] | undefined
 }
