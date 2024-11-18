@@ -23,6 +23,16 @@ export type RejectRes = {
   success: boolean
 }
 
+export const ApproveEndpoint = `${root}/:roomId/approve`
+
+export type ApproveParam = {
+  roomId: string
+}
+
+export type ApproveRes = {
+  draft_request: ReturnType<typeof draft_requestSerializer>
+}
+
 export const ProposeUpEndpoint = `${root}/:requestId/propose`
 
 export type ProposeUpParam = {
