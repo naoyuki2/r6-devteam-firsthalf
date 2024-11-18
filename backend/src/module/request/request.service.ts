@@ -4,7 +4,6 @@ import { Request } from './request.entity'
 import { Item } from '../item/item.entity'
 import { DraftRequest } from '../draft_request/draft_request.entity'
 import { DraftItem } from '../draft_item/draft_item.entity'
-import { CustomError } from '../../error/CustomError'
 const requestRepository = AppDataSource.getRepository(Request)
 const itemRepository = AppDataSource.getRepository(Item)
 type GetProps = {

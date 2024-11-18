@@ -25,11 +25,10 @@ export class DraftRequestService {
     return true
   }
 
-  async delete(roomId: string): Promise<Boolean> {
+  async delete(roomId: string): Promise<void> {
     await draftRequestRepository.delete({
       room: { id: roomId },
     })
-    return true
   }
 
   async approve(roomId: string): Promise<DraftRequest> {
