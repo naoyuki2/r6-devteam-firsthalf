@@ -35,6 +35,7 @@ export default function RequestDetailClient({
     })
     if (res == null) return
     const roomId = res.data.room.id
+    await apiClient.post(`/draft_requests/${roomId}`)
     router.push(`/chat/${roomId}`)
   }
 
