@@ -33,8 +33,7 @@ export class DraftRequestService {
       .where('room.id = :roomId', { roomId })
       .orderBy('draft_request.created_at', 'DESC')
       .take(1)
-    const draftRequest = await qb.getOneOrFail()
-    return draftRequest
+    return await qb.getOneOrFail()
   }
 
   async proposeUpdate({
