@@ -3,7 +3,9 @@ import { AppLink } from './AppLink'
 
 type RequestCardProps = {
   id: number
+  userId: number
   username: string
+  created_at: Date
   title: string
   delivery_prefecture: string
   location_prefecture: string
@@ -11,19 +13,24 @@ type RequestCardProps = {
 
 export const RequestCard = ({
   id,
+  userId,
   username,
+  created_at,
   title,
   delivery_prefecture,
   location_prefecture,
 }: RequestCardProps) => {
   return (
-    <AppLink href={`request/${id}`}>
-      <div className="border-bottom border-opacity-25">
-        <div className="d-flex">
+    <div className="border-bottom border-opacity-25">
+      <div className="d-flex justify-content-between align-items-center">
+        <AppLink href={`/user/${userId}`}>
           <PersonCircle size={36} className="me-3 mt-2" />
           <span className="fw-bold my-2 mt-2">{username}</span>
           <span className="ms-auto my-2 mt-2"></span>
-        </div>
+        </AppLink>
+        <span>{new Date(created_at).toLocaleString()}</span>
+      </div>
+      <AppLink href={`/request/${id}`}>
         <p className="fw-bold text-truncate mb-2">{title}</p>
 
         <div className="d-flex justify-content-evenly">
@@ -42,7 +49,7 @@ export const RequestCard = ({
             <span className="ms-3">{location_prefecture}</span>
           </div>
         </div>
-      </div>
-    </AppLink>
+      </AppLink>
+    </div>
   )
 }

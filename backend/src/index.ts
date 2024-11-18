@@ -9,6 +9,13 @@ import { setCurrentUser } from './middleware/setCurrentUser'
 import cors from 'cors'
 import { RoomController } from './module/room/room.controller'
 
+import { MessageController } from './module/message/message.controller'
+import { Server } from 'socket.io'
+import { createServer } from 'http'
+import { ClientToServerEvents, ServerToClientEvents } from './lib/socket.type'
+import { CustomError } from './error/CustomError'
+import { DraftRequestController } from './module/draft_request/draft_request.controller'
+
 const PORT = 3030
 
 AppDataSource.initialize()
@@ -32,12 +39,41 @@ useExpressServer(app, {
     UserController,
     AuthController,
     RoomController,
+    MessageController,
+    DraftRequestController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
   authorizationChecker: (action: Action) => {
-    return action.request.currentUserId
+    const currentUserId = action.request.currentUserId
+    if (currentUserId == null) throw new CustomError('Unauthorized user', 401)
+    return currentUserId
   },
 })
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))
+export const httpServer = createServer(app)
+
+const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+  },
+})
+
+io.on('connection', (socket) => {
+  // ルームに参加する処理
+  socket.on('joinRoom', ({ roomId }) => {
+    socket.join(roomId)
+  })
+
+  // クライアントからのメッセージ受信処理
+  socket.on('sendMessage', ({ message }) => {
+    io.to(message.roomId).emit('receiveMessage', { message })
+  })
+
+  // 切断イベント受信
+  socket.on('disconnect', () => {})
+})
+
+// サーバーの起動
+httpServer.listen(PORT, () => console.log(`Server listening on port ${PORT}!`))

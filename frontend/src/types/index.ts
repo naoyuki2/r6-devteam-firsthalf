@@ -1,3 +1,5 @@
+import { User } from '@/lib/jotai/userState'
+
 export type Request = {
   id: number
   title: string
@@ -46,6 +48,17 @@ export type CreateRequestArgs = {
   items: Item[]
 }
 
+export type CreateRequestForm = {
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  status: 'pending'
+  items: { id: number; name: string; quantity: number; price: string }[]
+}
+
 export type Item = {
   name: string
   quantity: number
@@ -54,5 +67,29 @@ export type Item = {
 
 export type CreateRoomArgs = {
   requestId: number
-  requestUserId: number
+}
+
+export type Room = {
+  id: string
+  created_at: string
+  isClosed: boolean
+  otherUser: User
+}
+
+export type roomUser = {
+  user: User
+}
+
+export type MessageList = {
+  id: number
+  body: string
+  isMine: boolean
+  created_at: Date
+}
+
+export type Message = {
+  id: number
+  body: string
+  created_at: Date
+  userId: number
 }
