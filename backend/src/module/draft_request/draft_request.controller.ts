@@ -54,7 +54,7 @@ export class DraftRequestController {
     @Res() res: Response<ApproveRes>,
   ) {
     const draftRequestId = req.params.roomId
-    const draftRequest = await this.draft_requestService.delete(draftRequestId)
+    const draftRequest = await this.draft_requestService.approve(draftRequestId)
 
     return res.json({
       draft_request: draft_requestSerializer(draftRequest),
