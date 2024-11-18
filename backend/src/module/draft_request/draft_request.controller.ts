@@ -37,11 +37,10 @@ export class DraftRequestController {
     @Req() req: Request<RejectParam, '', '', ''>,
     @Res() res: Response<RejectRes>,
   ) {
-    const draftRequestId = req.params.requestId
-    const rejectFlag = await this.draft_requestService.reject(draftRequestId)
-
     return res.json({
-      success: rejectFlag,
+      success: await this.draft_requestService.reject(
+        req.params.draftRequestId,
+      ),
     })
   }
 }

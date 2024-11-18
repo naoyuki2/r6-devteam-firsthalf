@@ -13,13 +13,7 @@ export class DraftRequestService {
   }
 
   async reject(draftRequestId: number): Promise<boolean> {
-    const draftRequest = await draftRequestRepository.findOne({
-      where: { id: draftRequestId },
-    })
-    if (!draftRequest) {
-      return false
-    }
-    await draftRequestRepository.remove(draftRequest)
+    await draftRequestRepository.delete(draftRequestId)
     return true
   }
 }
