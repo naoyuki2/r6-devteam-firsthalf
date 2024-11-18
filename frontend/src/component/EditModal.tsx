@@ -55,13 +55,7 @@ const EditModal: React.FC<EditModalProps> = ({ show, onClose }) => {
           <br />
           以下のリンクに商品情報がありますので、参考にしてください。
           <br />
-          <a
-            href="https://example.com"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            https://example.com
-          </a>
+          https://example.com
         </div>
       </Modal.Body>
       <Modal.Footer>
