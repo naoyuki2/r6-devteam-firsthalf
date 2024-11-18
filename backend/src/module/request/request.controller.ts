@@ -7,6 +7,7 @@ import {
   Res,
   Post,
   Authorized,
+  Patch,
 } from 'routing-controllers'
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
@@ -20,7 +21,11 @@ import {
   GetEndpoint,
   GetQuery,
   GetRes,
+  UpdateEndpoint,
+  UpdateReq,
+  UpdateRes,
 } from './request.type'
+import { CustomError } from '../../error/CustomError'
 
 @Controller()
 export class RequestController {
@@ -79,5 +84,52 @@ export class RequestController {
       items,
     })
     return res.json({ request: requestSerializer(getRequest) })
+  }
+
+  @Patch(UpdateEndpoint)
+  @Authorized()
+  async update(
+    @Req() req: Request<'', '', UpdateReq, ''>,
+    @Res() res: Response<UpdateRes>,
+  ) {
+    const {
+      requestId,
+      inputTitle,
+      inputLocation_prefecture,
+      inputLocation_details,
+      inputDelivery_prefecture,
+      inputDelivery_details,
+      inputDescription,
+      inputStatus,
+    } = req.body
+    const request = await this.requestService.getById({ id: requestId })
+    console.log('requestUserId', request.user.id)
+    console.log('currentUserId', req.currentUserId)
+    if (request.user.id !== req.currentUserId!)
+      throw new CustomError('Please verify the ID and try again.', 401)
+
+    Object.assign(request, {
+      ...(inputTitle !== undefined && { title: inputTitle }),
+      ...(inputLocation_prefecture !== undefined && {
+        location_prefecture: inputLocation_prefecture,
+      }),
+      ...(inputLocation_details !== undefined && {
+        location_details: inputLocation_details,
+      }),
+      ...(inputDelivery_prefecture !== undefined && {
+        delivery_prefecture: inputDelivery_prefecture,
+      }),
+      ...(inputDelivery_details !== undefined && {
+        delivery_details: inputDelivery_details,
+      }),
+      ...(inputDescription !== undefined && { description: inputDescription }),
+      ...(inputStatus !== undefined && { status: inputStatus }),
+    })
+
+    const updateRequest = await this.requestService.update({
+      request,
+    })
+
+    return res.json({ request: requestSerializer(updateRequest) })
   }
 }

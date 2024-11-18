@@ -37,5 +37,22 @@ export type CreateReq = {
 }
 
 export type CreateRes = {
-  request: unknown
+  request: ReturnType<typeof requestSerializer>
+}
+
+export const UpdateEndpoint = root
+
+export type UpdateReq = {
+  requestId: number
+  inputTitle: string | undefined
+  inputLocation_prefecture: string | undefined
+  inputLocation_details: string | undefined
+  inputDelivery_prefecture: string | undefined
+  inputDelivery_details: string | undefined
+  inputDescription: string | undefined
+  inputStatus: 'pending' | 'progress' | 'completed' | undefined
+}
+
+export type UpdateRes = {
+  request: ReturnType<typeof requestSerializer>
 }
