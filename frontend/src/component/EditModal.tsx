@@ -3,6 +3,7 @@
 import React from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
+import { AppButton } from './AppButton'
 
 type EditModalProps = {
   show: boolean
@@ -59,13 +60,18 @@ const EditModal: React.FC<EditModalProps> = ({ show, onClose }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={onClose}>
-          閉じる
-        </Button>
-
-        <Button variant="primary" onClick={onClose}>
-          依頼を編集する
-        </Button>
+        <AppButton
+          variant="secondary"
+          className="text-white"
+          onClick={onClose}
+          text="閉じる"
+        />
+        <AppButton
+          variant="info"
+          className="text-white"
+          onClick={onClose}
+          text="編集する"
+        />
       </Modal.Footer>
     </Modal>
   )
