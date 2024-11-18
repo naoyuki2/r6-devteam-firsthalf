@@ -18,7 +18,7 @@ export const LoginRecoModal = ({ isShow, closeModal }: LoginRecoModalProps) => {
     router.push('/login')
   }
   return (
-    <Modal show={isShow} onHide={closeModal}>
+    <Modal show={isShow} onHide={closeModal} centered>
       <Modal.Header closeButton>
         <Modal.Title></Modal.Title>
       </Modal.Header>
