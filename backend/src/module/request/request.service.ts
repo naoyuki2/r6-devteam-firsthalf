@@ -2,8 +2,11 @@ import { AppDataSource } from '../../app-data-source'
 import { validateEntity } from '../../utils/validate'
 import { Request } from './request.entity'
 import { Item } from '../item/item.entity'
+import { DraftRequest } from '../draft_request/draft_request.entity'
+import { DraftItem } from '../draft_item/draft_item.entity'
+import { CustomError } from '../../error/CustomError'
 const requestRepository = AppDataSource.getRepository(Request)
-
+const itemRepository = AppDataSource.getRepository(Item)
 type GetProps = {
   userId: number | undefined
 }
@@ -22,6 +25,11 @@ type createProps = {
   status: 'pending' | 'progress' | 'completed'
   userId: number
   items: Item[]
+}
+
+type approveProps = {
+  request: Request
+  draftRequest: DraftRequest
 }
 
 export class RequestService {
@@ -70,5 +78,47 @@ export class RequestService {
     })
     await validateEntity(request)
     return await requestRepository.save(request)
+  }
+  async conclusion({ request, draftRequest }: approveProps): Promise<Request> {
+    try {
+      request.title = draftRequest.title
+      request.location_prefecture = draftRequest.location_prefecture
+      request.location_details = draftRequest.location_details
+      request.delivery_prefecture = draftRequest.delivery_prefecture
+      request.delivery_details = draftRequest.delivery_details
+      request.description = draftRequest.description
+      request.status = 'progress'
+      request.items = await this._draftItemToItems(
+        request,
+        draftRequest.draft_items,
+      )
+
+      return await requestRepository.save(request)
+    } catch (error) {
+      throw new CustomError('Failed to conclude the request', 500)
+    }
+  }
+
+  async _draftItemToItems(
+    request: Request,
+    draftItems: DraftItem[],
+  ): Promise<Item[]> {
+    const itemIds = request.items.map((item) => item.id)
+
+    if (itemIds.length > 0) {
+      await itemRepository.delete(itemIds)
+    }
+    const newItems = draftItems.map((draftItem) => {
+      return itemRepository.create({
+        name: draftItem.name,
+        quantity: draftItem.quantity,
+        price: draftItem.price,
+      })
+    })
+
+    for (const item of newItems) {
+      await validateEntity(item)
+    }
+    return newItems
   }
 }
