@@ -18,25 +18,29 @@ export default function RequestDetailClient({
   const isChatShow = request.user.id == currentUser?.id
 
   const requestCreateRoom = async () => {
-    const token = getItem('token') // getItem 関数で token を取得
-    if (!token) {
-      router.push('/login')
-      return
-    }
+    try {
+      const token = getItem('token')
+      if (!token) {
+        router.push('/login')
+        return
+      }
 
-    const args: CreateRoomArgs = {
-      requestId: request.id,
-    }
+      const args: CreateRoomArgs = {
+        requestId: request.id,
+      }
 
-    const res = await apiClient.post('/rooms', args, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    if (res == null) return
-    const roomId = res.data.room.id
-    await apiClient.post(`/draft_requests/${roomId}`)
-    router.push(`/chat/${roomId}`)
+      const res = await apiClient.post('/rooms', args, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      if (res == null) return
+      const roomId = res.data.room.id
+      await apiClient.post(`/draft_requests/${roomId}`)
+      router.push(`/chat/${roomId}`)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   if (isChatShow) return <></>
