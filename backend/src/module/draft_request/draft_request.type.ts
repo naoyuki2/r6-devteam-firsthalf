@@ -42,3 +42,13 @@ export type ProposeUpBody = {
   description: string | undefined
   draft_items: DraftItem[] | undefined
 }
+
+export const GetByIdEndpoint = `${root}/:roomId`
+
+export type GetByIdParam = {
+  roomId: string
+}
+
+export type GetByIdRes = {
+  draft_request: ReturnType<typeof draft_requestSerializer>
+}

@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post, Delete } from 'routing-controllers'
+import { Controller, Req, Res, Post, Delete, Get } from 'routing-controllers'
 import {
   CreateByIdEndpoint,
   CreateByIdParam,
@@ -12,6 +12,9 @@ import {
   ProposeUpEndpoint,
   ProposeUpParam,
   ProposeUpRes,
+  GetByIdEndpoint,
+  GetByIdParam,
+  GetByIdRes,
 } from './draft_request.type'
 import { DraftRequestService } from './draft_request.service'
 import { draft_requestSerializer } from './draft_request.serializer'
@@ -61,6 +64,19 @@ export class DraftRequestController {
 
     return res.json({
       draft_request: draft_requestSerializer(updateRequest),
+    })
+  }
+
+  @Get(GetByIdEndpoint)
+  async get(
+    @Req() req: Request<GetByIdParam, '', '', ''>,
+    @Res() res: Response<GetByIdRes>,
+  ) {
+    const roomId = req.params.roomId
+    const draftRequest = await this.draft_requestService.get(roomId)
+
+    return res.json({
+      draft_request: draft_requestSerializer(draftRequest),
     })
   }
 }
