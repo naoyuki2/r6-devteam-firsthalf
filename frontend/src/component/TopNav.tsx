@@ -1,21 +1,31 @@
 'use client'
 
+import React, { useState } from 'react'
 import Image from 'next/image'
 import logo from '../../public/logo.png'
 import { AppLink } from './AppLink'
-import { ArrowLeft } from 'react-bootstrap-icons'
+import { ArrowLeft, PencilSquare } from 'react-bootstrap-icons'
 import { usePathname, useRouter } from 'next/navigation'
+import EditModal from './EditModal'
 
 export default function TopNav() {
   const pathname = usePathname()
   const router = useRouter()
+
+  // 特定のページで「戻る」ボタンを表示
   const isArrowShow =
     /^\/request\/\d+$/.test(pathname) || /^\/user\/\d+$/.test(pathname)
-  //下記のルートの際に戻るボタンを配置する
-  // request/?
-  // user/?
 
-  const isChatPage = /^\/chat\/\d+$/.test(pathname)
+  // チャット画面の場合に編集アイコンを表示
+  const isChatPage = /^\/chat\/[a-zA-Z0-9-]+$/.test(pathname) // 必要に応じて調整
+
+  console.log('Current Pathname:', pathname)
+  console.log('Is Chat Page:', isChatPage)
+
+  const [showModal, setShowModal] = useState(false)
+
+  const handleOpenModal = () => setShowModal(true)
+  const handleCloseModal = () => setShowModal(false)
 
   return (
     <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
@@ -25,16 +35,31 @@ export default function TopNav() {
             onClick={() => router.back()}
             style={{
               position: 'absolute',
-              fontSize: '32px',
+              fontSize: '36px',
               left: 16,
               top: 16,
             }}
           />
         )}
         <AppLink href="/">
-          <Image src={logo} alt="logo" width={48} height={48} priority={true} />
+          <Image src={logo} alt="logo" width={48} height={48} priority />
         </AppLink>
+        {isChatPage && (
+          <PencilSquare
+            onClick={handleOpenModal}
+            style={{
+              position: 'absolute',
+              fontSize: '24px',
+              right: 16,
+              top: 16,
+              cursor: 'pointer',
+            }}
+          />
+        )}
       </div>
+
+      {/* モーダル */}
+      <EditModal show={showModal} onClose={handleCloseModal} />
     </nav>
   )
 }
