@@ -38,14 +38,12 @@ export class DraftRequestController {
     @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,
     @Res() res: Response<ProposeUpRes>,
   ) {
-    const requestId = req.params.requestId
+    const draftRequestId = req.params.draftRequestId
     const body = req.body
-    const items = req.body.draft_items
-    const updateRequest = await this.draft_requestService.proposeUpdate(
-      requestId,
+    const updateRequest = await this.draft_requestService.proposeUpdate({
+      draftRequestId,
       body,
-      items,
-    )
+    })
 
     return res.json({
       draft_request: draft_requestSerializer(updateRequest),

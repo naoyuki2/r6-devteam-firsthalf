@@ -4,7 +4,7 @@ import { draft_requestSerializer } from './draft_request.serializer'
 const root = '/draft_requests'
 
 export const CreateByIdEndpoint = `${root}/:roomId`
-export const ProposeUpEndpoint = `${root}/proposal/:requestId`
+export const ProposeUpEndpoint = `${root}/:requestId/propose`
 
 export type CreateByIdParam = {
   roomId: string
@@ -15,7 +15,7 @@ export type CreateByIdRes = {
 }
 
 export type ProposeUpParam = {
-  requestId: number
+  draftRequestId: number
 }
 
 export type ProposeUpRes = {
