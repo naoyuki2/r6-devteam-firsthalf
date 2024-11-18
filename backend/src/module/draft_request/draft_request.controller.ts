@@ -11,6 +11,10 @@ import {
   RejectEndpoint,
   RejectParam,
   RejectRes,
+  ProposeUpBody,
+  ProposeUpEndpoint,
+  ProposeUpParam,
+  ProposeUpRes,
 } from './draft_request.type'
 import { DraftRequestService } from './draft_request.service'
 import { draft_requestSerializer } from './draft_request.serializer'
@@ -58,6 +62,23 @@ export class DraftRequestController {
 
     return res.json({
       draft_request: draft_requestSerializer(draftRequest),
+    })
+  }
+
+  @Post(ProposeUpEndpoint)
+  async proposeUpdate(
+    @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,
+    @Res() res: Response<ProposeUpRes>,
+  ) {
+    const draftRequestId = req.params.draftRequestId
+    const body = req.body
+    const updateRequest = await this.draft_requestService.proposeUpdate({
+      draftRequestId,
+      body,
+    })
+
+    return res.json({
+      draft_request: draft_requestSerializer(updateRequest),
     })
   }
 }
