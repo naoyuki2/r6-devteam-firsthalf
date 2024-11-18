@@ -80,23 +80,19 @@ export class RequestService {
     return await requestRepository.save(request)
   }
   async conclusion({ request, draftRequest }: approveProps): Promise<Request> {
-    try {
-      request.title = draftRequest.title
-      request.location_prefecture = draftRequest.location_prefecture
-      request.location_details = draftRequest.location_details
-      request.delivery_prefecture = draftRequest.delivery_prefecture
-      request.delivery_details = draftRequest.delivery_details
-      request.description = draftRequest.description
-      request.status = 'progress'
-      request.items = await this._draftItemToItems(
-        request,
-        draftRequest.draft_items,
-      )
+    request.title = draftRequest.title
+    request.location_prefecture = draftRequest.location_prefecture
+    request.location_details = draftRequest.location_details
+    request.delivery_prefecture = draftRequest.delivery_prefecture
+    request.delivery_details = draftRequest.delivery_details
+    request.description = draftRequest.description
+    request.status = 'progress'
+    request.items = await this._draftItemToItems(
+      request,
+      draftRequest.draft_items,
+    )
 
-      return await requestRepository.save(request)
-    } catch (error) {
-      throw new CustomError('Failed to conclude the request', 500)
-    }
+    return await requestRepository.save(request)
   }
 
   async _draftItemToItems(
