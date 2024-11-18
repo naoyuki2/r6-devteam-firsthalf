@@ -39,32 +39,6 @@ export class DraftRequestController {
     })
   }
 
-  @Delete(RejectEndpoint)
-  async reject(
-    @Req() req: Request<RejectParam, '', '', ''>,
-    @Res() res: Response<RejectRes>,
-  ) {
-    const draftRequestId = req.params.requestId
-    const rejectFlag = await this.draft_requestService.reject(draftRequestId)
-
-    return res.json({
-      success: rejectFlag,
-    })
-  }
-
-  @Delete(ApproveEndpoint)
-  async delete(
-    @Req() req: Request<ApproveParam, '', '', ''>,
-    @Res() res: Response<ApproveRes>,
-  ) {
-    const draftRequestId = req.params.roomId
-    const draftRequest = await this.draft_requestService.approve(draftRequestId)
-
-    return res.json({
-      draft_request: draft_requestSerializer(draftRequest),
-    })
-  }
-
   @Post(ProposeUpEndpoint)
   async proposeUpdate(
     @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,
@@ -79,6 +53,32 @@ export class DraftRequestController {
 
     return res.json({
       draft_request: draft_requestSerializer(updateRequest),
+    })
+  }
+
+  @Delete(RejectEndpoint)
+  async reject(
+    @Req() req: Request<RejectParam, '', '', ''>,
+    @Res() res: Response<RejectRes>,
+  ) {
+    const draftRequestId = req.params.draftRequestId
+    const rejectFlag = await this.draft_requestService.reject(draftRequestId)
+
+    return res.json({
+      success: rejectFlag,
+    })
+  }
+
+  @Delete(ApproveEndpoint)
+  async approve(
+    @Req() req: Request<ApproveParam, '', '', ''>,
+    @Res() res: Response<ApproveRes>,
+  ) {
+    const draftRequestId = req.params.roomId
+    const draftRequest = await this.draft_requestService.approve(draftRequestId)
+
+    return res.json({
+      draft_request: draft_requestSerializer(draftRequest),
     })
   }
 }

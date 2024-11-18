@@ -13,10 +13,10 @@ export type CreateByIdRes = {
   draft_request: ReturnType<typeof draft_requestSerializer>
 }
 
-export const RejectEndpoint = `${root}/:requestId/reject`
+export const RejectEndpoint = `${root}/:draftRequestId/reject`
 
 export type RejectParam = {
-  requestId: number
+  draftRequestId: number
 }
 
 export type RejectRes = {
