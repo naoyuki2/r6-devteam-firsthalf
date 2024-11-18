@@ -56,60 +56,70 @@ export const ChatMessage = ({
     )
 
   return (
-    <div
-      style={{
-        height: '300px',
-        overflowY: 'scroll',
-        border: '1px solid #ddd',
-        padding: '10px',
-        marginBottom: '10px',
-      }}
-    >
-      {messageList.map((msg) => (
-        <div
-          key={msg.id}
-          style={{
-            display: 'flex',
-            justifyContent: msg.isMine ? 'flex-end' : 'flex-start',
-            marginBottom: '20px',
-          }}
-        >
-          {!msg.isMine && (
-            <Image
-              src="/path/to/other-icon.png" // アイコンのパス
-              roundedCircle
-              width={40}
-              height={40}
-              style={{ marginRight: '10px', alignSelf: 'center' }}
-            />
-          )}
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {/* メッセージリスト */}
+      <div
+        style={{
+          flex: 1,
+          overflowY: 'scroll',
+          border: '1px solid #ddd',
+          padding: '10px',
+        }}
+      >
+        {messageList.map((msg) => (
           <div
+            key={msg.id}
             style={{
-              backgroundColor: msg.isMine ? '#4CAF50' : '#ddd',
-              color: msg.isMine ? 'white' : 'black',
-              padding: '10px 15px',
-              borderRadius: '10px',
-              maxWidth: '70%',
-              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: msg.isMine ? 'flex-end' : 'flex-start',
+              marginBottom: '20px',
             }}
           >
-            {msg.body}
-            {/* メッセージの右下に日時を表示 */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: msg.isMine ? 'flex-end' : 'flex-start',
+              }}
+            >
+              {!msg.isMine && (
+                <Image
+                  src="/path/to/other-icon.png"
+                  roundedCircle
+                  width={40}
+                  height={40}
+                  style={{ marginRight: '10px', alignSelf: 'center' }}
+                />
+              )}
+              <div
+                style={{
+                  backgroundColor: msg.isMine ? '#4CAF50' : '#ddd',
+                  color: msg.isMine ? 'white' : 'black',
+                  padding: '10px 15px',
+                  borderRadius: '10px',
+                  maxWidth: '70%',
+                  display: 'inline-block', // メッセージを横に表示する
+                  whiteSpace: 'nowrap', // 改行せずに横に表示
+                  overflow: 'hidden', // メッセージが長くなりすぎる場合に切り捨て
+                  textOverflow: 'ellipsis', // 長いメッセージの末尾に...を追加
+                }}
+              >
+                {msg.body}
+              </div>
+            </div>
             <div
               style={{
                 fontSize: '0.8em',
                 color: '#777',
-                position: 'absolute',
-                right: msg.isMine ? '10px' : 'auto',
-                left: msg.isMine ? 'auto' : '10px',
-                bottom: '-15px',
+                marginTop: '5px',
+                textAlign: msg.isMine ? 'right' : 'left',
               }}
             >
               {formatDate(msg.created_at)}
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   )
 }
