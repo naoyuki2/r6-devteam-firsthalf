@@ -20,6 +20,11 @@ export class DraftRequestService {
     return await draftRequestRepository.save(draftRequest)
   }
 
+  async reject(draftRequestId: number): Promise<boolean> {
+    await draftRequestRepository.delete(draftRequestId)
+    return true
+  }
+
   async proposeUpdate({
     draftRequestId,
     body,

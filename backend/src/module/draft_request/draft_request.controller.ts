@@ -1,10 +1,13 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post } from 'routing-controllers'
+import { Controller, Req, Res, Post, Delete } from 'routing-controllers'
 import {
   CreateByIdEndpoint,
   CreateByIdParam,
   CreateByIdRes,
+  RejectEndpoint,
+  RejectParam,
+  RejectRes,
   ProposeUpBody,
   ProposeUpEndpoint,
   ProposeUpParam,
@@ -33,6 +36,17 @@ export class DraftRequestController {
     })
   }
 
+  @Delete(RejectEndpoint)
+  async reject(
+    @Req() req: Request<RejectParam, '', '', ''>,
+    @Res() res: Response<RejectRes>,
+  ) {
+    return res.json({
+      success: await this.draft_requestService.reject(
+        req.params.draftRequestId,
+      ),
+    })
+  }
   @Post(ProposeUpEndpoint)
   async proposeUpdate(
     @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,

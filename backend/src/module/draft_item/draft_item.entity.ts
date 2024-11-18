@@ -18,6 +18,8 @@ export class DraftItem {
   @Column('int')
   price!: number
 
-  @ManyToOne(() => DraftRequest, (draft_request) => draft_request.draft_items)
+  @ManyToOne(() => DraftRequest, (draft_request) => draft_request.draft_items, {
+    onDelete: 'CASCADE',
+  })
   draft_request!: DraftRequest
 }
