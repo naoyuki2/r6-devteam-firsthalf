@@ -4,13 +4,20 @@ import React from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import { AppButton } from './AppButton'
+import { DraftRequest } from '@/types'
 
 type EditModalProps = {
   show: boolean
   onClose: () => void
+  draftRequest: DraftRequest
 }
 
-const EditModal: React.FC<EditModalProps> = ({ show, onClose }) => {
+const EditModal: React.FC<EditModalProps> = ({
+  show,
+  onClose,
+  draftRequest,
+}) => {
+  console.log('EditModal', draftRequest)
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>

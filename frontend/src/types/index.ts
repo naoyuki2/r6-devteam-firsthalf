@@ -93,3 +93,25 @@ export type Message = {
   created_at: Date
   userId: number
 }
+
+export type DraftRequest = {
+  id: number
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  status: string
+  completed_at: Date
+  created_at: Date
+  updated_at: Date
+  draft_item: {
+    id: number
+    name: string
+    quantity: number
+    price: number
+  }[]
+  action: boolean
+  roomId: string
+}

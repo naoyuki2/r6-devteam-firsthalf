@@ -8,12 +8,14 @@ import { Container } from 'react-bootstrap'
 import { MessageList, Room } from '@/types'
 import { handleSendMessage } from './utils'
 import { ChatMessage } from '@/component/ChatMessage'
+import { useDraftRequest } from './hooks'
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
   const [messageList, setMessageList] = useState<MessageList[]>([])
   const [inputMessage, setInputMessage] = useState<string>('')
   const roomId = room.id
+  const { draftRequest, error, isLoading } = useDraftRequest(roomId)
 
   useEffect(() => {
     joinRoom({ roomId })
@@ -38,11 +40,15 @@ const ChatClient = ({ room }: { room: Room }) => {
 
   return (
     <>
-      <TopNav />
+      <TopNav draftRequest={draftRequest} />
       <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
         <div>
           <h3>チャット相手: {room.otherUser.name ?? '不明'}</h3>
-          <ChatMessage messageList={messageList} roomId={room.id} setMessageList={setMessageList}/>
+          <ChatMessage
+            messageList={messageList}
+            roomId={room.id}
+            setMessageList={setMessageList}
+          />
           <input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
