@@ -11,7 +11,7 @@ import { DraftRequest } from '@/types'
 
 type TopNavProps = {
   draftRequest?: DraftRequest
-  otherRole: string
+  otherRole?: string
 }
 
 export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
@@ -61,7 +61,7 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
         )}
       </div>
 
-      {draftRequest != undefined && (
+      {draftRequest != undefined && otherRole != undefined && (
         <EditModal
           show={showModal}
           onClose={handleCloseModal}
