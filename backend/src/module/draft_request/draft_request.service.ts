@@ -25,6 +25,12 @@ export class DraftRequestService {
     return true
   }
 
+  async delete(roomId: string): Promise<void> {
+    await draftRequestRepository.delete({
+      room: { id: roomId },
+    })
+  }
+
   async approve(roomId: string): Promise<DraftRequest> {
     const qb = draftRequestRepository
       .createQueryBuilder('draft_request')
