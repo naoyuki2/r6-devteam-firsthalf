@@ -18,54 +18,42 @@ const EditModal: React.FC<EditModalProps> = ({
   draftRequest,
   otherRole,
 }) => {
-  console.log('EditModal', draftRequest)
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>＊＊＊フェスに行きます</Modal.Title>
+        <Modal.Title>{draftRequest.title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           入手場所
         </p>
-        <div className="mb-3 ms-3">東京都: 東京ビックサイト</div>
+        <div className="mb-3 ms-3">
+          {draftRequest.location_prefecture}:{draftRequest.location_details}
+        </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           受け渡し場所
         </p>
-        <div className="mb-3 ms-3">福岡県: 博多駅</div>
-
-        <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          受け渡し日時
-        </p>
-        <div className="mb-3 ms-3">2024/10/2(水)</div>
+        <div className="mb-3 ms-3">
+          {draftRequest.delivery_prefecture}:{draftRequest.delivery_details}
+        </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           欲しいもの1
         </p>
-        <div className="mb-3 ms-3">
-          <p>＊＊＊のTシャツ</p>
-          <div className="d-flex justify-content-between">
-            <span>個数: 1個</span>
-            <span>金額: 1,000円</span>
+        {draftRequest.draft_item.map((item) => (
+          <div className="mb-3 ms-3" key={item.id}>
+            <p>{item.name}</p>
+            <div className="d-flex justify-content-between">
+              <span>個数:{item.quantity}</span>
+              <span>金額:{item.price}円</span>
+            </div>
           </div>
-        </div>
-
+        ))}
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           詳細情報
         </p>
-        <div className="mb-3 ms-3">
-          ＊＊＊フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。
-          <br />
-          Tシャツ（黒、Lサイズ）
-          <br />
-          <br />
-          それぞれ、フェス会場内のオフィシャルグッズショップで購入できると思います。
-          <br />
-          以下のリンクに商品情報がありますので、参考にしてください。
-          <br />
-          https://example.com
-        </div>
+        <div className="mb-3 ms-3">{draftRequest.description}</div>
       </Modal.Body>
       <Modal.Footer>
         <AppButton
