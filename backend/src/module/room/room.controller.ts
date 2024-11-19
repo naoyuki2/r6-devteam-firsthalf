@@ -36,18 +36,21 @@ export class RoomController {
     const userId = req.currentUserId!
     const rooms = []
     const roomUsers = await this.roomService.getByUserId({ userId })
-    for (let i: number = 0; i < roomUsers.length; i++) {
+    for (let i = 0; i < roomUsers.length; i++) {
       const room_user = roomUsers[i]
       const { id } = room_user.room
+
       const room = await this.roomService.getByRoomId({ id })
-      const otherUser = room.room_users.find(
+      const otherRoomUser = room.room_users.find(
         (roomUser) => roomUser.user.id !== userId,
-      )!.user
-      rooms.push({ room, otherUser })
+      )!
+      const otherUser = otherRoomUser.user
+      const role = otherRoomUser.role
+      rooms.push({ room, otherUser, role })
     }
     return res.json({
-      rooms: rooms.map(({ room, otherUser }) =>
-        roomSerializer(room, otherUser),
+      rooms: rooms.map(({ room, otherUser, role }) =>
+        roomSerializer(room, otherUser, role),
       ),
     })
   }
@@ -60,10 +63,15 @@ export class RoomController {
   ) {
     const { id } = req.params
     const room = await this.roomService.getByRoomId({ id })
-    const otherUser = room.room_users.find(
+    const otherRoomUser = room.room_users.find(
       (roomUser) => roomUser.user.id !== req.currentUserId,
-    )!.user // エラー出たらここ怪しいかも
-    return res.json({ room: roomSerializer(room, otherUser) })
+    )!
+    const otherUser = otherRoomUser.user
+    const role = otherRoomUser.role
+
+    return res.json({
+      room: roomSerializer(room, otherUser, role),
+    })
   }
 
   @Authorized()
@@ -74,7 +82,6 @@ export class RoomController {
   ) {
     const { requestId } = req.body
     const currentUserId = req.currentUserId!
-
     const request = await this.requestService.getById({ id: requestId })
 
     if (request.user.id === currentUserId)
@@ -82,10 +89,9 @@ export class RoomController {
         'Please use a different userId to create a new room.',
         400,
       )
-
     const rooms = await this.roomService.getByRequestId({ requestId })
     if (rooms && rooms.length > 0) {
-      for (let i: number = 0; i < rooms!.length; i++) {
+      for (let i = 0; i < rooms!.length; i++) {
         const room = rooms[i]
         const roomId = room.id
         const room_user = await this.roomUserService.getByRoomUser({
@@ -97,15 +103,12 @@ export class RoomController {
         }
       }
     }
-
     const newRoom = await this.roomService.create({ requestId })
-
     await this.roomUserService.create({
       requestUserId: request.user.id,
       currentUserId: req.currentUserId!,
       createRoomId: newRoom.id,
     })
-
     return res.json({
       room: newRoom,
     })
