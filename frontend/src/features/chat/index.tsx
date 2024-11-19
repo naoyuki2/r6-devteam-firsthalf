@@ -4,16 +4,19 @@ import { useEffect, useState } from 'react'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
 import TopNav from '@/component/TopNav'
-import { Container } from 'react-bootstrap'
+import { Container, Spinner } from 'react-bootstrap'
 import { MessageList, Room } from '@/types'
 import { handleSendMessage } from './utils'
 import { ChatMessage } from '@/component/ChatMessage'
+import { useDraftRequest } from './hooks'
+import { AppAlert } from '@/component/AppAlert'
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
   const [messageList, setMessageList] = useState<MessageList[]>([])
   const [inputMessage, setInputMessage] = useState<string>('')
   const roomId = room.id
+  const { draftRequest, error, isLoading } = useDraftRequest(roomId)
 
   useEffect(() => {
     joinRoom({ roomId })
@@ -47,25 +50,24 @@ const ChatClient = ({ room }: { room: Room }) => {
     }
   }
 
+  if (isLoading) return <Spinner animation="border" />
+  if (error)
+    return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
   return (
     <>
-      <TopNav />
+      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} />
+      {/* <Container className="vh-100 d-flex justify-content-center align-items-center flex-column"> */}
       <Container className="vh-100 d-flex flex-column">
-        {/* チャットメッセージ */}
         <div style={{ flex: 1, paddingBottom: '70px' }}>
-          {' '}
-          {/* 下に余白を追加 */}
           <ChatMessage
             messageList={messageList}
             roomId={room.id}
             setMessageList={setMessageList}
           />
         </div>
-
-        {/* メッセージ入力欄 */}
         <div
           style={{
-            position: 'fixed', // 画面下部に固定
+            position: 'fixed',
             bottom: 0,
             left: 0,
             width: '100%',
@@ -79,7 +81,7 @@ const ChatClient = ({ room }: { room: Room }) => {
           <input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            onKeyDown={handleKeyDown} // Enterキー送信を追加
+            onKeyDown={handleKeyDown}
             placeholder="メッセージを入力"
             style={{ flex: 1, padding: '10px', marginRight: '10px' }}
             disabled={!currentUser}

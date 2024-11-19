@@ -7,8 +7,14 @@ import { AppLink } from './AppLink'
 import { ArrowLeft, PencilSquare } from 'react-bootstrap-icons'
 import { usePathname, useRouter } from 'next/navigation'
 import EditModal from './EditModal'
+import { DraftRequest } from '@/types'
 
-export default function TopNav() {
+type TopNavProps = {
+  draftRequest?: DraftRequest
+  otherRole?: string
+}
+
+export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -18,9 +24,6 @@ export default function TopNav() {
 
   // チャット画面の場合に編集アイコンを表示
   const isChatPage = /^\/chat\/[a-zA-Z0-9-]+$/.test(pathname) // 必要に応じて調整
-
-  console.log('Current Pathname:', pathname)
-  console.log('Is Chat Page:', isChatPage)
 
   const [showModal, setShowModal] = useState(false)
 
@@ -58,8 +61,14 @@ export default function TopNav() {
         )}
       </div>
 
-      {/* モーダル */}
-      <EditModal show={showModal} onClose={handleCloseModal} />
+      {draftRequest != undefined && otherRole != undefined && (
+        <EditModal
+          show={showModal}
+          onClose={handleCloseModal}
+          draftRequest={draftRequest}
+          otherRole={otherRole}
+        />
+      )}
     </nav>
   )
 }
