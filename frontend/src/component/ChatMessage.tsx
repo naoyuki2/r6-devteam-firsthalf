@@ -37,7 +37,7 @@ export const ChatMessage = ({
     }
   }, [messages, currentUser?.id, setMessageList])
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: Date) => {
     const date = new Date(dateString)
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'short',
@@ -97,11 +97,10 @@ export const ChatMessage = ({
                   color: msg.isMine ? 'white' : 'black',
                   padding: '10px 15px',
                   borderRadius: '10px',
-                  maxWidth: '70%',
-                  display: 'inline-block', // メッセージを横に表示する
-                  whiteSpace: 'nowrap', // 改行せずに横に表示
-                  overflow: 'hidden', // メッセージが長くなりすぎる場合に切り捨て
-                  textOverflow: 'ellipsis', // 長いメッセージの末尾に...を追加
+                  maxWidth: '100%', // メッセージボックスの最大幅を100%に変更
+                  display: 'inline-block', // メッセージを横並びに
+                  whiteSpace: 'normal', // 改行を許可
+                  wordBreak: 'break-word', // 長い単語も改行を入れて表示
                 }}
               >
                 {msg.body}
