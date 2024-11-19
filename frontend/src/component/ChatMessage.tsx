@@ -84,6 +84,7 @@ export const ChatMessage = ({
             >
               {!msg.isMine && (
                 <Image
+                  alt="icon"
                   src="/path/to/other-icon.png"
                   roundedCircle
                   width={40}
