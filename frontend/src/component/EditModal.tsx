@@ -9,12 +9,14 @@ type EditModalProps = {
   show: boolean
   onClose: () => void
   draftRequest: DraftRequest
+  otherRole: string
 }
 
 const EditModal: React.FC<EditModalProps> = ({
   show,
   onClose,
   draftRequest,
+  otherRole,
 }) => {
   return (
     <Modal show={show} onHide={onClose} centered>
@@ -60,12 +62,14 @@ const EditModal: React.FC<EditModalProps> = ({
           onClick={onClose}
           text="閉じる"
         />
-        <AppButton
-          variant="info"
-          className="text-white"
-          onClick={onClose}
-          text="編集する"
-        />
+        {otherRole === 'carrier' && (
+          <AppButton
+            variant="info"
+            className="text-white"
+            onClick={onClose}
+            text="編集する"
+          />
+        )}
       </Modal.Footer>
     </Modal>
   )

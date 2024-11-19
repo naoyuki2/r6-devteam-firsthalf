@@ -11,9 +11,10 @@ import { DraftRequest } from '@/types'
 
 type TopNavProps = {
   draftRequest?: DraftRequest
+  otherRole: string
 }
 
-export default function TopNav({ draftRequest }: TopNavProps) {
+export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -65,6 +66,7 @@ export default function TopNav({ draftRequest }: TopNavProps) {
           show={showModal}
           onClose={handleCloseModal}
           draftRequest={draftRequest}
+          otherRole={otherRole}
         />
       )}
     </nav>

@@ -38,22 +38,48 @@ const ChatClient = ({ room }: { room: Room }) => {
     })
   }, [currentUser?.id])
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && inputMessage.trim()) {
+      handleSendMessage({
+        inputMessage,
+        roomId: room.id,
+        currentUser,
+      })
+      setInputMessage('')
+    }
+  }
+
   return (
     <>
-      <TopNav draftRequest={draftRequest} />
-      <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
-        <div>
-          <h3>チャット相手: {room.otherUser.name ?? '不明'}</h3>
+      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} />
+      {/* <Container className="vh-100 d-flex justify-content-center align-items-center flex-column"> */}
+      <Container className="vh-100 d-flex flex-column">
+        <div style={{ flex: 1, paddingBottom: '70px' }}>
           <ChatMessage
             messageList={messageList}
             roomId={room.id}
             setMessageList={setMessageList}
           />
+        </div>
+        <div
+          style={{
+            position: 'fixed',
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            borderTop: '1px solid #ddd',
+            backgroundColor: 'white',
+            padding: '10px',
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <input
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={handleKeyDown}
             placeholder="メッセージを入力"
-            style={{ padding: '10px', width: '80%' }}
+            style={{ flex: 1, padding: '10px', marginRight: '10px' }}
             disabled={!currentUser}
           />
           <button
@@ -65,7 +91,7 @@ const ChatClient = ({ room }: { room: Room }) => {
               })
               setInputMessage('')
             }}
-            style={{ padding: '10px', marginLeft: '10px' }}
+            style={{ padding: '10px' }}
             disabled={!currentUser}
           >
             送信

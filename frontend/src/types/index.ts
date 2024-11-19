@@ -73,7 +73,10 @@ export type Room = {
   id: string
   created_at: string
   isClosed: boolean
-  otherUser: User
+  otherUser: {
+    user: User
+    role: string
+  }
 }
 
 export type roomUser = {
