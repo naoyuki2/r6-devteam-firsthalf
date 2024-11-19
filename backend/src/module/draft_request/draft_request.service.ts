@@ -119,7 +119,7 @@ export class DraftRequestService {
     draftRequest.description = room.request.description
     draftRequest.status = room.request.status
     draftRequest.room = room
-
+    draftRequest.action = true
     draftRequest.draft_items = room.request.items.map(this._itemToDraftItem)
 
     return draftRequest
