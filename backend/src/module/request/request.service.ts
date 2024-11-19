@@ -26,7 +26,7 @@ type createProps = {
   items: Item[]
 }
 
-type approveProps = {
+type conclusionProps = {
   request: Request
   draftRequest: DraftRequest
 }
@@ -78,7 +78,11 @@ export class RequestService {
     await validateEntity(request)
     return await requestRepository.save(request)
   }
-  async conclusion({ request, draftRequest }: approveProps): Promise<Request> {
+
+  async conclusion({
+    request,
+    draftRequest,
+  }: conclusionProps): Promise<Request> {
     request.title = draftRequest.title
     request.location_prefecture = draftRequest.location_prefecture
     request.location_details = draftRequest.location_details
@@ -90,7 +94,7 @@ export class RequestService {
       request,
       draftRequest.draft_items,
     )
-
+    await validateEntity(request)
     return await requestRepository.save(request)
   }
 
@@ -100,20 +104,14 @@ export class RequestService {
   ): Promise<Item[]> {
     const itemIds = request.items.map((item) => item.id)
 
-    if (itemIds.length > 0) {
-      await itemRepository.delete(itemIds)
-    }
-    const newItems = draftItems.map((draftItem) => {
+    if (itemIds.length > 0) await itemRepository.delete(itemIds)
+
+    return draftItems.map((draftItem) => {
       return itemRepository.create({
         name: draftItem.name,
         quantity: draftItem.quantity,
         price: draftItem.price,
       })
     })
-
-    for (const item of newItems) {
-      await validateEntity(item)
-    }
-    return newItems
   }
 }
