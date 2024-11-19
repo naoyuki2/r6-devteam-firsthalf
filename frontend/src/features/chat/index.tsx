@@ -1,92 +1,72 @@
 'use client'
-import { apiClient } from '@/lib/axios'
-import { getItem } from '@/utils/localStorage'
+
 import { useEffect, useState } from 'react'
-import io, { Socket } from 'socket.io-client'
-import { useSearchParams } from 'next/navigation'
+import { useCurrentUser } from '@/lib/jotai/userState'
+import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
+import TopNav from '@/component/TopNav'
+import { Container } from 'react-bootstrap'
+import { MessageList, Room } from '@/types'
+import { handleSendMessage } from './utils'
+import { ChatMessage } from '@/component/ChatMessage'
 
-let socket: Socket | undefined
-
-const ChatClient = () => {
-  const [message, setMessage] = useState('')
-  const [chat, setChat] = useState<string[]>([])
-  const [userName, setUserName] = useState<string | null>(null)
-
-  const searchParams = useSearchParams()
-  const roomId = searchParams.get('RoomId') || ''
+const ChatClient = ({ room }: { room: Room }) => {
+  const currentUser = useCurrentUser()
+  const [messageList, setMessageList] = useState<MessageList[]>([])
+  const [inputMessage, setInputMessage] = useState<string>('')
+  const roomId = room.id
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = getItem('token')
-        const res = await apiClient.get('/users', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        setUserName(res.data.user.name)
-      } catch (error) {
-        console.error('ユーザー情報の取得に失敗しました:', error)
-      }
-    }
-
-    fetchUser()
-
-    socket = io('http://localhost:3030')
-
-    // ルームに参加
-    socket.emit('joinRoom', { roomId, userName })
-
-    // サーバーからメッセージを受け取る
-    socket.on('message', (message: string) => {
-      setChat((prevChat) => [...prevChat, message])
-    })
-
+    joinRoom({ roomId })
     return () => {
-      socket?.disconnect()
+      disconnectSocket()
     }
-  }, [roomId, userName])
+  }, [roomId])
 
-  // メッセージを送信する関数
-  const sendMessage = () => {
-    if (message.trim() && socket && userName) {
-      // メッセージを送信（自分のメッセージも追加）
-      socket.emit('sendMessage', { roomId, message, userName })
-      setChat((prevChat) => [...prevChat])
-      setMessage('') // 入力をクリア
-    }
-  }
+  useEffect(() => {
+    receiveMessage(({ message }) => {
+      setMessageList((prev) => [
+        ...prev,
+        {
+          id: message.id,
+          body: message.body,
+          isMine: message.userId === currentUser?.id,
+          created_at: message.created_at,
+        },
+      ])
+    })
+  }, [currentUser?.id])
 
   return (
-    <div>
-      <div
-        style={{
-          height: '300px',
-          overflowY: 'scroll',
-          border: '1px solid #ddd',
-          padding: '10px',
-          marginBottom: '10px',
-        }}
-      >
-        {chat.map((msg, index) => (
-          <p key={index}>{msg}</p>
-        ))}
-      </div>
-      <input
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="メッセージを入力"
-        style={{ padding: '10px', width: '80%' }}
-        disabled={!userName}
-      />
-      <button
-        onClick={sendMessage}
-        style={{ padding: '10px', marginLeft: '10px' }}
-        disabled={!userName}
-      >
-        送信
-      </button>
-    </div>
+    <>
+      <TopNav />
+      <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
+        <div>
+          <h3>チャット相手: {room.otherUser.name ?? '不明'}</h3>
+          <ChatMessage messageList={messageList} roomId={room.id} setMessageList={setMessageList}/>
+          <input
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="メッセージを入力"
+            style={{ padding: '10px', width: '80%' }}
+            disabled={!currentUser}
+          />
+          <button
+            onClick={async () => {
+              await handleSendMessage({
+                inputMessage,
+                roomId: room.id,
+                currentUser,
+              })
+              setInputMessage('')
+            }}
+            style={{ padding: '10px', marginLeft: '10px' }}
+            disabled={!currentUser}
+          >
+            送信
+          </button>
+        </div>
+      </Container>
+    </>
   )
 }
 

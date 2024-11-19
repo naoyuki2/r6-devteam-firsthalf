@@ -26,5 +26,5 @@ export type CreateReq = {
 }
 
 export type CreateRes = {
-  Room: Room
+  room: Room
 }
