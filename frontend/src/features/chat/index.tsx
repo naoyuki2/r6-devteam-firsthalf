@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
 import TopNav from '@/component/TopNav'
-import { Container } from 'react-bootstrap'
+import { Container, Spinner } from 'react-bootstrap'
 import { MessageList, Room } from '@/types'
 import { handleSendMessage } from './utils'
 import { ChatMessage } from '@/component/ChatMessage'
 import { useDraftRequest } from './hooks'
+import { AppAlert } from '@/component/AppAlert'
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
@@ -49,6 +50,9 @@ const ChatClient = ({ room }: { room: Room }) => {
     }
   }
 
+  if (isLoading) return <Spinner animation="border" />
+  if (error)
+    return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
   return (
     <>
       <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} />
