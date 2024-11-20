@@ -9,15 +9,25 @@ type EditModalProps = {
   onClose: () => void
 }
 
+type Item = {
+  id: number
+  name: string
+  quantity: number
+  price: string
+}
+
 const EditModal: React.FC<EditModalProps> = ({ show, onClose }) => {
-  // 編集モードの管理
   const [isEdit, setIsEdit] = useState(false)
 
-  // 各項目の値を管理（初期値は既存データ）
-  const [place, setPlace] = useState('東京都: 東京ビックサイト')
-  const [transfer, setTransfer] = useState('福岡県: 博多駅')
-  const [date, setDate] = useState('2024/10/2(水)')
-  const [item, setItem] = useState('＊＊＊のTシャツ')
+  // 入力内容の状態管理
+  const [title, setTitle] = useState('＊＊＊フェスに行きます')
+  const [locationPrefecture, setLocationPrefecture] = useState('東京都')
+  const [locationDetails, setLocationDetails] = useState('東京ビックサイト')
+  const [deliveryPrefecture, setDeliveryPrefecture] = useState('福岡県')
+  const [deliveryDetails, setDeliveryDetails] = useState('博多駅')
+  const [items, setItems] = useState<Item[]>([
+    { id: Date.now(), name: '＊＊＊のTシャツ', quantity: 1, price: '1,000' },
+  ])
   const [details, setDetails] = useState(
     `＊＊＊フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。
 Tシャツ（黒、Lサイズ）
@@ -32,75 +42,201 @@ https://example.com`
     setIsEdit(!isEdit)
   }
 
+  // アイテムを追加
+  const addItem = () => {
+    setItems((prev) => [
+      ...prev,
+      { id: Date.now(), name: '', quantity: 1, price: '' },
+    ])
+  }
+
+  // アイテムを削除
+  const removeItem = (id: number) => {
+    setItems((prev) => prev.filter((item) => item.id !== id))
+  }
+
+  // アイテムの変更を管理
+  const handleItemChange = (
+    id: number,
+    field: keyof Item,
+    value: string | number
+  ) => {
+    setItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, [field]: value } : item))
+    )
+  }
+
   return (
     <Modal show={show} onHide={onClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>＊＊＊フェスに行きます</Modal.Title>
+        <Modal.Title>{isEdit ? '依頼の編集' : title}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          入手場所
+          タイトル
         </p>
         <div className="mb-3 ms-3">
           {isEdit ? (
             <input
               type="text"
               className="form-control"
-              value={place}
-              onChange={(e) => setPlace(e.target.value)}
+              value={title}
+              placeholder="タイトルを入力してください"
+              onChange={(e) => setTitle(e.target.value)}
             />
           ) : (
-            place
+            title
           )}
         </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          受け渡し場所
+          入手場所（都道府県）
         </p>
         <div className="mb-3 ms-3">
           {isEdit ? (
             <input
               type="text"
               className="form-control"
-              value={transfer}
-              onChange={(e) => setTransfer(e.target.value)}
+              placeholder="都道府県"
+              value={locationPrefecture}
+              onChange={(e) => setLocationPrefecture(e.target.value)}
             />
           ) : (
-            transfer
+            locationPrefecture
           )}
         </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          受け渡し日時
+          入手場所（詳細情報）
         </p>
         <div className="mb-3 ms-3">
           {isEdit ? (
             <input
               type="text"
               className="form-control"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
+              placeholder="詳細情報"
+              value={locationDetails}
+              onChange={(e) => setLocationDetails(e.target.value)}
             />
           ) : (
-            date
+            locationDetails
           )}
         </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          欲しいもの1
+          受け渡し場所（都道府県）
         </p>
         <div className="mb-3 ms-3">
           {isEdit ? (
             <input
               type="text"
               className="form-control"
-              value={item}
-              onChange={(e) => setItem(e.target.value)}
+              placeholder="都道府県"
+              value={deliveryPrefecture}
+              onChange={(e) => setDeliveryPrefecture(e.target.value)}
             />
           ) : (
-            item
+            deliveryPrefecture
           )}
         </div>
+
+        <p className="border-start border-info border-5 ps-2 fw-bold my-2">
+          受け渡し場所（詳細情報）
+        </p>
+        <div className="mb-3 ms-3">
+          {isEdit ? (
+            <input
+              type="text"
+              className="form-control"
+              placeholder="詳細情報"
+              value={deliveryDetails}
+              onChange={(e) => setDeliveryDetails(e.target.value)}
+            />
+          ) : (
+            deliveryDetails
+          )}
+        </div>
+
+        <p className="border-start border-info border-5 ps-2 fw-bold my-2">
+          欲しいもの
+        </p>
+        {items.map((item) => (
+          <div key={item.id} className="mb-3 ms-3">
+            {isEdit ? (
+              <>
+                <input
+                  type="text"
+                  className="form-control mb-2"
+                  placeholder="アイテム名"
+                  value={item.name}
+                  onChange={(e) =>
+                    handleItemChange(item.id, 'name', e.target.value)
+                  }
+                />
+                <div className="d-flex justify-content-between mb-2">
+                  <div className="d-flex flex-column me-3">
+                    <label className="fw-bold border-start border-info ps-2">
+                      個数
+                    </label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="個数"
+                      min="1"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleItemChange(
+                          item.id,
+                          'quantity',
+                          Math.max(1, Number(e.target.value))
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="d-flex flex-column">
+                    <label className="fw-bold border-start border-info ps-2">
+                      金額
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="金額"
+                      value={item.price}
+                      onChange={(e) =>
+                        handleItemChange(item.id, 'price', e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="d-flex justify-content-end">
+                  <AppButton
+                    text="削除"
+                    onClick={() => removeItem(item.id)}
+                    className="btn-sm btn-danger"
+                  />
+                </div>
+              </>
+            ) : (
+              <>
+                <p>{item.name}</p>
+                <div className="d-flex justify-content-between">
+                  <span>個数: {item.quantity}個</span>
+                  <span>金額: {item.price}円</span>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+
+        {isEdit && (
+          <div className="d-flex justify-content-end">
+            <AppButton
+              text="追加"
+              onClick={addItem}
+              className="btn-sm btn-info mb-3"
+            />
+          </div>
+        )}
 
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           詳細情報
@@ -109,8 +245,8 @@ https://example.com`
           {isEdit ? (
             <textarea
               className="form-control"
-              value={details}
               rows={5}
+              value={details}
               onChange={(e) => setDetails(e.target.value)}
             />
           ) : (
