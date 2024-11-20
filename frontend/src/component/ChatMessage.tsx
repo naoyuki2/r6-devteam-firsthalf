@@ -56,13 +56,11 @@ export const ChatMessage = ({
     )
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      {/* メッセージリスト */}
+    <div style={{ height: '300px', display: 'flex', flexDirection: 'column' }}>
       <div
         style={{
           flex: 1,
           overflowY: 'scroll',
-          border: '1px solid #ddd',
           padding: '10px',
         }}
       >

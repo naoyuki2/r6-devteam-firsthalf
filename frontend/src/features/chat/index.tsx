@@ -10,6 +10,8 @@ import { handleSendMessage } from './utils'
 import { ChatMessage } from '@/component/ChatMessage'
 import { useDraftRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
+import { AppTextArea } from '@/component/AppTextArea'
+import { AppButton } from '@/component/AppButton'
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
@@ -55,9 +57,9 @@ const ChatClient = ({ room }: { room: Room }) => {
     return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
   return (
     <>
-      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} /> 
+      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} />
       <Container className="vh-100 d-flex flex-column">
-        <div style={{ flex: 1, paddingBottom: '70px' }}>
+        <div style={{}}>
           <ChatMessage
             messageList={messageList}
             roomId={room.id}
@@ -66,39 +68,40 @@ const ChatClient = ({ room }: { room: Room }) => {
         </div>
         <div
           style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
             width: '100%',
-            borderTop: '1px solid #ddd',
             backgroundColor: 'white',
-            padding: '10px',
             display: 'flex',
-            alignItems: 'center',
+            flexDirection: 'column',
           }}
         >
-          <input
+          <AppTextArea
+            name="chatMessage"
             value={inputMessage}
+            autoComplete="off"
             onChange={(e) => setInputMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
             placeholder="メッセージを入力"
-            style={{ flex: 1, padding: '10px', marginRight: '10px' }}
+            style={{
+              flex: 1,
+              padding: '10px',
+              marginRight: '10px',
+              width: '100%',
+            }}
+            rows={4}
             disabled={!currentUser}
           />
-          <button
+          <AppButton
+            text="送信" // ボタンのテキストをtextプロパティで指定
             onClick={async () => {
               await handleSendMessage({
                 inputMessage,
                 roomId: room.id,
                 currentUser,
               })
-              setInputMessage('')
+              setInputMessage('') // 入力内容をクリア
             }}
-            style={{ padding: '10px' }}
+            style={{ padding: '10px', width: '100%' }}
             disabled={!currentUser}
-          >
-            送信
-          </button>
+          />
         </div>
       </Container>
     </>
