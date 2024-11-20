@@ -26,7 +26,9 @@ export function RoomClient() {
                     <PersonCircle size={48} />
                   </Col>
                   <Col className="text-truncate">
-                    <p className="mb-0">{room.otherUser.name || 'Unknown'}</p>
+                    <p className="mb-0">
+                      {room.otherUser.user.name || 'Unknown'}
+                    </p>
                   </Col>
                   <Col xs="auto" className="text-muted text-end">
                     {new Date(room.created_at).toLocaleTimeString()}
