@@ -1,5 +1,7 @@
 import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
+import { formatDistanceToNow } from 'date-fns'
+import { ja } from 'date-fns/locale'
 
 type RequestCardProps = {
   id: number
@@ -28,7 +30,12 @@ export const RequestCard = ({
           <span className="fw-bold my-2 mt-2">{username}</span>
           <span className="ms-auto my-2 mt-2"></span>
         </AppLink>
-        <span>{new Date(created_at).toLocaleString()}</span>
+        <span>
+          {formatDistanceToNow(new Date(created_at), {
+            addSuffix: true,
+            locale: ja,
+          })}
+        </span>
       </div>
       <AppLink href={`/request/${id}`}>
         <p className="fw-bold text-truncate mb-2">{title}</p>
