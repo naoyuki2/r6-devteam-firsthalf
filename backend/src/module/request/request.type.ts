@@ -39,13 +39,3 @@ export type CreateReq = {
 export type CreateRes = {
   request: unknown
 }
-
-export const ConclusionEndpoint = `${root}/:roomId/conclusion`
-
-export type ConclusionParam = {
-  roomId: string
-}
-
-export type ConclusionRes = {
-  request: ReturnType<typeof requestSerializer>
-}

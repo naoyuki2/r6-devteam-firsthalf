@@ -11,9 +11,6 @@ import {
 import { RequestService } from './request.service'
 import { requestSerializer } from './request.serializer'
 import {
-  ConclusionEndpoint,
-  ConclusionParam,
-  ConclusionRes,
   CreateEndpoint,
   CreateReq,
   CreateRes,
@@ -86,26 +83,5 @@ export class RequestController {
       items,
     })
     return res.json({ request: requestSerializer(getRequest) })
-  }
-
-  @Post(ConclusionEndpoint)
-  async conclusion(
-    @Req() req: Request<ConclusionParam, '', '', ''>,
-    @Res() res: Response<ConclusionRes>,
-  ) {
-    const { roomId } = req.params
-    const draftRequest = await this.draftRequestService.get(roomId)
-    const { request } = await this.roomService.getByRoomId({ id: roomId })
-
-    const updatedRequest = await this.requestService.conclusion({
-      request: request,
-      draftRequest,
-    })
-
-    await this.draftRequestService.delete(roomId)
-
-    return res.json({
-      request: requestSerializer(updatedRequest),
-    })
   }
 }
