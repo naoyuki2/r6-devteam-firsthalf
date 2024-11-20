@@ -74,7 +74,10 @@ export type Room = {
   created_at: string
   isClosed: boolean
   otherUser: {
-    user: User
+    id: number
+    name: string
+    email: string
+    icon_image_url: string
     role: string
   }
 }
