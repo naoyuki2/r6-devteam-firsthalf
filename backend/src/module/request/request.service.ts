@@ -21,7 +21,7 @@ type createProps = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending' | 'progress' | 'completed'
+  status: 'pending' | 'agreed' | 'received' | 'completed'
   userId: number
   items: Item[]
 }
@@ -89,7 +89,7 @@ export class RequestService {
     request.delivery_prefecture = draftRequest.delivery_prefecture
     request.delivery_details = draftRequest.delivery_details
     request.description = draftRequest.description
-    request.status = 'progress'
+    request.status = 'agreed'
     request.items = await this._draftItemToItems(
       request,
       draftRequest.draft_items,

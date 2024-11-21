@@ -13,3 +13,13 @@ export type AgreedRequestRes = {
 export type AgreedUserRes = {
   isAgreed: boolean
 }
+
+export const FeedbackEndpoint = '/feedback/:roomId'
+
+export type FeedbackParam = {
+  roomId: string
+}
+
+export type FeedbackRes = {
+  success: boolean
+}

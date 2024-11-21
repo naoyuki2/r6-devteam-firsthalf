@@ -32,7 +32,7 @@ export type CreateReq = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending' | 'progress' | 'completed'
+  status: 'pending' | 'agreed' | 'received' | 'completed'
   items: Item[]
 }
 

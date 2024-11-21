@@ -25,6 +25,18 @@ export class RoomUser {
   })
   isAgreed!: boolean
 
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isFeedback!: boolean
+
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isReceive!: boolean
+
   @ManyToOne(() => Room, (room) => room.room_users)
   room!: Room
 
