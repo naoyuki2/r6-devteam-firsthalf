@@ -38,17 +38,14 @@ export class RoomUserController {
       currentRoomUser,
     })
 
-    if (isAgreed) {
-      const updatedRequest = await this.roomUserService.conclusion({
-        roomId,
-      })
-      return res.json({
-        request: requestSerializer(updatedRequest),
-      })
-    } else {
-      return res.json({
-        isAgreed: false,
-      })
-    }
+    if (!isAgreed) return res.json({ isAgreed: false })
+
+    const updatedRequest = await this.roomUserService.conclusion({
+      roomId,
+    })
+
+    return res.json({
+      request: requestSerializer(updatedRequest),
+    })
   }
 }
