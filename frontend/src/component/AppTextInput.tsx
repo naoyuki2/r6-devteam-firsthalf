@@ -4,11 +4,12 @@ type AppTextInputProps = {
   label?: string
   type: string
   name: string
-  placeholder: string
+  placeholder?: string
   autoComplete: string
   onChange: (changeData: React.ChangeEvent<HTMLInputElement>) => void
   labelClassName?: string
   controlClassName?: string
+  value?: string | number
 }
 
 export const AppTextInput = ({
