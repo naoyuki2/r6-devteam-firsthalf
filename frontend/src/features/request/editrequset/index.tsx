@@ -8,6 +8,7 @@ import { Form, Row, Col } from 'react-bootstrap'
 import { Item, CreateRequestForm } from '@/types'
 import { useRequest } from './hooks'
 import { PREFECTURES } from './constants'
+import { AppAlert } from '@/component/AppAlert'
 
 const INITIAL_FORM: CreateRequestForm = {
   title: '',
@@ -82,7 +83,7 @@ export default function EditRequestClient() {
       router.push('/home')
     } catch (e) {
       setHasError(true)
-      console.error(hasError)
+      console.error(e)
     }
   }
 
@@ -96,6 +97,11 @@ export default function EditRequestClient() {
 
   return (
     <>
+      <AppAlert
+        message="入力項目に問題があります"
+        variant="danger"
+        show={hasError}
+      />
       <Form>
         <Form.Group className="mb-3">
           <AppTextInput
