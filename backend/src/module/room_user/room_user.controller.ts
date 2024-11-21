@@ -15,6 +15,9 @@ import {
   FeedbackEndpoint,
   FeedbackParam,
   FeedbackRes,
+  ReceivedEndpoint,
+  ReceivedParam,
+  ReceivedRes,
 } from './room_user.type'
 import { RoomUserService } from './room_user.service'
 import { RoomService } from '../room/room.service'
@@ -49,6 +52,32 @@ export class RoomUserController {
     if (!isAgreed) return res.json({ isAgreed: false })
     await this.roomUserService.conclusion({ roomId })
     return res.json({ isAgreed: true })
+  }
+
+  @Authorized()
+  @Post(ReceivedEndpoint)
+  async received(
+    @Req() req: Request<ReceivedParam, '', '', ''>,
+    @Res() res: Response<ReceivedRes>,
+  ) {
+    const roomId = req.params.roomId
+    const currentUserId = req.currentUserId!
+    const room = await this.roomService.getByRoomId({ id: roomId })
+
+    const otherRoomUser = room.room_users.find(
+      (roomUser) => roomUser.user.id !== currentUserId,
+    )!
+    const currentRoomUser = room.room_users.find(
+      (roomUser) => roomUser.user.id === currentUserId,
+    )!
+
+    const isReceived = await this.roomUserService.checkReceived({
+      otherRoomUser,
+      currentRoomUser,
+    })
+
+    if (!isReceived) return res.json({ isReceived: false })
+    return res.json({ isReceived: true })
   }
 
   @Authorized()
