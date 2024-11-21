@@ -73,17 +73,14 @@ export type Room = {
   id: string
   created_at: string
   isClosed: boolean
-  otherUser: {
-    id: number
-    name: string
-    email: string
-    icon_image_url: string
-    role: string
-  }
+  otherUser: roomUser
+  currentUser: roomUser
 }
 
 export type roomUser = {
   user: User
+  role: string
+  isAgreed: boolean
 }
 
 export type MessageList = {
