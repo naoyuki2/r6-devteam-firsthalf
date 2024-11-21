@@ -29,13 +29,13 @@ export class RoomUser {
     type: 'boolean',
     default: false,
   })
-  isFeedback!: boolean
+  isReceived!: boolean
 
   @Column({
     type: 'boolean',
     default: false,
   })
-  isReceive!: boolean
+  isFeedback!: boolean
 
   @ManyToOne(() => Room, (room) => room.room_users)
   room!: Room
