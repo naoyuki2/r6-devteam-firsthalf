@@ -19,6 +19,12 @@ export class RoomUser {
   })
   role!: role
 
+  @Column({
+    type: 'boolean',
+    default: false,
+  })
+  isAgreed!: boolean
+
   @ManyToOne(() => Room, (room) => room.room_users)
   room!: Room
 

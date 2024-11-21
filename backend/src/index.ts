@@ -14,6 +14,8 @@ import { Server } from 'socket.io'
 import { createServer } from 'http'
 import { ClientToServerEvents, ServerToClientEvents } from './lib/socket.type'
 import { CustomError } from './error/CustomError'
+import { DraftRequestController } from './module/draft_request/draft_request.controller'
+import { RoomUserController } from './module/room_user/room_user.controller'
 
 const PORT = 3030
 
@@ -39,6 +41,8 @@ useExpressServer(app, {
     AuthController,
     RoomController,
     MessageController,
+    DraftRequestController,
+    RoomUserController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,

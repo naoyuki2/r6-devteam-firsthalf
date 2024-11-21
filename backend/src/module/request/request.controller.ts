@@ -21,10 +21,14 @@ import {
   GetQuery,
   GetRes,
 } from './request.type'
+import { RoomService } from '../room/room.service'
+import { DraftRequestService } from '../draft_request/draft_request.service'
 
 @Controller()
 export class RequestController {
   private requestService = new RequestService()
+  private roomService = new RoomService()
+  private draftRequestService = new DraftRequestService()
 
   @Get(GetEndpoint)
   async get(
