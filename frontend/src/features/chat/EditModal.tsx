@@ -168,7 +168,7 @@ const EditModal: React.FC<EditModalProps> = ({
           onClick={onClose}
           text="閉じる"
         />
-        {otherRole !== 'carrier' &&
+        {otherRole == 'carrier' &&
           (isEdit ? (
             <AppButton
               variant="info"
