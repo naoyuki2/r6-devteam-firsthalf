@@ -3,10 +3,13 @@
 import React, { useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import { AppButton } from './AppButton'
+import { DraftRequest } from '@/types'
 
 type EditModalProps = {
   show: boolean
   onClose: () => void
+  draftRequest: DraftRequest
+  otherRole: string
 }
 
 type Item = {
@@ -16,7 +19,12 @@ type Item = {
   price: string
 }
 
-const EditModal: React.FC<EditModalProps> = ({ show, onClose }) => {
+const EditModal: React.FC<EditModalProps> = ({
+  show,
+  onClose,
+  draftRequest,
+  otherRole,
+}) => {
   const [isEdit, setIsEdit] = useState(false)
 
   // 入力内容の状態管理
@@ -73,22 +81,31 @@ https://example.com`
       </Modal.Header>
       <Modal.Body>
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
-          タイトル
+          入手場所
         </p>
         <div className="mb-3 ms-3">
-          {isEdit ? (
-            <input
-              type="text"
-              className="form-control"
-              value={title}
-              placeholder="タイトルを入力してください"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          ) : (
-            title
-          )}
+          {draftRequest.location_prefecture}:{draftRequest.location_details}
         </div>
 
+        <p className="border-start border-info border-5 ps-2 fw-bold my-2">
+          受け渡し場所
+        </p>
+        <div className="mb-3 ms-3">
+          {draftRequest.delivery_prefecture}:{draftRequest.delivery_details}
+        </div>
+
+        <p className="border-start border-info border-5 ps-2 fw-bold my-2">
+          欲しいもの1
+        </p>
+        {draftRequest.draft_item.map((item) => (
+          <div className="mb-3 ms-3" key={item.id}>
+            <p>{item.name}</p>
+            <div className="d-flex justify-content-between">
+              <span>個数:{item.quantity}</span>
+              <span>金額:{item.price}円</span>
+            </div>
+          </div>
+        ))}
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           入手場所（都道府県）
         </p>
@@ -253,6 +270,7 @@ https://example.com`
             details
           )}
         </div>
+        <div className="mb-3 ms-3">{draftRequest.description}</div>
       </Modal.Body>
       <Modal.Footer>
         <AppButton
@@ -261,21 +279,6 @@ https://example.com`
           onClick={onClose}
           text="閉じる"
         />
-        {isEdit ? (
-          <AppButton
-            variant="success"
-            className="text-white"
-            onClick={handleEditToggle}
-            text="保存する"
-          />
-        ) : (
-          <AppButton
-            variant="info"
-            className="text-white"
-            onClick={handleEditToggle}
-            text="編集する"
-          />
-        )}
       </Modal.Footer>
     </Modal>
   )

@@ -41,16 +41,17 @@ export class RoomController {
       const { id } = room_user.room
 
       const room = await this.roomService.getByRoomId({ id })
-      const otherRoomUser = room.room_users.find(
+      const otherUser = room.room_users.find(
         (roomUser) => roomUser.user.id !== userId,
       )!
-      const otherUser = otherRoomUser.user
-      const role = otherRoomUser.role
-      rooms.push({ room, otherUser, role })
+      const currentUser = room.room_users.find(
+        (roomUser) => roomUser.user.id === userId,
+      )!
+      rooms.push({ room, otherUser, currentUser })
     }
     return res.json({
-      rooms: rooms.map(({ room, otherUser, role }) =>
-        roomSerializer(room, otherUser, role),
+      rooms: rooms.map(({ room, otherUser, currentUser }) =>
+        roomSerializer(room, otherUser, currentUser),
       ),
     })
   }
@@ -63,14 +64,15 @@ export class RoomController {
   ) {
     const { id } = req.params
     const room = await this.roomService.getByRoomId({ id })
-    const otherRoomUser = room.room_users.find(
+    const otherUser = room.room_users.find(
       (roomUser) => roomUser.user.id !== req.currentUserId,
     )!
-    const otherUser = otherRoomUser.user
-    const role = otherRoomUser.role
+    const currentUser = room.room_users.find(
+      (roomUser) => roomUser.user.id === req.currentUserId,
+    )!
 
     return res.json({
-      room: roomSerializer(room, otherUser, role),
+      room: roomSerializer(room, otherUser, currentUser),
     })
   }
 
