@@ -1,6 +1,7 @@
 import { Form } from 'react-bootstrap'
 
 type AppTextInputProps = {
+  value?: string | number
   label?: string
   type: string
   name: string

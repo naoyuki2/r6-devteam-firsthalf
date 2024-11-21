@@ -85,7 +85,7 @@ export class DraftRequestService {
     if (body.description !== undefined)
       draftRequest.description = body.description
 
-    if (body.draft_items !== undefined) {
+    if (body.draft_items != undefined && body.draft_items.length > 0) {
       draftRequest.draft_items = body.draft_items.map((item) => {
         const draftItem = new DraftItem()
         draftItem.name = item.name
@@ -101,6 +101,7 @@ export class DraftRequestService {
         ...item,
         id: undefined,
       })),
+      action: false,
       created_at: undefined,
       updated_at: undefined,
     })

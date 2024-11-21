@@ -55,7 +55,11 @@ const ChatClient = ({ room }: { room: Room }) => {
     return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
   return (
     <>
-      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} /> 
+      <TopNav
+        draftRequest={draftRequest}
+        otherRole={room.otherUser.role}
+        currentUser={currentUser}
+      />
       <Container className="vh-100 d-flex flex-column">
         <div style={{ flex: 1, paddingBottom: '70px' }}>
           <ChatMessage

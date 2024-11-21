@@ -6,15 +6,21 @@ import logo from '../../public/logo.png'
 import { AppLink } from './AppLink'
 import { ArrowLeft, PencilSquare } from 'react-bootstrap-icons'
 import { usePathname, useRouter } from 'next/navigation'
-import EditModal from './EditModal'
 import { DraftRequest } from '@/types'
+import EditModal from '@/features/chat/EditModal'
+import { User } from '@/lib/jotai/userState'
 
 type TopNavProps = {
   draftRequest?: DraftRequest
   otherRole?: string
+  currentUser?: User | null
 }
 
-export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
+export default function TopNav({
+  draftRequest,
+  otherRole,
+  currentUser,
+}: TopNavProps) {
   const pathname = usePathname()
   const router = useRouter()
 
@@ -61,14 +67,17 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
         )}
       </div>
 
-      {draftRequest != undefined && otherRole != undefined && (
-        <EditModal
-          show={showModal}
-          onClose={handleCloseModal}
-          draftRequest={draftRequest}
-          otherRole={otherRole}
-        />
-      )}
+      {draftRequest != undefined &&
+        otherRole != undefined &&
+        currentUser != undefined && (
+          <EditModal
+            show={showModal}
+            onClose={handleCloseModal}
+            draftRequest={draftRequest}
+            otherRole={otherRole}
+            currentUser={currentUser}
+          />
+        )}
     </nav>
   )
 }

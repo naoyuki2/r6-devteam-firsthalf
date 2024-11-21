@@ -33,3 +33,7 @@ export const handleSendMessage = async ({
     console.error('Failed to send message:', error)
   }
 }
+
+/**
+ * ⬇︎EditModalで使用するメソッド⬇︎
+ */

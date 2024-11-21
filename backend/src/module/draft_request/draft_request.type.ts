@@ -33,7 +33,7 @@ export type ApproveRes = {
   draft_request: ReturnType<typeof draft_requestSerializer>
 }
 
-export const ProposeUpEndpoint = `${root}/:requestId/propose`
+export const ProposeUpEndpoint = `${root}/:draftRequestId/propose`
 
 export type ProposeUpParam = {
   draftRequestId: number
