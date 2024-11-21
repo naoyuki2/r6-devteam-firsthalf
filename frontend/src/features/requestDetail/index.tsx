@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { apiClient } from '@/lib/axios'
 import { CreateRoomArgs, Request } from '@/types'
 import { useCurrentUser } from '@/lib/jotai/userState'
-import { getItem } from '@/utils/localStorage' // getItem を追加
+import { getItem } from '@/utils/localStorage'
 
 type RequestDetailClientProps = {
   request: Request
@@ -38,14 +38,32 @@ export default function RequestDetailClient({
     router.push(`/chat/${roomId}`)
   }
 
-  if (isChatShow) return <></>
+  const navigateToEdit = () => {
+    router.push(`/request/${request.id}/edit`)
+  }
 
   // ログイン状態確認
   const isLoggedIn = !!getItem('token')
 
   return (
-    <button className="btn btn-info" type="button" onClick={requestCreateRoom}>
-      {isLoggedIn ? 'チャットする' : 'チャットするためにログインしよう'}
-    </button>
+    <div>
+      {/* チャットボタン */}
+      {!isChatShow && (
+        <button
+          className="btn btn-info"
+          type="button"
+          onClick={requestCreateRoom}
+        >
+          {isLoggedIn ? 'チャットする' : 'チャットするためにログインしよう'}
+        </button>
+      )}
+
+      {/* 依頼修正ボタン（投稿者の場合のみ表示） */}
+      {isChatShow && (
+        <button className="btn btn-info" type="button" onClick={navigateToEdit}>
+          依頼を修正
+        </button>
+      )}
+    </div>
   )
 }
