@@ -13,7 +13,7 @@ import { User } from '../user/user.entity'
 import { Item } from '../item/item.entity'
 import { Room } from '../room/room.entity'
 
-export type status = 'pending' | 'progress' | 'completed'
+export type status = 'pending' | 'agreed' |'received'| 'completed'
 @Entity()
 export class Request {
   @PrimaryGeneratedColumn()

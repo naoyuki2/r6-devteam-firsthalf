@@ -1,15 +1,23 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post, Authorized } from 'routing-controllers'
+import {
+  Controller,
+  Req,
+  Res,
+  Post,
+  Authorized,
+  Patch,
+} from 'routing-controllers'
 import {
   AgreedEndpoint,
   AgreedParam,
-  AgreedRequestRes,
   AgreedUserRes,
+  FeedbackEndpoint,
+  FeedbackParam,
+  FeedbackRes,
 } from './room_user.type'
 import { RoomUserService } from './room_user.service'
 import { RoomService } from '../room/room.service'
-import { requestSerializer } from '../request/request.serializer'
 
 @Controller()
 export class RoomUserController {
@@ -20,7 +28,7 @@ export class RoomUserController {
   @Post(AgreedEndpoint)
   async agreed(
     @Req() req: Request<AgreedParam, '', '', ''>,
-    @Res() res: Response<AgreedRequestRes | AgreedUserRes>,
+    @Res() res: Response<AgreedUserRes>,
   ) {
     const roomId = req.params.roomId
     const currentUserId = req.currentUserId!
@@ -39,13 +47,32 @@ export class RoomUserController {
     })
 
     if (!isAgreed) return res.json({ isAgreed: false })
+    await this.roomUserService.conclusion({ roomId })
+    return res.json({ isAgreed: true })
+  }
 
-    const updatedRequest = await this.roomUserService.conclusion({
-      roomId,
+  @Authorized()
+  @Patch(FeedbackEndpoint)
+  async feedback(
+    @Req() req: Request<FeedbackParam, '', '', ''>,
+    @Res() res: Response<FeedbackRes>,
+  ) {
+    const roomId = req.params.roomId
+    const currentUserId = req.currentUserId!
+    const room = await this.roomService.getByRoomId({ id: roomId })
+
+    const otherRoomUser = room.room_users.find(
+      (roomUser) => roomUser.user.id !== currentUserId,
+    )!
+    const currentRoomUser = room.room_users.find(
+      (roomUser) => roomUser.user.id === currentUserId,
+    )!
+    const isFeedback = await this.roomUserService.checkFeedback({
+      currentRoomUser,
+      otherRoomUser,
     })
 
-    return res.json({
-      request: requestSerializer(updatedRequest),
-    })
+    if (!isFeedback) return res.json({ success: false })
+    return res.json({ success: true })
   }
 }

@@ -91,4 +91,17 @@ export class RoomUserService {
 
     return updatedRequest
   }
+
+  async checkFeedback({
+    currentRoomUser,
+    otherRoomUser,
+  }: AgreedProps): Promise<boolean> {
+    if (!currentRoomUser.isFeedback) {
+      currentRoomUser.isFeedback = true
+      await roomUserRepository.save(currentRoomUser)
+    }
+    if (currentRoomUser.isFeedback && otherRoomUser.isFeedback) return true
+
+    return false
+  }
 }

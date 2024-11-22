@@ -12,7 +12,7 @@ import {
 import { Room } from '../room/room.entity'
 import { DraftItem } from '../draft_item/draft_item.entity'
 
-export type status = 'pending' | 'progress' | 'completed'
+export type status = 'pending' | 'agreed' |'received'| 'completed'
 @Entity()
 export class DraftRequest {
   @PrimaryGeneratedColumn()
