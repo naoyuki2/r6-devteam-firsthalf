@@ -23,6 +23,11 @@ type AgreedProps = {
   otherRoomUser: RoomUser
 }
 
+type ReceivedProps = {
+  currentRoomUser: RoomUser
+  otherRoomUser: RoomUser
+}
+
 export class RoomUserService {
   private requestService = new RequestService()
   private roomService = new RoomService()
@@ -74,6 +79,19 @@ export class RoomUserService {
       await roomUserRepository.save(currentRoomUser)
     }
     if (currentRoomUser.isAgreed && otherRoomUser.isAgreed) return true
+
+    return false
+  }
+
+  async checkReceived({
+    currentRoomUser,
+    otherRoomUser,
+  }: ReceivedProps): Promise<boolean> {
+    if (!currentRoomUser.isReceived) {
+      currentRoomUser.isReceived = true
+      await roomUserRepository.save(currentRoomUser)
+    }
+    if (currentRoomUser.isReceived && otherRoomUser.isReceived) return true
 
     return false
   }
