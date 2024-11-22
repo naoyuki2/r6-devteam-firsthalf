@@ -12,7 +12,7 @@ export default async function ProfilePage({
 }) {
   const resUser = await apiClient.get(`/users/${params.id}`)
   const { user } = resUser.data
-  const resReq = await apiClient.get(`/requests?userId=${user.id}`)
+  const resReq = await apiClient.get(`/requests?filter[userId]=${user.id}`)
   const { requests } = resReq.data
   return (
     <>
