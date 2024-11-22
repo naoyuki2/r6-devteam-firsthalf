@@ -9,6 +9,7 @@ export type GetQuery = {
   filter: {
     status: 'pending' | 'progress' | 'completed'
     userId: number | undefined
+    prefecture: string | undefined
   }
 }
 
