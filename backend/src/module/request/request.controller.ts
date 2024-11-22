@@ -21,22 +21,22 @@ import {
   GetQuery,
   GetRes,
 } from './request.type'
-import { RoomService } from '../room/room.service'
-import { DraftRequestService } from '../draft_request/draft_request.service'
 
 @Controller()
 export class RequestController {
   private requestService = new RequestService()
-  private roomService = new RoomService()
-  private draftRequestService = new DraftRequestService()
 
   @Get(GetEndpoint)
   async get(
     @Req() req: Request<'', '', '', GetQuery>,
     @Res() res: Response<GetRes>,
   ) {
-    const { userId, status } = req.query.filter
-    const requests = await this.requestService.get({ userId, status })
+    const { userId, status, prefecture } = req.query.filter
+    const requests = await this.requestService.get({
+      userId,
+      status,
+      prefecture,
+    })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),
     })
