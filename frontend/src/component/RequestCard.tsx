@@ -68,7 +68,7 @@ export const RequestCard = ({
           </div>
           <div className="d-flex align-items-center">
             <div className="d-flex flex-column align-items-center">
-              <HouseDoor size={24} />
+              <Shop size={24} />
               <p
                 className="mb-2"
                 style={{
