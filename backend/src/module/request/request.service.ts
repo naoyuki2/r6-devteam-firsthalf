@@ -7,9 +7,9 @@ import { DraftItem } from '../draft_item/draft_item.entity'
 const requestRepository = AppDataSource.getRepository(Request)
 const itemRepository = AppDataSource.getRepository(Item)
 type GetProps = {
-  status: 'pending' | 'progress' | 'completed'
-  userId: number | undefined
-  prefecture: string | undefined
+  status?: 'pending' | 'progress' | 'completed'
+  userId?: number
+  location_prefecture?: string
 }
 
 type GetByIdProps = {
@@ -34,7 +34,11 @@ type conclusionProps = {
 }
 
 export class RequestService {
-  async get({ userId, status, prefecture }: GetProps): Promise<Request[]> {
+  async get({
+    userId,
+    status,
+    location_prefecture,
+  }: GetProps): Promise<Request[]> {
     const qb = requestRepository
       .createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
@@ -45,12 +49,14 @@ export class RequestService {
       qb.where('user.id = :userId', { userId })
     }
 
-    if (status == 'pending') {
+    if (status !== undefined) {
       qb.where('status = :status', { status })
     }
 
-    if (prefecture !== undefined) {
-      qb.where('location_prefecture = :prefecture', { prefecture })
+    if (location_prefecture !== 'null' && location_prefecture !== undefined) {
+      qb.where('location_prefecture = :location_prefecture', {
+        location_prefecture,
+      })
     }
 
     return await qb.getMany()

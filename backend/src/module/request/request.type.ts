@@ -7,9 +7,9 @@ export const GetEndpoint = root
 
 export type GetQuery = {
   filter: {
-    status: 'pending' | 'progress' | 'completed'
-    userId: number | undefined
-    prefecture: string | undefined
+    status?: 'pending' | 'progress' | 'completed'
+    userId?: number
+    location_prefecture?: string
   }
 }
 

@@ -31,11 +31,11 @@ export class RequestController {
     @Req() req: Request<'', '', '', GetQuery>,
     @Res() res: Response<GetRes>,
   ) {
-    const { userId, status, prefecture } = req.query.filter
+    const { userId, status, location_prefecture } = req.query.filter
     const requests = await this.requestService.get({
       userId,
       status,
-      prefecture,
+      location_prefecture,
     })
     return res.json({
       requests: requests.map((request) => requestSerializer(request)),

@@ -9,6 +9,7 @@ type RequestCardProps = {
   username: string
   created_at: Date
   title: string
+  description: string
   delivery_prefecture: string
   location_prefecture: string
 }
@@ -19,6 +20,7 @@ export const RequestCard = ({
   username,
   created_at,
   title,
+  description,
   delivery_prefecture,
   location_prefecture,
 }: RequestCardProps) => {
@@ -26,9 +28,10 @@ export const RequestCard = ({
     <div className="border-bottom border-opacity-25">
       <div className="d-flex justify-content-between align-items-center">
         <AppLink href={`/user/${userId}`}>
-          <PersonCircle size={36} className="me-3 mt-2" />
-          <span className="fw-bold my-2 mt-2">{username}</span>
-          <span className="ms-auto my-2 mt-2"></span>
+          <div className="d-flex align-items-center">
+            <PersonCircle size={36} className="me-3 mt-2" />
+            <span className="fw-bold my-2 mt-2">{username}</span>
+          </div>
         </AppLink>
         <span>
           {formatDistanceToNow(new Date(created_at), {
@@ -38,20 +41,42 @@ export const RequestCard = ({
         </span>
       </div>
       <AppLink href={`/request/${id}`}>
-        <p className="fw-bold text-truncate mb-2">{title}</p>
-
+        <div className="my-3">
+          <p className="fw-bold text-truncate mb-2">{title}</p>
+          <p
+            style={{
+              fontSize: '0.9rem',
+            }}
+          >
+            {description}
+          </p>
+        </div>
         <div className="d-flex justify-content-evenly">
-          <div className="d-flex align-items-center">
-            <div>
-              <HouseDoor size={24} className="ms-2" />
-              <p className="mb-2">HOME</p>
+          <div className="d-flex align  -items-center">
+            <div className="d-flex flex-column align-items-center">
+              <HouseDoor size={24} />
+              <p
+                className="mb-2"
+                style={{
+                  fontSize: '0.8rem',
+                }}
+              >
+                HOME
+              </p>
             </div>
             <span className="ms-3">{delivery_prefecture}</span>
           </div>
           <div className="d-flex align-items-center">
-            <div>
-              <Shop size={24} className="ms-2" />
-              <p className="mb-2">SHOP</p>
+            <div className="d-flex flex-column align-items-center">
+              <HouseDoor size={24} />
+              <p
+                className="mb-2"
+                style={{
+                  fontSize: '0.8rem',
+                }}
+              >
+                SHOP
+              </p>
             </div>
             <span className="ms-3">{location_prefecture}</span>
           </div>

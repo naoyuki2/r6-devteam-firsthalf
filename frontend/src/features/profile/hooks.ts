@@ -11,7 +11,7 @@ export const useRequest = (
   isLoading: boolean
 } => {
   const { data, error, isLoading } = useSWR(
-    currentUserId ? `/requests?userId=${currentUserId}` : null,
+    currentUserId ? `/requests?filter[userId]=${currentUserId}` : null,
     fetchWithToken
   )
 
