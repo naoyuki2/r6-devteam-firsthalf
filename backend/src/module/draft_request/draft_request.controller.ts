@@ -1,14 +1,6 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import {
-  Controller,
-  Req,
-  Res,
-  Post,
-  Delete,
-  Get,
-  Patch,
-} from 'routing-controllers'
+import { Controller, Req, Res, Post, Delete, Get } from 'routing-controllers'
 import {
   ApproveEndpoint,
   ApproveParam,

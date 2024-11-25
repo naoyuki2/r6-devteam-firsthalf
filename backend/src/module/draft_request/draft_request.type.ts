@@ -1,5 +1,4 @@
 import { DraftItem } from '../draft_item/draft_item.entity'
-import { requestSerializer } from '../request/request.serializer'
 import { draft_requestSerializer } from './draft_request.serializer'
 
 const root = '/draft_requests'
