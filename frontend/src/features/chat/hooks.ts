@@ -1,5 +1,5 @@
 import { fetcher } from '@/lib/axios'
-import { DraftRequest, GetByRoomIdRes, Message, Room } from '@/types'
+import { DraftRequest, GetByRoomIdRes, Message } from '@/types'
 import Error from 'next/error'
 import useSWR from 'swr'
 

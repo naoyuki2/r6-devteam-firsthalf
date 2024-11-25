@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { User, useSetCurrentUser } from '@/lib/jotai/userState'
-import { fetcher, fetchWithToken } from '@/lib/axios'
+import { fetcher } from '@/lib/axios'
 import useSWR from 'swr'
 import { AppAlert } from '@/component/AppAlert'
 import { Spinner } from 'react-bootstrap'

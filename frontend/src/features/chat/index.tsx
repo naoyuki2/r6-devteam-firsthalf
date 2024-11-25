@@ -43,7 +43,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
 
     if (!agreeRes?.data.isBothAgreed) return
 
-    const concludedRes = await fetchWithToken({
+    await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
     })
@@ -57,7 +57,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
 
     if (!receiveRes?.data.isBothReceived) return
 
-    const Res = await fetchWithToken({
+    await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.request.id}/received`,
     })
