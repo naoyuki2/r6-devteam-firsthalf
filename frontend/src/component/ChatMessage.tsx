@@ -91,8 +91,8 @@ export const ChatMessage = ({
                 />
               )}
               <div
+                className={msg.isMine ? 'bg-info' : 'bg-light'}
                 style={{
-                  backgroundColor: msg.isMine ? '#4CAF50' : '#ddd',
                   color: msg.isMine ? 'white' : 'black',
                   padding: '10px 15px',
                   borderRadius: '10px',

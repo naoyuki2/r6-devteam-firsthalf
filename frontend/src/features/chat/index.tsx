@@ -12,7 +12,11 @@ import { useDraftRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
 import { AppTextArea } from '@/component/AppTextArea'
 import { AppButton } from '@/component/AppButton'
+<<<<<<< HEAD
 import TodoList from '@/component/TodoList '
+=======
+import { HandThumbsDown, HandThumbsUp } from 'react-bootstrap-icons'
+>>>>>>> a22b5b224f4395ac97802098dffcce0ab53d93b6
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
@@ -92,7 +96,7 @@ const ChatClient = ({ room }: { room: Room }) => {
             disabled={!currentUser}
           />
           <AppButton
-            text="送信" // ボタンのテキストをtextプロパティで指定
+            text="メッセージを送信する" // ボタンのテキストをtextプロパティで指定
             onClick={async () => {
               await handleSendMessage({
                 inputMessage,
@@ -101,6 +105,68 @@ const ChatClient = ({ room }: { room: Room }) => {
               })
               setInputMessage('') // 入力内容をクリア
             }}
+            className="text-info bg-light border border-info mt-3"
+            style={{ padding: '10px', width: '100%' }}
+            disabled={!currentUser}
+          />
+        </div>
+        <div
+          style={{
+            width: '100%',
+            backgroundColor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <p className="border-start border-info border-5 ps-2 fw-bold mt-4">
+            取引相手の評価
+          </p>
+          <div className="d-flex justify-content-start mb-3">
+            <label htmlFor="success" className="btn btn-outline-success">
+              <HandThumbsUp className="me-2"></HandThumbsUp>良かった
+            </label>
+            <input
+              type="radio"
+              name="evaluation"
+              id="success"
+              className="invisible"
+            />
+            <label htmlFor="danger" className="btn btn-outline-danger">
+              <HandThumbsDown className="me-2"></HandThumbsDown>悪かった
+            </label>
+            <input
+              type="radio"
+              name="evaluation"
+              id="danger"
+              className="invisible"
+            />
+          </div>
+          <AppTextArea
+            name="chatMessage"
+            value={inputMessage}
+            autoComplete="off"
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="メッセージを入力"
+            style={{
+              flex: 1,
+              padding: '10px',
+              marginRight: '10px',
+              width: '100%',
+            }}
+            rows={4}
+            disabled={!currentUser}
+          />
+          <AppButton
+            text="評価を送信する" // ボタンのテキストをtextプロパティで指定
+            onClick={async () => {
+              await handleSendMessage({
+                inputMessage,
+                roomId: room.id,
+                currentUser,
+              })
+              setInputMessage('') // 入力内容をクリア
+            }}
+            className="text-info bg-light border border-info mt-3"
             style={{ padding: '10px', width: '100%' }}
             disabled={!currentUser}
           />
