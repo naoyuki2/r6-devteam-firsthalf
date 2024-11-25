@@ -58,7 +58,7 @@ export class RequestController {
   }
 
   @Get(GetByIdEndpoint)
-  async getById(
+  async getRequestIdById(
     @Req() req: Request<GetByIdParam, '', '', ''>,
     @Res() res: Response<GetByIdRes>,
   ) {
