@@ -1,6 +1,8 @@
 import { requestSerializer } from '../request/request.serializer'
 
-export const AgreedEndpoint = '/agreed/:roomId'
+const root = '/room_users'
+
+export const AgreedEndpoint = `${root}/:roomId/agreed`
 
 export type AgreedParam = {
   roomId: string
@@ -11,20 +13,20 @@ export type AgreedRequestRes = {
 }
 
 export type AgreedUserRes = {
-  isAgreed: boolean
+  isBothAgreed: boolean
 }
 
-export const ReceivedEndpoint = '/received/:roomId'
+export const ReceivedEndpoint = `${root}/:roomId/received`
 
 export type ReceivedParam = {
   roomId: string
 }
 
 export type ReceivedRes = {
-  isReceived: boolean
+  isBothReceived: boolean
 }
 
-export const FeedbackEndpoint = '/feedback/:roomId'
+export const FeedbackEndpoint = `${root}/:roomId/feedback`
 
 export type FeedbackParam = {
   roomId: string

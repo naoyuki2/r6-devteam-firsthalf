@@ -52,7 +52,7 @@ export const RequestCard = ({
           </p>
         </div>
         <div className="d-flex justify-content-evenly">
-          <div className="d-flex align  -items-center">
+          <div className="d-flex align-items-center">
             <div className="d-flex flex-column align-items-center">
               <HouseDoor size={24} />
               <p

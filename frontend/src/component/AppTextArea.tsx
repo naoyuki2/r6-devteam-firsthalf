@@ -1,6 +1,7 @@
 import { Form } from 'react-bootstrap'
 
 type AppTextAreaProps = {
+  value?: string
   label?: string
   name: string
   placeholder: string

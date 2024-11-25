@@ -1,6 +1,14 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post, Delete, Get } from 'routing-controllers'
+import {
+  Controller,
+  Req,
+  Res,
+  Post,
+  Delete,
+  Get,
+  Patch,
+} from 'routing-controllers'
 import {
   ApproveEndpoint,
   ApproveParam,
@@ -18,6 +26,9 @@ import {
   GetByIdEndpoint,
   GetByIdParam,
   GetByIdRes,
+  DeleteEndpoint,
+  DeleteParam,
+  DeleteRes,
 } from './draft_request.type'
 import { DraftRequestService } from './draft_request.service'
 import { draft_requestSerializer } from './draft_request.serializer'
@@ -34,11 +45,24 @@ export class DraftRequestController {
     @Res() res: Response<CreateByIdRes>,
   ) {
     const roomId = req.params.roomId
-    const room = await this.roomService.getByRoomId({ id: roomId })
+    const room = await this.roomService.getByRoomId(roomId)
     const draft_request = await this.draft_requestService.create(room)
 
     return res.json({
       draft_request: draft_requestSerializer(draft_request),
+    })
+  }
+
+  @Get(GetByIdEndpoint)
+  async get(
+    @Req() req: Request<GetByIdParam, '', '', ''>,
+    @Res() res: Response<GetByIdRes>,
+  ) {
+    const roomId = req.params.roomId
+    const draftRequest = await this.draft_requestService.getByRoomId(roomId)
+
+    return res.json({
+      draft_request: draft_requestSerializer(draftRequest),
     })
   }
 
@@ -56,19 +80,6 @@ export class DraftRequestController {
 
     return res.json({
       draft_request: draft_requestSerializer(updateRequest),
-    })
-  }
-
-  @Get(GetByIdEndpoint)
-  async get(
-    @Req() req: Request<GetByIdParam, '', '', ''>,
-    @Res() res: Response<GetByIdRes>,
-  ) {
-    const roomId = req.params.roomId
-    const draftRequest = await this.draft_requestService.get(roomId)
-
-    return res.json({
-      draft_request: draft_requestSerializer(draftRequest),
     })
   }
 
@@ -96,5 +107,16 @@ export class DraftRequestController {
     return res.json({
       draft_request: draft_requestSerializer(draftRequest),
     })
+  }
+
+  @Delete(DeleteEndpoint)
+  async delete(
+    @Req() req: Request<DeleteParam, '', '', ''>,
+    @Res() res: Response<DeleteRes>,
+  ) {
+    const { roomId } = req.params
+    const success = await this.draft_requestService.delete(roomId)
+
+    return res.json({ success })
   }
 }

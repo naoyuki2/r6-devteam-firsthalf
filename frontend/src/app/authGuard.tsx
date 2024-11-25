@@ -3,7 +3,7 @@
 import { ReactNode, useEffect } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import { User, useSetCurrentUser } from '@/lib/jotai/userState'
-import { fetchWithToken } from '@/lib/axios'
+import { fetcher, fetchWithToken } from '@/lib/axios'
 import useSWR from 'swr'
 import { AppAlert } from '@/component/AppAlert'
 import { Spinner } from 'react-bootstrap'
@@ -22,7 +22,7 @@ const useUser = (): {
   error: Error | null
   isLoading: boolean
 } => {
-  const { data, error, isLoading } = useSWR('/users', fetchWithToken)
+  const { data, error, isLoading } = useSWR('/users', fetcher)
   return {
     user: data?.data.user ?? null,
     error,

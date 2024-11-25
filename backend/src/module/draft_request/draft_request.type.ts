@@ -1,4 +1,5 @@
 import { DraftItem } from '../draft_item/draft_item.entity'
+import { requestSerializer } from '../request/request.serializer'
 import { draft_requestSerializer } from './draft_request.serializer'
 
 const root = '/draft_requests'
@@ -61,4 +62,14 @@ export type GetByIdParam = {
 
 export type GetByIdRes = {
   draft_request: ReturnType<typeof draft_requestSerializer>
+}
+
+export const DeleteEndpoint = `${root}/:roomId/delete`
+
+export type DeleteParam = {
+  roomId: string
+}
+
+export type DeleteRes = {
+  success: boolean
 }

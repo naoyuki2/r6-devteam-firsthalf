@@ -1,4 +1,4 @@
-import { fetchWithToken } from '@/lib/axios'
+import { fetcher } from '@/lib/axios'
 import { Request } from '@/types'
 import Error from 'next/error'
 import useSWR from 'swr'
@@ -12,7 +12,7 @@ export const useRequest = (
 } => {
   const { data, error, isLoading } = useSWR(
     currentUserId ? `/requests?filter[userId]=${currentUserId}` : null,
-    fetchWithToken
+    fetcher
   )
 
   return {

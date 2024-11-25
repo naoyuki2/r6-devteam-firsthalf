@@ -1,16 +1,16 @@
-import { fetchWithToken } from '@/lib/axios'
-import { DraftRequest, Message, Room } from '@/types'
+import { fetcher } from '@/lib/axios'
+import { DraftRequest, GetByRoomIdRes, Message, Room } from '@/types'
 import Error from 'next/error'
 import useSWR from 'swr'
 
 export const useRoom = (
   roomId: string
 ): {
-  room: Room
+  room: GetByRoomIdRes
   error: Error
   isLoading: boolean
 } => {
-  const { data, error, isLoading } = useSWR(`/rooms/${roomId}`, fetchWithToken)
+  const { data, error, isLoading } = useSWR(`/rooms/${roomId}`, fetcher)
   return {
     room: data?.data.room,
     error,
@@ -27,7 +27,7 @@ export const useDraftRequest = (
 } => {
   const { data, error, isLoading } = useSWR(
     `/draft_requests/${roomId}`,
-    fetchWithToken
+    fetcher
   )
   return {
     draftRequest: data?.data.draft_request,
@@ -43,10 +43,7 @@ export const useMessage = (
   error: Error
   isLoading: boolean
 } => {
-  const { data, error, isLoading } = useSWR(
-    `/messages/${roomId}`,
-    fetchWithToken
-  )
+  const { data, error, isLoading } = useSWR(`/messages/${roomId}`, fetcher)
   return {
     messages: data?.data.messages,
     error,

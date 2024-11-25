@@ -1,4 +1,4 @@
-import { fetchWithToken } from '@/lib/axios'
+import { fetcher, fetchWithToken } from '@/lib/axios'
 import { Request } from '@/types'
 import Error from 'next/error'
 import useSWR from 'swr'
@@ -10,7 +10,7 @@ export const useRequestList = (
   error: Error
   isLoading: boolean
 } => {
-  const { data, error, isLoading } = useSWR(`/requests${query}`, fetchWithToken)
+  const { data, error, isLoading } = useSWR(`/requests${query}`, fetcher)
   return {
     requests: data?.data.requests,
     error,

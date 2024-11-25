@@ -73,14 +73,25 @@ export type Room = {
   id: string
   created_at: string
   isClosed: boolean
-  otherUser: roomUser
-  currentUser: roomUser
+  otherUser: RoomUser
+  currentUser: RoomUser
 }
 
-export type roomUser = {
+export type GetByRoomIdRes = {
+  id: string
+  request: Request
+  draftRequest: DraftRequest
+  otherUser: RoomUser
+  currentUser: RoomUser
+  messages: Message[]
+}
+
+export type RoomUser = {
   user: User
   role: string
   isAgreed: boolean
+  isReceived: boolean
+  isFeedback: boolean
 }
 
 export type MessageList = {
@@ -109,7 +120,7 @@ export type DraftRequest = {
   completed_at: Date
   created_at: Date
   updated_at: Date
-  draft_item: {
+  draft_items: {
     id: number
     name: string
     quantity: number

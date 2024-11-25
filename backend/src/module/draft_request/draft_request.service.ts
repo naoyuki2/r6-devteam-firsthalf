@@ -25,10 +25,11 @@ export class DraftRequestService {
     return true
   }
 
-  async delete(roomId: string): Promise<void> {
+  async delete(roomId: string): Promise<boolean> {
     await draftRequestRepository.delete({
       room: { id: roomId },
     })
+    return true
   }
 
   async approve(roomId: string): Promise<DraftRequest> {
@@ -47,7 +48,7 @@ export class DraftRequestService {
     return await draftRequestRepository.save(latestRequest)
   }
 
-  async get(roomId: string): Promise<DraftRequest> {
+  async getByRoomId(roomId: string): Promise<DraftRequest> {
     const qb = draftRequestRepository
       .createQueryBuilder('draft_request')
       .leftJoinAndSelect('draft_request.draft_items', 'draft_items')
@@ -56,6 +57,13 @@ export class DraftRequestService {
       .orderBy('draft_request.created_at', 'DESC')
       .take(1)
     return await qb.getOneOrFail()
+  }
+
+  async getByDraftRequestId(draftRequestId: number): Promise<DraftRequest> {
+    return await draftRequestRepository.findOneOrFail({
+      where: { id: draftRequestId },
+      relations: ['draft_items'],
+    })
   }
 
   async proposeUpdate({
@@ -110,7 +118,7 @@ export class DraftRequestService {
 
   _requestToDraftRequest(room: Room): DraftRequest {
     const draftRequest = new DraftRequest()
-
+    console.log(room.request)
     draftRequest.title = room.request.title
     draftRequest.location_prefecture = room.request.location_prefecture
     draftRequest.location_details = room.request.location_details

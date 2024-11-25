@@ -1,6 +1,5 @@
 import { AppDataSource } from '../../app-data-source'
 import { DraftRequestService } from '../draft_request/draft_request.service'
-import { Request } from '../request/request.entity'
 import { RequestService } from '../request/request.service'
 import { RoomService } from '../room/room.service'
 import { role as RoomUserRole, RoomUser } from './room_user.entity'
@@ -94,20 +93,6 @@ export class RoomUserService {
     if (currentRoomUser.isReceived && otherRoomUser.isReceived) return true
 
     return false
-  }
-
-  async conclusion({ roomId }: { roomId: string }): Promise<Request> {
-    const draftRequest = await this.draftRequestService.get(roomId)
-    const { request } = await this.roomService.getByRoomId({ id: roomId })
-
-    const updatedRequest = await this.requestService.conclusion({
-      request,
-      draftRequest,
-    })
-
-    await this.draftRequestService.delete(roomId)
-
-    return updatedRequest
   }
 
   async checkFeedback({

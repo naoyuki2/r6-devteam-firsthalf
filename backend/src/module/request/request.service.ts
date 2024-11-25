@@ -12,10 +12,6 @@ type GetProps = {
   location_prefecture?: string
 }
 
-type GetByIdProps = {
-  id: number
-}
-
 type createProps = {
   title: string
   location_prefecture: string
@@ -31,6 +27,18 @@ type createProps = {
 type conclusionProps = {
   request: Request
   draftRequest: DraftRequest
+}
+
+type AgreedProps = {
+  requestId: number
+}
+
+type ReceivedProps = {
+  requestId: number
+}
+
+type CompletedProps = {
+  requestId: number
 }
 
 export class RequestService {
@@ -62,9 +70,9 @@ export class RequestService {
     return await qb.getMany()
   }
 
-  async getById({ id }: GetByIdProps): Promise<Request> {
+  async getByRequestId(requestId: number): Promise<Request> {
     return await requestRepository.findOneOrFail({
-      where: { id },
+      where: { id: requestId },
       relations: ['user', 'items'],
     })
   }
@@ -95,7 +103,27 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async conclusion({
+  async agreed({ requestId }: AgreedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'agreed'
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async received({ requestId }: ReceivedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'received'
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async concluded({
     request,
     draftRequest,
   }: conclusionProps): Promise<Request> {
@@ -110,6 +138,16 @@ export class RequestService {
       request,
       draftRequest.draft_items,
     )
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async completed({ requestId }: CompletedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'completed'
     await validateEntity(request)
     return await requestRepository.save(request)
   }

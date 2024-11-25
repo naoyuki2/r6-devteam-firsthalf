@@ -41,7 +41,7 @@ const EditModal: React.FC<EditModalProps> = ({
         <p className="border-start border-info border-5 ps-2 fw-bold my-2">
           欲しいもの1
         </p>
-        {draftRequest.draft_item.map((item) => (
+        {draftRequest.draft_items.map((item) => (
           <div className="mb-3 ms-3" key={item.id}>
             <p>{item.name}</p>
             <div className="d-flex justify-content-between">

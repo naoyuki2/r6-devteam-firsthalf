@@ -1,5 +1,5 @@
 import { Room } from './room.entity'
-import { roomSerializer } from './room.serializer'
+import { getByRoomIdSerializer, roomSerializer } from './room.serializer'
 
 const root = '/rooms'
 
@@ -9,14 +9,14 @@ export type GetByUserIdRes = {
   rooms: ReturnType<typeof roomSerializer>[]
 }
 
-export const GetByRoomIdEndpoint = `${root}/:id`
+export const GetByRoomIdEndpoint = `${root}/:roomId`
 
 export type GetByRoomIdParam = {
-  id: string
+  roomId: string
 }
 
 export type GetByRoomIdRes = {
-  room: ReturnType<typeof roomSerializer>
+  room: ReturnType<typeof getByRoomIdSerializer>
 }
 
 export const CreateEndpoint = root

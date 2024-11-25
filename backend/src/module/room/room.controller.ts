@@ -9,7 +9,7 @@ import {
   Authorized,
 } from 'routing-controllers'
 import { RoomService } from './room.service'
-import { roomSerializer } from './room.serializer'
+import { getByRoomIdSerializer, roomSerializer } from './room.serializer'
 import {
   CreateEndpoint,
   CreateReq,
@@ -23,24 +23,29 @@ import {
 import { RoomUserService } from '../room_user/room_user.service'
 import { RequestService } from '../request/request.service'
 import { CustomError } from '../../error/CustomError'
+import { DraftRequestService } from '../draft_request/draft_request.service'
 
 @Controller()
 export class RoomController {
   private roomService = new RoomService()
   private roomUserService = new RoomUserService()
   private requestService = new RequestService()
+  private draftRequestService = new DraftRequestService()
 
   @Authorized()
   @Get(GetByUserIdEndpoint)
-  async getByUserId(@Req() req: Request, @Res() res: Response<GetByUserIdRes>) {
+  async getByUserId(
+    @Req() req: Request<''>,
+    @Res() res: Response<GetByUserIdRes>,
+  ) {
     const userId = req.currentUserId!
     const rooms = []
-    const roomUsers = await this.roomService.getByUserId({ userId })
+    const roomUsers = await this.roomService.getByUserId(userId)
     for (let i = 0; i < roomUsers.length; i++) {
       const room_user = roomUsers[i]
       const { id } = room_user.room
 
-      const room = await this.roomService.getByRoomId({ id })
+      const room = await this.roomService.getByRoomId(id)
       const otherUser = room.room_users.find(
         (roomUser) => roomUser.user.id !== userId,
       )!
@@ -62,17 +67,12 @@ export class RoomController {
     @Req() req: Request<GetByRoomIdParam, '', '', ''>,
     @Res() res: Response<GetByRoomIdRes>,
   ) {
-    const { id } = req.params
-    const room = await this.roomService.getByRoomId({ id })
-    const otherUser = room.room_users.find(
-      (roomUser) => roomUser.user.id !== req.currentUserId,
-    )!
-    const currentUser = room.room_users.find(
-      (roomUser) => roomUser.user.id === req.currentUserId,
-    )!
+    const { roomId } = req.params
+    const room = await this.roomService.getByRoomId(roomId)
+    const draftRequest = await this.draftRequestService.getByRoomId(roomId)
 
     return res.json({
-      room: roomSerializer(room, otherUser, currentUser),
+      room: getByRoomIdSerializer(room, draftRequest, req.currentUserId!),
     })
   }
 
@@ -84,7 +84,7 @@ export class RoomController {
   ) {
     const { requestId } = req.body
     const currentUserId = req.currentUserId!
-    const request = await this.requestService.getById({ id: requestId })
+    const request = await this.requestService.getByRequestId(requestId)
 
     if (request.user.id === currentUserId)
       throw new CustomError(

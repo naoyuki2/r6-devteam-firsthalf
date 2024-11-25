@@ -1,105 +1,88 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { useCurrentUser } from '@/lib/jotai/userState'
-import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
 import TopNav from '@/component/TopNav'
-import { Container, Spinner } from 'react-bootstrap'
-import { MessageList, Room } from '@/types'
+import { useEffect, useState } from 'react'
+import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
+import { Container } from 'react-bootstrap'
+import { GetByRoomIdRes, Message } from '@/types'
+import { ChatMessage } from './ChatMessage'
+import { FeedbackForm } from './FeedbackForm'
+import { UserStatus } from './UserStatus'
 import { handleSendMessage } from './utils'
-import { ChatMessage } from '@/component/ChatMessage'
-import { useDraftRequest } from './hooks'
-import { AppAlert } from '@/component/AppAlert'
+import { fetchWithToken } from '@/lib/axios'
 
-const ChatClient = ({ room }: { room: Room }) => {
-  const currentUser = useCurrentUser()
-  const [messageList, setMessageList] = useState<MessageList[]>([])
-  const [inputMessage, setInputMessage] = useState<string>('')
-  const roomId = room.id
-  const { draftRequest, error, isLoading } = useDraftRequest(roomId)
+const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
+  const [messages, setMessages] = useState<Message[]>(room.messages)
 
   useEffect(() => {
-    joinRoom({ roomId })
+    joinRoom({ roomId: room.id })
+    receiveMessage(({ message }: { message: Message }) => {
+      setMessages((prev) => [...prev, message])
+    })
     return () => {
       disconnectSocket()
     }
-  }, [roomId])
+  }, [room.id])
 
-  useEffect(() => {
-    receiveMessage(({ message }) => {
-      setMessageList((prev) => [
-        ...prev,
-        {
-          id: message.id,
-          body: message.body,
-          isMine: message.userId === currentUser?.id,
-          created_at: message.created_at,
-        },
-      ])
+  const sendMessage = async (inputMessage: string) => {
+    await handleSendMessage({
+      inputMessage,
+      roomId: room.id,
+      currentUser: room.currentUser.user,
     })
-  }, [currentUser?.id])
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && inputMessage.trim()) {
-      handleSendMessage({
-        inputMessage,
-        roomId: room.id,
-        currentUser,
-      })
-      setInputMessage('')
-    }
   }
 
-  if (isLoading) return <Spinner animation="border" />
-  if (error)
-    return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
+  const handleAgree = async () => {
+    const isConfirm = window.confirm('合意しますか？')
+    if (!isConfirm) return
+
+    const agreeRes = await fetchWithToken({
+      method: 'PATCH',
+      url: `/room_users/${room.id}/agreed`,
+    })
+
+    if (!agreeRes?.data.isBothAgreed) return
+
+    const concludedRes = await fetchWithToken({
+      method: 'PATCH',
+      url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
+    })
+  }
+
+  const handleReceive = async () => {
+    const receiveRes = await fetchWithToken({
+      method: 'PATCH',
+      url: `/room_users/${room.id}/received`,
+    })
+
+    if (!receiveRes?.data.isBothReceived) return
+
+    const Res = await fetchWithToken({
+      method: 'PATCH',
+      url: `/requests/${room.request.id}/received`,
+    })
+  }
+
   return (
     <>
-      <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} /> 
-      <Container className="vh-100 d-flex flex-column">
-        <div style={{ flex: 1, paddingBottom: '70px' }}>
-          <ChatMessage
-            messageList={messageList}
-            roomId={room.id}
-            setMessageList={setMessageList}
-          />
-        </div>
-        <div
-          style={{
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            borderTop: '1px solid #ddd',
-            backgroundColor: 'white',
-            padding: '10px',
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <input
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="メッセージを入力"
-            style={{ flex: 1, padding: '10px', marginRight: '10px' }}
-            disabled={!currentUser}
-          />
-          <button
-            onClick={async () => {
-              await handleSendMessage({
-                inputMessage,
-                roomId: room.id,
-                currentUser,
-              })
-              setInputMessage('')
-            }}
-            style={{ padding: '10px' }}
-            disabled={!currentUser}
-          >
-            送信
-          </button>
-        </div>
+      <TopNav
+        draftRequest={room.draftRequest}
+        otherRole={room.otherUser.role}
+      />
+      <Container>
+        <UserStatus
+          currentUser={room.currentUser}
+          otherUser={room.otherUser}
+          status={room.request.status}
+          onAgree={handleAgree}
+          onReceive={handleReceive}
+        />
+        <ChatMessage
+          messages={messages}
+          currentUserId={room.currentUser.user.id}
+          onSendMessage={sendMessage}
+        />
+        <FeedbackForm />
       </Container>
     </>
   )
