@@ -62,3 +62,13 @@ export type GetByIdParam = {
 export type GetByIdRes = {
   draft_request: ReturnType<typeof draft_requestSerializer>
 }
+
+export const DeleteEndpoint = `${root}/:roomId/delete`
+
+export type DeleteParam = {
+  roomId: string
+}
+
+export type DeleteRes = {
+  success: boolean
+}

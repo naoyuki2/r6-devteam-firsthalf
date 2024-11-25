@@ -7,13 +7,9 @@ import { DraftItem } from '../draft_item/draft_item.entity'
 const requestRepository = AppDataSource.getRepository(Request)
 const itemRepository = AppDataSource.getRepository(Item)
 type GetProps = {
-  status: 'pending' | 'progress' | 'completed'
-  userId: number | undefined
-  prefecture: string | undefined
-}
-
-type GetByIdProps = {
-  id: number
+  status?: 'pending' | 'progress' | 'completed'
+  userId?: number
+  location_prefecture?: string
 }
 
 type createProps = {
@@ -33,8 +29,24 @@ type conclusionProps = {
   draftRequest: DraftRequest
 }
 
+type AgreedProps = {
+  requestId: number
+}
+
+type ReceivedProps = {
+  requestId: number
+}
+
+type CompletedProps = {
+  requestId: number
+}
+
 export class RequestService {
-  async get({ userId, status, prefecture }: GetProps): Promise<Request[]> {
+  async get({
+    userId,
+    status,
+    location_prefecture,
+  }: GetProps): Promise<Request[]> {
     const qb = requestRepository
       .createQueryBuilder('request')
       .leftJoinAndSelect('request.user', 'user')
@@ -45,20 +57,22 @@ export class RequestService {
       qb.where('user.id = :userId', { userId })
     }
 
-    if (status == 'pending') {
+    if (status !== undefined) {
       qb.where('status = :status', { status })
     }
 
-    if (prefecture !== undefined) {
-      qb.where('location_prefecture = :prefecture', { prefecture })
+    if (location_prefecture !== 'null' && location_prefecture !== undefined) {
+      qb.where('location_prefecture = :location_prefecture', {
+        location_prefecture,
+      })
     }
 
     return await qb.getMany()
   }
 
-  async getById({ id }: GetByIdProps): Promise<Request> {
+  async getByRequestId(requestId: number): Promise<Request> {
     return await requestRepository.findOneOrFail({
-      where: { id },
+      where: { id: requestId },
       relations: ['user', 'items'],
     })
   }
@@ -89,7 +103,27 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async conclusion({
+  async agreed({ requestId }: AgreedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'agreed'
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async received({ requestId }: ReceivedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'received'
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async concluded({
     request,
     draftRequest,
   }: conclusionProps): Promise<Request> {
@@ -104,6 +138,16 @@ export class RequestService {
       request,
       draftRequest.draft_items,
     )
+    await validateEntity(request)
+    return await requestRepository.save(request)
+  }
+
+  async completed({ requestId }: CompletedProps): Promise<Request> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+      relations: ['user', 'items'],
+    })
+    request.status = 'completed'
     await validateEntity(request)
     return await requestRepository.save(request)
   }

@@ -7,10 +7,11 @@ import { joinRoom } from '@/utils/socket'
 import { Spinner } from 'react-bootstrap'
 
 export default function Chat({ params }: { params: { id: string } }) {
-  const { room, error, isLoading } = useRoom(params.id)
-  if (isLoading) return <Spinner animation="border" />
-  if (error)
-    return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
   joinRoom({ roomId: params.id })
+  const { room, error, isLoading } = useRoom(params.id)
+
+  if (isLoading) return <Spinner animation="border" />
+  if (error) return <AppAlert variant="danger" message="エラーが発生しました" />
+
   return <ChatClient room={room} />
 }

@@ -2,6 +2,18 @@ import { apiClient } from '@/lib/axios'
 import { User } from '@/lib/jotai/userState'
 import { sendMessage } from '@/utils/socket'
 
+export const formatChatDate = (dateString: Date) => {
+  const date = new Date(dateString)
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+  return date.toLocaleDateString('ja-JP', options)
+}
+
 type HandleSendMessageProps = {
   inputMessage: string
   roomId: string

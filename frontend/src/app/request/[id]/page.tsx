@@ -43,11 +43,8 @@ export default async function RequestDetail({
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
           欲しいもの
         </p>
-        {/* 全体の中央寄せを行うd-flex justify-content-centerクラスを追加 */}
         <div className="d-flex justify-content-center">
           <div className="w-75">
-            {' '}
-            {/* 幅を指定して中央に寄せる */}
             {request.items.map((item) => (
               <div
                 key={item.id}
