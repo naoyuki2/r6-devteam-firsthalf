@@ -17,7 +17,7 @@ export type GetRes = {
   requests: ReturnType<typeof requestSerializer>[]
 }
 
-export const GetByIdEndpoint = `${root}/:id`
+export const GetByIdEndpoint = `${root}/:requestId`
 
 export type GetByIdParam = {
   requestId: number
