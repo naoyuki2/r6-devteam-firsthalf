@@ -4,7 +4,8 @@ import { useRouter } from 'next/navigation'
 import { apiClient } from '@/lib/axios'
 import { CreateRoomArgs, Request } from '@/types'
 import { useCurrentUser } from '@/lib/jotai/userState'
-import { getItem } from '@/utils/localStorage' // getItem を追加
+import { getItem } from '@/utils/localStorage'
+import { AppButton } from '@/component/AppButton'
 
 type RequestDetailClientProps = {
   request: Request
@@ -15,7 +16,7 @@ export default function RequestDetailClient({
 }: RequestDetailClientProps) {
   const router = useRouter()
   const currentUser = useCurrentUser()
-  const isChatShow = request.user.id == currentUser?.id
+  const isRequestUser = request.user.id == currentUser?.id
 
   const requestCreateRoom = async () => {
     try {
@@ -43,14 +44,33 @@ export default function RequestDetailClient({
     }
   }
 
-  if (isChatShow) return <></>
+  const requestEdit = () => {
+    router.push(`/request/${request.id}/edit`)
+  }
 
   // ログイン状態確認
   const isLoggedIn = !!getItem('token')
 
   return (
-    <button className="btn btn-info" type="button" onClick={requestCreateRoom}>
-      {isLoggedIn ? 'チャットする' : 'チャットするためにログインしよう'}
-    </button>
+    <>
+      {!isRequestUser && (
+        <AppButton
+          className="btn btn-info"
+          type="button"
+          onClick={requestCreateRoom}
+          text={
+            isLoggedIn ? 'チャットする' : 'チャットするためにログインしよう'
+          }
+        ></AppButton>
+      )}
+      {isRequestUser && (
+        <AppButton
+          className="btn btn-info"
+          type="button"
+          onClick={requestEdit}
+          text="依頼を修正"
+        ></AppButton>
+      )}
+    </>
   )
 }

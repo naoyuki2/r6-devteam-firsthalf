@@ -56,7 +56,7 @@ export default function RequestClient() {
       ...prev,
       items: [
         ...prev.items,
-        { id: Date.now(), name: '', quantity: 1, price: '' },
+        { id: Date.now(), name: '1', quantity: 1, price: '' },
       ],
     }))
   }
@@ -115,7 +115,7 @@ export default function RequestClient() {
             label="タイトル"
             type="text"
             name="title"
-            placeholder="例）＊＊＊限定グッズを購入してほしい！"
+            placeholder="例）＊＊＊限定グッズを購入してほしい!"
             autoComplete="off"
             onChange={handleInputChange}
           />
