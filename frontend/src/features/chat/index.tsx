@@ -12,6 +12,7 @@ import { useDraftRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
 import { AppTextArea } from '@/component/AppTextArea'
 import { AppButton } from '@/component/AppButton'
+import TodoList from '@/component/TodoList '
 
 const ChatClient = ({ room }: { room: Room }) => {
   const currentUser = useCurrentUser()
@@ -60,6 +61,7 @@ const ChatClient = ({ room }: { room: Room }) => {
       <TopNav draftRequest={draftRequest} otherRole={room.otherUser.role} />
       <Container className="vh-100 d-flex flex-column">
         <div style={{}}>
+          <TodoList />
           <ChatMessage
             messageList={messageList}
             roomId={room.id}
