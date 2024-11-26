@@ -73,6 +73,10 @@ io.on('connection', (socket) => {
     io.to(message.roomId).emit('receiveMessage', { message })
   })
 
+  socket.on('updateStatus', ({ roomId, status }) => {
+    io.to(roomId).emit('statusUpdated', status)
+  })
+
   // 切断イベント受信
   socket.on('disconnect', () => {})
 })

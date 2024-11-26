@@ -2,7 +2,13 @@
 
 import TopNav from '@/component/TopNav'
 import { useEffect, useState } from 'react'
-import { disconnectSocket, receiveMessage, joinRoom } from '@/utils/socket'
+import {
+  disconnectSocket,
+  receiveMessage,
+  joinRoom,
+  onStatusUpdate,
+  updateStatus,
+} from '@/utils/socket'
 import { Container } from 'react-bootstrap'
 import { GetByRoomIdRes, Message } from '@/types'
 import { ChatMessage } from './ChatMessage'
@@ -13,9 +19,14 @@ import { fetchWithToken } from '@/lib/axios'
 
 const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [messages, setMessages] = useState<Message[]>(room.messages)
+  const [status, setStatus] = useState<string>(room.request.status)
 
   useEffect(() => {
     joinRoom({ roomId: room.id })
+    onStatusUpdate(({ status: updatedStatus }) => {
+      setStatus(updatedStatus)
+      window.location.reload()
+    })
     receiveMessage(({ message }: { message: Message }) => {
       setMessages((prev) => [...prev, message])
     })
@@ -40,13 +51,13 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/agreed`,
     })
-
     if (!agreeRes?.data.isBothAgreed) return
 
     await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
     })
+    updateStatus({ status: 'agreed', roomId: room.id })
   }
 
   const handleReceive = async () => {
@@ -54,13 +65,27 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/received`,
     })
-
     if (!receiveRes?.data.isBothReceived) return
 
     await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.request.id}/received`,
     })
+    updateStatus({ status: 'received', roomId: room.id })
+  }
+
+  const handleFeedback = async () => {
+    const feedbackRes = await fetchWithToken({
+      method: 'PATCH',
+      url: `/room_users/${room.id}/feedback`,
+    })
+    if (!feedbackRes?.data.success) return
+
+    await fetchWithToken({
+      method: 'PATCH',
+      url: `/requests/${room.request.id}/completed`,
+    })
+    updateStatus({ status: 'completed', roomId: room.id })
   }
 
   return (
@@ -71,18 +96,19 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       />
       <Container>
         <UserStatus
-          currentUser={room.currentUser}
+          initialCurrentUser={room.currentUser}
           otherUser={room.otherUser}
-          status={room.request.status}
+          status={status}
           onAgree={handleAgree}
           onReceive={handleReceive}
+          onSendMessage={sendMessage}
         />
         <ChatMessage
           messages={messages}
           currentUserId={room.currentUser.user.id}
           onSendMessage={sendMessage}
         />
-        <FeedbackForm />
+        <FeedbackForm onFeedback={handleFeedback} status={status} />
       </Container>
     </>
   )
