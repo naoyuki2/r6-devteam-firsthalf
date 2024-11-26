@@ -28,7 +28,7 @@ type UpdateStatusProps = {
 // サーバーからクライアントに送信するイベント
 export type ServerToClientEvents = {
   receiveMessage: (message: ReceiveMessageProps) => void
-  statusUpdated: (status: string) => void
+  statusUpdated: (updateStatus: string) => void
 }
 
 // クライアントからサーバーに送信するイベント

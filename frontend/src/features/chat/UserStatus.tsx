@@ -1,7 +1,6 @@
 import { AppButton } from '@/component/AppButton'
 import { AppLabel } from '@/component/AppLabel'
 import { RoomUser } from '@/types'
-import { useState } from 'react'
 import { PersonCircle } from 'react-bootstrap-icons'
 
 type UserStatusProps = {

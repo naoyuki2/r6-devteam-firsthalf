@@ -24,9 +24,8 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
 
   useEffect(() => {
     joinRoom({ roomId: room.id })
-    onStatusUpdate(({ status: updatedStatus }) => {
-      setStatus(updatedStatus)
-      window.location.reload()
+    onStatusUpdate((status: string) => {
+      setStatus(status)
     })
     receiveMessage(({ message }: { message: Message }) => {
       setMessages((prev) => [...prev, message])

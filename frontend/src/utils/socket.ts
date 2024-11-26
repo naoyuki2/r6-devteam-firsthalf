@@ -2,7 +2,6 @@ import {
   JoinRoomProps,
   ReceiveMessageProps,
   SendMessageProps,
-  UpdateStatusProps,
 } from '@/types/socket.type'
 import io, { Socket } from 'socket.io-client'
 
@@ -44,9 +43,7 @@ export const updateStatus = ({
   socket?.emit('updateStatus', { status, roomId })
 }
 
-export const onStatusUpdate = (
-  callback: (data: { status: string }) => void
-) => {
+export const onStatusUpdate = (callback: (status: string) => void) => {
   initializeSocket()
   socket?.on('statusUpdated', callback)
 }
