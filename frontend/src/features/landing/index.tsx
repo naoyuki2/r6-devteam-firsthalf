@@ -57,9 +57,11 @@ export const LandingClient = () => {
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
                 <GeoAlt size={24} />
-                <Card.Title className="h5 fw-bold">魅力をかく①</Card.Title>
+                <Card.Title className="h5 fw-bold">
+                  現地に行かなくても買える①
+                </Card.Title>
                 <Card.Text className="text-secondary">
-                  ○○○○○○○○○○○○○○○○○○します。
+                  実際に現地に行かなくても買える。
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -68,9 +70,9 @@ export const LandingClient = () => {
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
                 <Cart size={24} />
-                <Card.Title className="h5 fw-bold">魅力をかく②</Card.Title>
+                <Card.Title className="h5 fw-bold">依頼作成機能②</Card.Title>
                 <Card.Text className="text-secondary">
-                  ○○○○○○○○○○○○○○○○○○します。
+                  欲しいもの依頼できる
                 </Card.Text>
               </Card.Body>
             </Card>
@@ -79,9 +81,9 @@ export const LandingClient = () => {
             <Card className="h-100 shadow-sm border-0 bg-white">
               <Card.Body>
                 <TrainLightrailFront size={24} />
-                <Card.Title className="h5 fw-bold">魅力をかく③</Card.Title>
+                <Card.Title className="h5 fw-bold">お金を稼ぐ③</Card.Title>
                 <Card.Text className="text-secondary">
-                  ○○○○○○○○○○○○○○○○○○します。
+                  旅行行くついでにお金を稼げます。
                 </Card.Text>
               </Card.Body>
             </Card>
