@@ -54,7 +54,12 @@ export const ChatMessage = ({
                       wordBreak: 'break-word',
                     }}
                   >
-                    {msg.body}
+                    {msg.body.split('\n').map((line, index) => (
+                      <span key={index}>
+                        {line}
+                        <br />
+                      </span>
+                    ))}
                   </div>
                 </div>
                 <div
