@@ -23,6 +23,7 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
     /^\/request\/\d+$/.test(pathname) ||
     /^\/user\/\d+$/.test(pathname) ||
     '/search' === pathname ||
+    '/request' === pathname ||
     /^\/chat\/[a-zA-Z0-9-]+$/.test(pathname)
 
   const isSearchShow = '/home' === pathname

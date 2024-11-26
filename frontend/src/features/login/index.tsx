@@ -11,6 +11,7 @@ import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 import { Form } from 'react-bootstrap'
+import { HouseDoor } from 'react-bootstrap-icons'
 
 type Form = {
   email: {
@@ -98,6 +99,15 @@ export const LoginClient = () => {
           href="/signup"
           className="mt-3"
         />
+        <div className="mt-4 text-center">
+          <a
+            href="/home"
+            className="text-decoration-none text-dark d-flex align-items-center justify-content-center"
+          >
+            <HouseDoor className="me-2" />
+            ホームに戻る
+          </a>
+        </div>
       </Form>
     </>
   )
