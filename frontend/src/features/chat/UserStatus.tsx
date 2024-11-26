@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { PersonCircle } from 'react-bootstrap-icons'
 
 type UserStatusProps = {
-  initialCurrentUser: RoomUser
+  currentUser: RoomUser
   otherUser: RoomUser
   status: string
   onAgree: () => void
@@ -14,37 +14,13 @@ type UserStatusProps = {
 }
 
 export const UserStatus = ({
-  initialCurrentUser,
+  currentUser,
   otherUser,
   status,
   onAgree,
   onReceive,
   onSendMessage,
 }: UserStatusProps) => {
-  const [currentUser, setCurrentUser] = useState<RoomUser>(initialCurrentUser)
-  const handleAgree = () => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      isAgreed: true,
-    }))
-    onAgree()
-    onSendMessage(
-      `依頼の内容に同意しました。
-      ※このメッセージは自動で送信されています`
-    )
-  }
-
-  const handleReceive = () => {
-    setCurrentUser((prev) => ({
-      ...prev,
-      isReceived: true,
-    }))
-    onReceive()
-    onSendMessage(
-      `依頼の品を受け取りました。
-      ※このメッセージは自動で送信されています`
-    )
-  }
   return (
     <>
       <AppLabel text="ユーザーのステータス" />
@@ -52,8 +28,8 @@ export const UserStatus = ({
         <CurrentUserStatus
           user={currentUser}
           status={status}
-          onAgree={handleAgree}
-          onReceive={handleReceive}
+          onAgree={onAgree}
+          onReceive={onReceive}
           onSendMessage={onSendMessage}
         />
         <OtherUserStatus user={otherUser} status={status} />

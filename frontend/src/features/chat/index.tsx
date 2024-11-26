@@ -10,7 +10,7 @@ import {
   updateStatus,
 } from '@/utils/socket'
 import { Container } from 'react-bootstrap'
-import { GetByRoomIdRes, Message } from '@/types'
+import { GetByRoomIdRes, Message, RoomUser } from '@/types'
 import { ChatMessage } from './ChatMessage'
 import { FeedbackForm } from './FeedbackForm'
 import { UserStatus } from './UserStatus'
@@ -20,6 +20,7 @@ import { fetchWithToken } from '@/lib/axios'
 const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [messages, setMessages] = useState<Message[]>(room.messages)
   const [status, setStatus] = useState<string>(room.request.status)
+  const [currentUser, setCurrentUser] = useState<RoomUser>(room.currentUser)
 
   useEffect(() => {
     joinRoom({ roomId: room.id })
@@ -39,7 +40,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
     await handleSendMessage({
       inputMessage,
       roomId: room.id,
-      currentUser: room.currentUser.user,
+      currentUser: currentUser.user,
     })
   }
 
@@ -51,6 +52,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/agreed`,
     })
+    setCurrentUser((prev) => ({
+      ...prev,
+      isAgreed: true,
+    }))
     if (!agreeRes?.data.isBothAgreed) return
 
     await fetchWithToken({
@@ -65,6 +70,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/received`,
     })
+    setCurrentUser((prev) => ({
+      ...prev,
+      isReceived: true,
+    }))
     if (!receiveRes?.data.isBothReceived) return
 
     await fetchWithToken({
@@ -79,6 +88,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/feedback`,
     })
+    setCurrentUser((prev) => ({
+      ...prev,
+      isFeedback: true,
+    }))
     if (!feedbackRes?.data.success) return
 
     await fetchWithToken({
@@ -96,7 +109,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       />
       <Container>
         <UserStatus
-          initialCurrentUser={room.currentUser}
+          currentUser={currentUser}
           otherUser={room.otherUser}
           status={status}
           onAgree={handleAgree}
@@ -105,7 +118,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
         />
         <ChatMessage
           messages={messages}
-          currentUserId={room.currentUser.user.id}
+          currentUserId={currentUser.user.id}
           onSendMessage={sendMessage}
         />
         <FeedbackForm onFeedback={handleFeedback} status={status} />
