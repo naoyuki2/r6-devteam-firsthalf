@@ -6,6 +6,11 @@ import { Request } from '@/types'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
 
+// 三桁区切り
+const formatCurrency = (value: number) => {
+  return new Intl.NumberFormat('ja-JP').format(value)
+}
+
 export default async function RequestDetail({
   params,
 }: {
@@ -45,16 +50,40 @@ export default async function RequestDetail({
         </p>
         <div className="d-flex justify-content-center">
           <div className="w-75">
-            {request.items.map((item) => (
-              <div
-                key={item.id}
-                className="d-flex justify-content-between mb-2"
-              >
-                <p className="me-4">商品名: {item.name}</p>
-                <p className="me-4">個数: {item.quantity}</p>
-                <p>価格: ¥{item.price}</p>
-              </div>
-            ))}
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                  <th>商品名</th>
+                  <th>単価</th>
+                  <th>個数</th>
+                  <th>金額</th>
+                </tr>
+              </thead>
+              <tbody>
+                {request.items.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.name}</td>
+                    <td>¥{formatCurrency(item.price)}</td>
+                    <td>{item.quantity}</td>
+                    <td>¥{formatCurrency(item.price * item.quantity)}</td>
+                  </tr>
+                ))}
+                <tr>
+                  <td colSpan={3} className="text-end fw-bold">
+                    合計
+                  </td>
+                  <td>
+                    ¥
+                    {formatCurrency(
+                      request.items.reduce(
+                        (total, item) => total + item.price * item.quantity,
+                        0
+                      )
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
