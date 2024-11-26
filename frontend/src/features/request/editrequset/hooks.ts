@@ -1,5 +1,5 @@
 import useSWR from 'swr'
-import { fetcher, fetchWithToken } from '@/lib/axios'
+import { fetcher } from '@/lib/axios'
 import { CreateRequestForm } from '@/types'
 
 export const useRequest = (
