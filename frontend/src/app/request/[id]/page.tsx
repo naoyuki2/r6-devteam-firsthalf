@@ -48,43 +48,41 @@ export default async function RequestDetail({
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
           欲しいもの
         </p>
-        <div className="d-flex justify-content-center">
-          <div className="w-75">
-            <table className="table table-bordered">
-              <thead>
-                <tr>
-                  <th>商品名</th>
-                  <th>単価</th>
-                  <th>個数</th>
-                  <th>金額</th>
+        <div className="ms-4">
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>商品名</th>
+                <th>単価</th>
+                <th>個数</th>
+                <th>金額</th>
+              </tr>
+            </thead>
+            <tbody>
+              {request.items.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.name}</td>
+                  <td>¥{formatCurrency(item.price)}</td>
+                  <td>{item.quantity}</td>
+                  <td>¥{formatCurrency(item.price * item.quantity)}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {request.items.map((item) => (
-                  <tr key={item.id}>
-                    <td>{item.name}</td>
-                    <td>¥{formatCurrency(item.price)}</td>
-                    <td>{item.quantity}</td>
-                    <td>¥{formatCurrency(item.price * item.quantity)}</td>
-                  </tr>
-                ))}
-                <tr>
-                  <td colSpan={3} className="text-end fw-bold">
-                    合計
-                  </td>
-                  <td>
-                    ¥
-                    {formatCurrency(
-                      request.items.reduce(
-                        (total, item) => total + item.price * item.quantity,
-                        0
-                      )
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+              ))}
+              <tr>
+                <td colSpan={3} className="text-end fw-bold">
+                  合計
+                </td>
+                <td>
+                  ¥
+                  {formatCurrency(
+                    request.items.reduce(
+                      (total, item) => total + item.price * item.quantity,
+                      0
+                    )
+                  )}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
