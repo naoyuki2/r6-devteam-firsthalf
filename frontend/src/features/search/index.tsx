@@ -15,9 +15,9 @@ export function SearchClient() {
   const [selectedArea, setSelectedArea] = useState<Area | undefined>(undefined)
 
   const handleClose = () => setSelectedArea(undefined)
-
   return (
     <>
+      <p>購入場所</p>
       {AREA_BUTTONS.map((button, index) => (
         <AppButton
           key={index}
