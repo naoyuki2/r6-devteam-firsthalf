@@ -120,15 +120,11 @@ const EditModal: React.FC<EditModalProps> = ({
     }
     try {
       const token = getItem('token')
-      const res = await apiClient.post(
-        `/draft_requests/${draftRequest.id}/propose`,
-        args,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      await apiClient.post(`/draft_requests/${draftRequest.id}/propose`, args, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       const createMessageArgs = {
         body: '依頼を更新しました。右上のアイコンからご確認をお願いします。（このメッセージは自動送信されました。）',
         roomId: draftRequest.room.id,
@@ -142,9 +138,7 @@ const EditModal: React.FC<EditModalProps> = ({
   }
 
   const handleReject = async () => {
-    const res = await apiClient.delete(
-      `/draft_requests/${draftRequest.id}/reject`
-    )
+    await apiClient.delete(`/draft_requests/${draftRequest.id}/reject`)
     const createMessageArgs = {
       body: `更新された依頼内容は拒否されました。
       （このメッセージは自動送信されました。）`,
@@ -156,9 +150,7 @@ const EditModal: React.FC<EditModalProps> = ({
     window.location.reload()
   }
   const handleApprove = async () => {
-    const res = await apiClient.delete(
-      `/draft_requests/${draftRequest.room.id}/approve`
-    )
+    await apiClient.delete(`/draft_requests/${draftRequest.room.id}/approve`)
     const createMessageArgs = {
       body: `更新された依頼内容を承認しました。
       更新された依頼内容で問題なければ
@@ -189,7 +181,7 @@ const EditModal: React.FC<EditModalProps> = ({
         )}
       </Modal.Body>
       <Modal.Footer>
-        {otherRole === 'requester' && !isEdit ? (
+        {otherRole === 'requester' && !draftRequest.action ? (
           <>
             <AppButton
               variant="danger"
