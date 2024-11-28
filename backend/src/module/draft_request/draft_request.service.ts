@@ -109,6 +109,7 @@ export class DraftRequestService {
         ...item,
         id: undefined,
       })),
+      action: false,
       created_at: undefined,
       updated_at: undefined,
     })
@@ -118,7 +119,6 @@ export class DraftRequestService {
 
   _requestToDraftRequest(room: Room): DraftRequest {
     const draftRequest = new DraftRequest()
-    console.log(room.request)
     draftRequest.title = room.request.title
     draftRequest.location_prefecture = room.request.location_prefecture
     draftRequest.location_details = room.request.location_details

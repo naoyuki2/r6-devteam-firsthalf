@@ -1,6 +1,5 @@
 'use client'
 
-import TopNav from '@/component/TopNav'
 import { useEffect, useState } from 'react'
 import {
   disconnectSocket,
@@ -16,6 +15,7 @@ import { FeedbackForm } from './FeedbackForm'
 import { UserStatus } from './UserStatus'
 import { handleSendMessage } from './utils'
 import { fetchWithToken } from '@/lib/axios'
+import ChatTopNav from './ChatTopNav'
 
 const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [messages, setMessages] = useState<Message[]>(room.messages)
@@ -102,9 +102,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
 
   return (
     <>
-      <TopNav
+      <ChatTopNav
         draftRequest={room.draftRequest}
         otherRole={room.otherUser.role}
+        currentUser={currentUser.user}
       />
       <Container>
         <UserStatus

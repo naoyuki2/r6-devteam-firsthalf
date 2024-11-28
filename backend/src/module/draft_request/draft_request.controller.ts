@@ -1,6 +1,14 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post, Delete, Get } from 'routing-controllers'
+import {
+  Controller,
+  Req,
+  Res,
+  Post,
+  Delete,
+  Get,
+  Authorized,
+} from 'routing-controllers'
 import {
   ApproveEndpoint,
   ApproveParam,
@@ -58,6 +66,7 @@ export class DraftRequestController {
     })
   }
 
+  @Authorized()
   @Post(ProposeUpEndpoint)
   async proposeUpdate(
     @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,
