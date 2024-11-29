@@ -1,7 +1,6 @@
 import { AppButton } from '@/component/AppButton'
 import { AppLabel } from '@/component/AppLabel'
 import { RoomUser } from '@/types'
-import { useState } from 'react'
 import { PersonCircle } from 'react-bootstrap-icons'
 
 type UserStatusProps = {
@@ -71,7 +70,7 @@ const CurrentUserStatus = ({
 
   const displayText =
     role === '依頼者'
-      ? !action
+      ? action === false
         ? approval
         : status === 'pending'
         ? agree
@@ -82,7 +81,7 @@ const CurrentUserStatus = ({
         : status === 'completed'
         ? completed
         : ''
-      : !action
+      : action === false
       ? approval
       : status === 'pending'
       ? agree
@@ -95,13 +94,13 @@ const CurrentUserStatus = ({
       : ''
 
   const getButtonConfig = () => {
-    if (!action && role === '運び手') {
+    if (action === false && role === '運び手') {
       return {
         text: '開く',
         onClick: onOpenModal,
         disabled: false,
       }
-    } else if (!action && role === '依頼者') {
+    } else if (action === false && role === '依頼者') {
       return {}
     }
 
@@ -185,7 +184,7 @@ const OtherUserStatus = ({
 
   const displayText =
     role === '依頼者'
-      ? !action
+      ? action === false
         ? approval
         : status === 'pending'
         ? agree
@@ -196,7 +195,7 @@ const OtherUserStatus = ({
         : status === 'completed'
         ? completed
         : ''
-      : !action
+      : action === false
       ? approval
       : status === 'pending'
       ? agree
