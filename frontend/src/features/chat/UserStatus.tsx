@@ -9,6 +9,7 @@ type UserStatusProps = {
   status: string
   onAgree: () => void
   onReceive: () => void
+  onSendMessage: (message: string) => void
 }
 
 export const UserStatus = ({
@@ -17,6 +18,7 @@ export const UserStatus = ({
   status,
   onAgree,
   onReceive,
+  onSendMessage,
 }: UserStatusProps) => {
   return (
     <>
@@ -27,6 +29,7 @@ export const UserStatus = ({
           status={status}
           onAgree={onAgree}
           onReceive={onReceive}
+          onSendMessage={onSendMessage}
         />
         <OtherUserStatus user={otherUser} status={status} />
       </div>
@@ -39,36 +42,43 @@ const CurrentUserStatus = ({
   status,
   onAgree,
   onReceive,
+  onSendMessage,
 }: {
   user: RoomUser
   status: string
   onAgree: () => void
   onReceive: () => void
+  onSendMessage: (message: string) => void
 }) => {
-  console.log(user)
-  console.log(status)
   const role = user.role === 'requester' ? '依頼者' : '運び手'
   const agree = user.isAgreed ? '合意しました' : '合意していません'
   const receive = user.isReceived ? '受け取りました' : '受け取っていません'
   const feedback = user.isFeedback ? '評価しました' : '評価していません'
+  const completed = '工程が完了しました'
 
   const getButtonConfig = () => {
     if (status === 'pending' && !user.isAgreed) {
       return {
         text: '合意',
-        onClick: onAgree,
+        onClick: () => {
+          onAgree()
+          onSendMessage(
+            `依頼の内容に同意しました。
+          ※このメッセージは自動で送信されています`
+          )
+        },
         disabled: false,
       }
     } else if (status === 'agreed' && !user.isReceived) {
       return {
         text: '完了',
-        onClick: onReceive,
-        disabled: false,
-      }
-    } else if (status === 'received' && !user.isFeedback) {
-      return {
-        text: '評価',
-        onClick: () => console.log('評価処理'),
+        onClick: () => {
+          onReceive()
+          onSendMessage(
+            `依頼の品を受け取りました。
+          ※このメッセージは自動で送信されています`
+          )
+        },
         disabled: false,
       }
     }
@@ -91,6 +101,7 @@ const CurrentUserStatus = ({
           {status === 'pending' && agree}
           {status === 'agreed' && receive}
           {status === 'received' && feedback}
+          {status === 'completed' && completed}
         </span>
       </div>
       {buttonConfig.text ? (
@@ -123,6 +134,7 @@ const OtherUserStatus = ({
   const agree = user.isAgreed ? '合意しました' : '合意していません'
   const receive = user.isReceived ? '受け取りました' : '受け取っていません'
   const feedback = user.isFeedback ? '評価しました' : '評価していません'
+  const completed = '工程が完了しました'
 
   return (
     <div className="border border-secondary rounded p-2 d-flex align-items-center justify-content-between">
@@ -138,6 +150,7 @@ const OtherUserStatus = ({
           {status === 'pending' && agree}
           {status === 'agreed' && receive}
           {status === 'received' && feedback}
+          {status === 'completed' && completed}
         </span>
       </div>
       <AppButton

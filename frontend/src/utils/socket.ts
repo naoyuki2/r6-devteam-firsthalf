@@ -32,6 +32,21 @@ export const receiveMessage = (
   socket?.on('receiveMessage', callback)
 }
 
+export const updateStatus = ({
+  status,
+  roomId,
+}: {
+  status: string
+  roomId: string
+}) => {
+  initializeSocket()
+  socket?.emit('updateStatus', { status, roomId })
+}
+
+export const onStatusUpdate = (callback: (status: string) => void) => {
+  initializeSocket()
+  socket?.on('statusUpdated', callback)
+}
 export const disconnectSocket = () => {
   if (socket) {
     socket.disconnect()

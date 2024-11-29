@@ -10,6 +10,7 @@ type AppTextAreaProps = {
   labelClassName?: string
   controlClassName?: string
   rows?: number
+  disabled?: boolean
 }
 
 export const AppTextArea = ({
