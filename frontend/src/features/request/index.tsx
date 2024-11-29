@@ -19,7 +19,7 @@ const INITIAL_FORM: CreateRequestForm = {
   delivery_details: '',
   description: '',
   status: 'pending',
-  items: [{ id: Date.now(), name: '', quantity: 1, price: '' }], // id: Date.now() でユニークなIDを生成
+  items: [{ id: Date.now(), name: '', quantity: 1, price: 0 }], // id: Date.now() でユニークなIDを生成
 }
 
 export default function RequestClient() {
@@ -43,7 +43,7 @@ export default function RequestClient() {
     value: string | number
   ) => {
     const updatedItems = [...form.items]
-    if (field === 'quantity') {
+    if (field === 'quantity' || field === 'price') {
       updatedItems[index][field] = value as number
     } else {
       updatedItems[index][field] = value as string
@@ -56,7 +56,7 @@ export default function RequestClient() {
       ...prev,
       items: [
         ...prev.items,
-        { id: Date.now(), name: '1', quantity: 1, price: '' },
+        { id: Date.now(), name: '1', quantity: 1, price: 0 },
       ],
     }))
   }
@@ -70,7 +70,7 @@ export default function RequestClient() {
 
   // idが未使用であるESLint警告が出るが、重大な問題ではないためコメントアウトで無視
   const removeIdFromItems = (
-    items: { id: number; name: string; quantity: number; price: string }[]
+    items: { id: number; name: string; quantity: number; price: number }[]
   ) => {
     return items.map(({ id, ...rest }) => rest) // eslint-disable-line @typescript-eslint/no-unused-vars
   }

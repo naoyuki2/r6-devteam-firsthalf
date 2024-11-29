@@ -45,6 +45,8 @@ export const fetchWithToken = async ({
           Authorization: `Bearer ${token}`,
         },
       })
+    case 'DELETE':
+      return apiClient.delete(url)
   }
 }
 

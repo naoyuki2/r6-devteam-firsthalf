@@ -18,7 +18,7 @@ const INITIAL_FORM: CreateRequestForm = {
   delivery_details: '',
   description: '',
   status: 'pending',
-  items: [{ id: Date.now(), name: '', quantity: 1, price: '' }], // id: Date.now() でユニークなIDを生成
+  items: [{ id: Date.now(), name: '', quantity: 1, price: 0 }], // id: Date.now() でユニークなIDを生成
 }
 
 export default function EditRequestClient() {
@@ -51,7 +51,7 @@ export default function EditRequestClient() {
     value: string | number
   ) => {
     const updatedItems = [...form.items]
-    if (field === 'quantity') {
+    if (field === 'quantity' || field === 'price') {
       updatedItems[index][field] = value as number
     } else {
       updatedItems[index][field] = value as string
@@ -64,7 +64,7 @@ export default function EditRequestClient() {
       ...prev,
       items: [
         ...prev.items,
-        { id: Date.now(), name: '', quantity: 1, price: '' },
+        { id: Date.now(), name: '', quantity: 1, price: 0 },
       ],
     }))
   }

@@ -7,18 +7,22 @@ type UserStatusProps = {
   currentUser: RoomUser
   otherUser: RoomUser
   status: string
+  action: boolean
   onAgree: () => void
   onReceive: () => void
   onSendMessage: (message: string) => void
+  onOpenModal: () => void
 }
 
 export const UserStatus = ({
   currentUser,
   otherUser,
+  action,
   status,
   onAgree,
   onReceive,
   onSendMessage,
+  onOpenModal,
 }: UserStatusProps) => {
   return (
     <>
@@ -27,11 +31,13 @@ export const UserStatus = ({
         <CurrentUserStatus
           user={currentUser}
           status={status}
+          action={action}
           onAgree={onAgree}
           onReceive={onReceive}
           onSendMessage={onSendMessage}
+          onOpenModal={onOpenModal}
         />
-        <OtherUserStatus user={otherUser} status={status} />
+        <OtherUserStatus user={otherUser} status={status} action={action} />
       </div>
     </>
   )
@@ -40,23 +46,64 @@ export const UserStatus = ({
 const CurrentUserStatus = ({
   user,
   status,
+  action,
   onAgree,
   onReceive,
   onSendMessage,
+  onOpenModal,
 }: {
   user: RoomUser
+  action: boolean
   status: string
   onAgree: () => void
   onReceive: () => void
   onSendMessage: (message: string) => void
+  onOpenModal: () => void
 }) => {
   const role = user.role === 'requester' ? '依頼者' : '運び手'
+  const approval =
+    role === '運び手' ? '依頼を確認してください' : '依頼を更新しました'
   const agree = user.isAgreed ? '合意しました' : '合意していません'
   const receive = user.isReceived ? '受け取りました' : '受け取っていません'
   const feedback = user.isFeedback ? '評価しました' : '評価していません'
   const completed = '工程が完了しました'
 
+  const displayText =
+    role === '依頼者'
+      ? action === false
+        ? approval
+        : status === 'pending'
+        ? agree
+        : status === 'agreed'
+        ? receive
+        : status === 'received'
+        ? feedback
+        : status === 'completed'
+        ? completed
+        : ''
+      : action === false
+      ? approval
+      : status === 'pending'
+      ? agree
+      : status === 'agreed'
+      ? receive
+      : status === 'received'
+      ? feedback
+      : status === 'completed'
+      ? completed
+      : ''
+
   const getButtonConfig = () => {
+    if (action === false && role === '運び手') {
+      return {
+        text: '開く',
+        onClick: onOpenModal,
+        disabled: false,
+      }
+    } else if (action === false && role === '依頼者') {
+      return {}
+    }
+
     if (status === 'pending' && !user.isAgreed) {
       return {
         text: '合意',
@@ -64,7 +111,7 @@ const CurrentUserStatus = ({
           onAgree()
           onSendMessage(
             `依頼の内容に同意しました。
-          ※このメッセージは自動で送信されています`
+                （このメッセージは自動送信されました。）`
           )
         },
         disabled: false,
@@ -76,7 +123,7 @@ const CurrentUserStatus = ({
           onReceive()
           onSendMessage(
             `依頼の品を受け取りました。
-          ※このメッセージは自動で送信されています`
+                （このメッセージは自動送信されました。）`
           )
         },
         disabled: false,
@@ -97,12 +144,7 @@ const CurrentUserStatus = ({
         </div>
       </div>
       <div>
-        <span>
-          {status === 'pending' && agree}
-          {status === 'agreed' && receive}
-          {status === 'received' && feedback}
-          {status === 'completed' && completed}
-        </span>
+        <span>{displayText}</span>
       </div>
       {buttonConfig.text ? (
         <AppButton
@@ -126,15 +168,44 @@ const CurrentUserStatus = ({
 const OtherUserStatus = ({
   user,
   status,
+  action,
 }: {
   user: RoomUser
   status: string
+  action: boolean
 }) => {
   const role = user.role === 'requester' ? '依頼者' : '運び手'
+  const approval =
+    role === '運び手' ? '依頼を確認してください' : '依頼を更新しました'
   const agree = user.isAgreed ? '合意しました' : '合意していません'
   const receive = user.isReceived ? '受け取りました' : '受け取っていません'
   const feedback = user.isFeedback ? '評価しました' : '評価していません'
   const completed = '工程が完了しました'
+
+  const displayText =
+    role === '依頼者'
+      ? action === false
+        ? approval
+        : status === 'pending'
+        ? agree
+        : status === 'agreed'
+        ? receive
+        : status === 'received'
+        ? feedback
+        : status === 'completed'
+        ? completed
+        : ''
+      : action === false
+      ? approval
+      : status === 'pending'
+      ? agree
+      : status === 'agreed'
+      ? receive
+      : status === 'received'
+      ? feedback
+      : status === 'completed'
+      ? completed
+      : ''
 
   return (
     <div className="border border-secondary rounded p-2 d-flex align-items-center justify-content-between">
@@ -145,14 +216,8 @@ const OtherUserStatus = ({
           <span className="text-muted">{role}</span>
         </div>
       </div>
-      <div>
-        <span>
-          {status === 'pending' && agree}
-          {status === 'agreed' && receive}
-          {status === 'received' && feedback}
-          {status === 'completed' && completed}
-        </span>
-      </div>
+      <span>{displayText}</span>
+      {/* 隙間うめようのボタン、画面に表示はされません */}
       <AppButton
         className="invisible"
         variant="outline-success"

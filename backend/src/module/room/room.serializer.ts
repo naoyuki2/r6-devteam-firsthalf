@@ -1,5 +1,6 @@
 import { DraftRequest } from '../draft_request/draft_request.entity'
 import { messageSerializer } from '../message/message.serializer'
+import { Request } from '../request/request.entity'
 import { requestSerializer } from '../request/request.serializer'
 import { RoomUser } from '../room_user/room_user.entity'
 import { room_userSerializer } from '../room_user/room_user.serializer'
@@ -24,7 +25,7 @@ export const roomSerializer = (
 
 export const getByRoomIdSerializer = (
   room: Room,
-  draftRequest: DraftRequest,
+  draftRequest: DraftRequest | Request,
   currentUserId: number,
 ) => {
   const otherUser = room.room_users.find(

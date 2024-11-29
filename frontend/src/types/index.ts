@@ -55,14 +55,14 @@ export type CreateRequestForm = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending'
-  items: { id: number; name: string; quantity: number; price: string }[]
+  status: string
+  items: { id: number; name: string; quantity: number; price: number }[]
 }
 
 export type Item = {
   name: string
   quantity: number
-  price: string
+  price: number
 }
 
 export type CreateRoomArgs = {
@@ -126,6 +126,20 @@ export type DraftRequest = {
     quantity: number
     price: number
   }[]
+  room: {
+    id: string
+    created_at: Date
+    isClosed: boolean
+  }
   action: boolean
-  roomId: string
+}
+
+export type ProposeDraftRequestArgs = {
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  draft_items: Item[]
 }

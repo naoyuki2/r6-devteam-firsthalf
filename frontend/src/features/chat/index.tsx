@@ -1,6 +1,5 @@
 'use client'
 
-import TopNav from '@/component/TopNav'
 import { useEffect, useState } from 'react'
 import {
   disconnectSocket,
@@ -16,11 +15,16 @@ import { FeedbackForm } from './FeedbackForm'
 import { UserStatus } from './UserStatus'
 import { handleSendMessage } from './utils'
 import { fetchWithToken } from '@/lib/axios'
+import ChatTopNav from './ChatTopNav'
 
 const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [messages, setMessages] = useState<Message[]>(room.messages)
   const [status, setStatus] = useState<string>(room.request.status)
   const [currentUser, setCurrentUser] = useState<RoomUser>(room.currentUser)
+
+  const [showModal, setShowModal] = useState(false)
+  const handleOpenModal = () => setShowModal(true)
+  const handleCloseModal = () => setShowModal(false)
 
   useEffect(() => {
     joinRoom({ roomId: room.id })
@@ -60,6 +64,11 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
     await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
+    })
+
+    await fetchWithToken({
+      method: 'DELETE',
+      url: `/draft_requests/${room.id}/delete`,
     })
     updateStatus({ status: 'agreed', roomId: room.id })
   }
@@ -102,18 +111,26 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
 
   return (
     <>
-      <TopNav
-        draftRequest={room.draftRequest}
+      <ChatTopNav
+        draftRequest={
+          room.request.status === 'pending' ? room.draftRequest : room.request
+        }
         otherRole={room.otherUser.role}
+        currentUser={currentUser.user}
+        onOpenModal={handleOpenModal}
+        onCloseModal={handleCloseModal}
+        showModal={showModal}
       />
       <Container>
         <UserStatus
           currentUser={currentUser}
           otherUser={room.otherUser}
+          action={room.draftRequest.action}
           status={status}
           onAgree={handleAgree}
           onReceive={handleReceive}
           onSendMessage={sendMessage}
+          onOpenModal={handleOpenModal}
         />
         <ChatMessage
           messages={messages}
