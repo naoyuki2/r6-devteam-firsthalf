@@ -71,6 +71,13 @@ export class RoomController {
     const room = await this.roomService.getByRoomId(roomId)
     const draftRequest = await this.draftRequestService.getByRoomId(roomId)
 
+    if (draftRequest == undefined) {
+      const request = await this.requestService.getByRequestId(room.request.id)
+      return res.json({
+        room: getByRoomIdSerializer(room, request, req.currentUserId!),
+      })
+    }
+
     return res.json({
       room: getByRoomIdSerializer(room, draftRequest, req.currentUserId!),
     })

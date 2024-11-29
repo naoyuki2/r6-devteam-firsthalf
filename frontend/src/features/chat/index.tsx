@@ -22,6 +22,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [status, setStatus] = useState<string>(room.request.status)
   const [currentUser, setCurrentUser] = useState<RoomUser>(room.currentUser)
 
+  const [showModal, setShowModal] = useState(false)
+  const handleOpenModal = () => setShowModal(true)
+  const handleCloseModal = () => setShowModal(false)
+
   useEffect(() => {
     joinRoom({ roomId: room.id })
     onStatusUpdate((status: string) => {
@@ -60,6 +64,11 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
     await fetchWithToken({
       method: 'PATCH',
       url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
+    })
+
+    await fetchWithToken({
+      method: 'DELETE',
+      url: `/draft_requests/${room.id}/delete`,
     })
     updateStatus({ status: 'agreed', roomId: room.id })
   }
@@ -103,18 +112,25 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   return (
     <>
       <ChatTopNav
-        draftRequest={room.draftRequest}
+        draftRequest={
+          room.request.status === 'pending' ? room.draftRequest : room.request
+        }
         otherRole={room.otherUser.role}
         currentUser={currentUser.user}
+        onOpenModal={handleOpenModal}
+        onCloseModal={handleCloseModal}
+        showModal={showModal}
       />
       <Container>
         <UserStatus
           currentUser={currentUser}
           otherUser={room.otherUser}
+          action={room.draftRequest.action}
           status={status}
           onAgree={handleAgree}
           onReceive={handleReceive}
           onSendMessage={sendMessage}
+          onOpenModal={handleOpenModal}
         />
         <ChatMessage
           messages={messages}

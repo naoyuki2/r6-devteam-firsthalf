@@ -61,6 +61,8 @@ export class DraftRequestController {
     const roomId = req.params.roomId
     const draftRequest = await this.draft_requestService.getByRoomId(roomId)
 
+    if (draftRequest == undefined || null) return
+
     return res.json({
       draft_request: draft_requestSerializer(draftRequest),
     })

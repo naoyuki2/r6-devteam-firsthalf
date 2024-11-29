@@ -6,6 +6,7 @@ import {
   CreateRequestForm,
   DraftRequest,
   ProposeDraftRequestArgs,
+  Request,
 } from '@/types'
 import { Col, Form, Row } from 'react-bootstrap'
 import { PREFECTURES } from '@/features/request/constants'
@@ -19,7 +20,7 @@ import { User } from '@/lib/jotai/userState'
 type EditModalProps = {
   show: boolean
   onClose: () => void
-  draftRequest: DraftRequest
+  draftRequest: DraftRequest | Request
   otherRole: string
   currentUser: User | null
 }
@@ -28,7 +29,7 @@ type Item = {
   id: number
   name: string
   quantity: number
-  price: string
+  price: number
 }
 
 const EditModal: React.FC<EditModalProps> = ({
@@ -44,20 +45,50 @@ const EditModal: React.FC<EditModalProps> = ({
     setIsEdit(!isEdit)
   }
 
-  const [form, setForm] = useState<CreateRequestForm>({
-    title: draftRequest.title,
-    location_prefecture: draftRequest.location_prefecture,
-    location_details: draftRequest.location_details,
-    delivery_prefecture: draftRequest.delivery_prefecture,
-    delivery_details: draftRequest.delivery_details,
-    description: draftRequest.description,
-    status: 'pending',
-    items: draftRequest.draft_items.map((item) => ({
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-    })),
+  const isDraftRequest = (
+    request: Request | DraftRequest
+  ): request is DraftRequest => {
+    return 'room' in request && 'action' in request
+  }
+
+  const items = isDraftRequest(draftRequest)
+    ? draftRequest.draft_items
+    : draftRequest.items
+
+  const [form, setForm] = useState<CreateRequestForm>(() => {
+    if (isDraftRequest(draftRequest)) {
+      return {
+        title: draftRequest.title,
+        location_prefecture: draftRequest.location_prefecture,
+        location_details: draftRequest.location_details,
+        delivery_prefecture: draftRequest.delivery_prefecture,
+        delivery_details: draftRequest.delivery_details,
+        description: draftRequest.description,
+        status: 'pending',
+        items: draftRequest.draft_items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+      }
+    } else {
+      return {
+        title: draftRequest.title,
+        location_prefecture: draftRequest.location_prefecture,
+        location_details: draftRequest.location_details,
+        delivery_prefecture: draftRequest.delivery_prefecture,
+        delivery_details: draftRequest.delivery_details,
+        description: draftRequest.description,
+        status: draftRequest.status,
+        items: draftRequest.items.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+      }
+    }
   })
 
   const handleInputChange = (
@@ -109,6 +140,7 @@ const EditModal: React.FC<EditModalProps> = ({
   }
 
   const proposeDraftRequest = async () => {
+    if (!isDraftRequest(draftRequest)) return
     const args: ProposeDraftRequestArgs = {
       title: form.title,
       location_prefecture: form.location_prefecture,
@@ -138,10 +170,11 @@ const EditModal: React.FC<EditModalProps> = ({
   }
 
   const handleReject = async () => {
+    if (!isDraftRequest(draftRequest)) return
     await apiClient.delete(`/draft_requests/${draftRequest.id}/reject`)
     const createMessageArgs = {
-      body: `更新された依頼内容は拒否されました。
-      （このメッセージは自動送信されました。）`,
+      body: `更新された依頼内容は拒否されました。（このメッセージ
+      は自動送信されました。）`,
       roomId: draftRequest.room.id,
       userId: currentUser?.id,
     }
@@ -150,6 +183,7 @@ const EditModal: React.FC<EditModalProps> = ({
     window.location.reload()
   }
   const handleApprove = async () => {
+    if (!isDraftRequest(draftRequest)) return
     await apiClient.delete(`/draft_requests/${draftRequest.room.id}/approve`)
     const createMessageArgs = {
       body: `更新された依頼内容を承認しました。
@@ -177,70 +211,87 @@ const EditModal: React.FC<EditModalProps> = ({
             handleItemChange={handleItemChange}
           />
         ) : (
-          <NonEditModalBody draftRequest={draftRequest} />
+          <NonEditModalBody draftRequest={draftRequest} items={items} />
         )}
       </Modal.Body>
       <Modal.Footer>
-        {otherRole === 'requester' && !draftRequest.action ? (
+        {isDraftRequest(draftRequest) ? (
           <>
-            <AppButton
-              variant="danger"
-              className="text-white"
-              onClick={handleReject}
-              text="拒否"
-            />
-            <AppButton
-              variant="success"
-              className="text-white"
-              onClick={handleApprove}
-              text="承認"
-            />
-          </>
-        ) : (
-          <>
-            {otherRole === 'carrier' && (
+            {otherRole === 'requester' && !draftRequest.action ? (
               <>
-                {isEdit ? (
+                <AppButton
+                  variant="danger"
+                  className="text-white"
+                  onClick={handleReject}
+                  text="拒否"
+                />
+                <AppButton
+                  variant="success"
+                  className="text-white"
+                  onClick={handleApprove}
+                  text="承認"
+                />
+              </>
+            ) : (
+              <>
+                {otherRole === 'carrier' && (
+                  <>
+                    {isEdit ? (
+                      <AppButton
+                        variant="info"
+                        className="text-white"
+                        onClick={() => proposeDraftRequest()}
+                        text="保存する"
+                      />
+                    ) : (
+                      draftRequest.action && (
+                        <AppButton
+                          variant="info"
+                          className="text-white"
+                          onClick={handleEditToggle}
+                          text="編集する"
+                        />
+                      )
+                    )}
+                  </>
+                )}
+                {otherRole === 'requester' && isEdit && draftRequest.action && (
                   <AppButton
                     variant="info"
                     className="text-white"
-                    onClick={() => proposeDraftRequest()}
-                    text="保存する"
+                    onClick={handleEditToggle}
+                    text="編集する"
                   />
-                ) : (
-                  draftRequest.action && (
-                    <AppButton
-                      variant="info"
-                      className="text-white"
-                      onClick={handleEditToggle}
-                      text="編集する"
-                    />
-                  )
                 )}
+                <AppButton
+                  variant="secondary"
+                  className="text-white"
+                  onClick={onClose}
+                  text="閉じる"
+                />
               </>
             )}
-            {otherRole === 'requester' && isEdit && draftRequest.action && (
-              <AppButton
-                variant="info"
-                className="text-white"
-                onClick={handleEditToggle}
-                text="編集する"
-              />
-            )}
-            <AppButton
-              variant="secondary"
-              className="text-white"
-              onClick={onClose}
-              text="閉じる"
-            />
           </>
+        ) : (
+          <AppButton
+            variant="secondary"
+            className="text-white"
+            onClick={onClose}
+            text="閉じる"
+          />
         )}
       </Modal.Footer>
     </Modal>
   )
 }
 
-const NonEditModalBody = ({ draftRequest }: { draftRequest: DraftRequest }) => {
+const NonEditModalBody = ({
+  draftRequest,
+  items,
+}: {
+  draftRequest: DraftRequest | Request
+  items: Item[]
+}) => {
   return (
     <>
       <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
@@ -268,7 +319,7 @@ const NonEditModalBody = ({ draftRequest }: { draftRequest: DraftRequest }) => {
       </p>
       <div className="d-flex justify-content-center">
         <div className="w-75">
-          {draftRequest.draft_items.map((item) => (
+          {items.map((item) => (
             <div key={item.id} className="d-flex justify-content-between mb-2">
               <p className="me-4">{item.name}</p>
               <p className="me-4">{item.quantity}個</p>

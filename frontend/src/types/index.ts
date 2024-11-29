@@ -55,7 +55,7 @@ export type CreateRequestForm = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending'
+  status: string
   items: { id: number; name: string; quantity: number; price: number }[]
 }
 

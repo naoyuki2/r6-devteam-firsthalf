@@ -5,27 +5,29 @@ import Image from 'next/image'
 import logo from '../../../public/logo.png'
 import { ArrowLeft, PencilSquare } from 'react-bootstrap-icons'
 import { useRouter } from 'next/navigation'
-import { DraftRequest } from '@/types'
+import { DraftRequest, Request } from '@/types'
 import { User } from '@/lib/jotai/userState'
 import { AppLink } from '@/component/AppLink'
 import EditModal from './EditModal'
 
 type TopNavProps = {
-  draftRequest?: DraftRequest
+  draftRequest: DraftRequest | Request
   otherRole?: string
   currentUser?: User | null
+  onOpenModal: () => void
+  onCloseModal: () => void
+  showModal: boolean
 }
 
 export default function ChatTopNav({
   draftRequest,
   otherRole,
   currentUser,
+  onOpenModal,
+  onCloseModal,
+  showModal,
 }: TopNavProps) {
   const router = useRouter()
-  const [showModal, setShowModal] = useState(false)
-
-  const handleOpenModal = () => setShowModal(true)
-  const handleCloseModal = () => setShowModal(false)
 
   return (
     <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
@@ -43,7 +45,7 @@ export default function ChatTopNav({
           <Image src={logo} alt="logo" width={48} height={48} priority />
         </AppLink>
         <PencilSquare
-          onClick={handleOpenModal}
+          onClick={onOpenModal}
           style={{
             position: 'absolute',
             fontSize: '24px',
@@ -59,7 +61,7 @@ export default function ChatTopNav({
         currentUser != undefined && (
           <EditModal
             show={showModal}
-            onClose={handleCloseModal}
+            onClose={onCloseModal}
             draftRequest={draftRequest}
             otherRole={otherRole}
             currentUser={currentUser}
