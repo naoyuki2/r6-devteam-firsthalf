@@ -72,7 +72,7 @@ export const LandingClient = () => {
                 <Cart size={24} />
                 <Card.Title className="h5 fw-bold">依頼作成機能②</Card.Title>
                 <Card.Text className="text-secondary">
-                  欲しいもの依頼できる
+                  欲しいものを依頼できる
                 </Card.Text>
               </Card.Body>
             </Card>
