@@ -1,7 +1,7 @@
 'use client'
 
 import { RequestCard } from '@/component/RequestCard'
-import { Container, Spinner, Card } from 'react-bootstrap'
+import { Container, Spinner, Card, Row, Col, Badge } from 'react-bootstrap'
 import { useRequestList } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
 import { useSearchParams } from 'next/navigation'
@@ -45,6 +45,19 @@ export const HomeClient = () => {
 
   return (
     <Container>
+      <Row className="my-3">
+        <Col xs="auto" className="d-flex align-items-center">
+          <Badge bg="info" text="dark" className="px-3 py-2">
+            入手場所：東京都
+          </Badge>
+        </Col>
+        <Col xs="auto" className="d-flex align-items-center ms-2">
+          <Badge bg="info" text="dark" className="px-3 py-2">
+            受け渡し場所：福岡県
+          </Badge>
+        </Col>
+      </Row>
+
       {requests.map((request) => (
         <RequestCard
           key={request.id}
