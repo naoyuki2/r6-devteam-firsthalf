@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Message } from '@/types'
 import { AppTextArea } from '@/component/AppTextArea'
 import { formatChatDate } from './utils'
@@ -18,6 +18,11 @@ export const ChatMessage = ({
   onSendMessage,
 }: ChatMessageProps) => {
   const [inputMessage, setInputMessage] = useState<string>('')
+  const chatEndRef = useRef<HTMLDivElement | null>(null)
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   return (
     <>
@@ -72,6 +77,7 @@ export const ChatMessage = ({
                 >
                   {formatChatDate(msg.created_at)}
                 </div>
+                <div ref={chatEndRef}></div>
               </div>
             )
           })}
