@@ -7,23 +7,23 @@ import { AppUserIcon } from './AppUserIcon'
 
 type RequestCardProps = {
   id: number
-  userId: number
   username: string
   created_at: Date
   title: string
   description: string
   delivery_prefecture: string
   location_prefecture: string
+  color: string
 }
 
 export const RequestCard = ({
   id,
-  userId,
   username,
   created_at,
   title,
   delivery_prefecture,
   location_prefecture,
+  color,
 }: RequestCardProps) => {
   return (
     <AppLink href={`/request/${id}`}>
@@ -33,10 +33,7 @@ export const RequestCard = ({
           borderRadius: '10px',
         }}
       >
-        <Thumbnail
-          backgroundColor="#87ceeb" //いずれは動的にカラーコードを指定する
-          title={title}
-        />
+        <Thumbnail backgroundColor={color} title={title} />
         <div
           className="mt-2 d-flex"
           style={{
@@ -48,14 +45,12 @@ export const RequestCard = ({
         </div>
         <p className="fw-bold my-2">{title}</p>
         <div className="d-flex justify-content-between align-items-center">
-          <AppLink href={`/user/${userId}`}>
-            <div className="d-flex align-items-center">
-              <AppUserIcon size={24} />
-              <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
-                {username}
-              </span>
-            </div>
-          </AppLink>
+          <div className="d-flex align-items-center">
+            <AppUserIcon size={24} />
+            <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
+              {username}
+            </span>
+          </div>
           <span className="text-muted" style={{ fontSize: '0.75rem' }}>
             {formatDistanceToNow(new Date(created_at), {
               addSuffix: true,
