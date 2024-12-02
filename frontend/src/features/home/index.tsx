@@ -44,7 +44,7 @@ export const HomeClient = () => {
     )
 
   return (
-    <Container>
+    <Container style={{ marginTop: '15px' }}>
       {requests.map((request) => (
         <RequestCard
           key={request.id}
