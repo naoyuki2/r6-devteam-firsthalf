@@ -56,6 +56,7 @@ export const HomeClient = () => {
           description={request.description}
           delivery_prefecture={request.delivery_prefecture}
           location_prefecture={request.location_prefecture}
+          color={request.color}
         />
       ))}
     </Container>

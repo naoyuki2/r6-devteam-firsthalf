@@ -12,6 +12,7 @@ export type Request = {
   completed_at: Date
   created_at: Date
   updated_at: Date
+  color: string
   user: {
     id: number
     name: string

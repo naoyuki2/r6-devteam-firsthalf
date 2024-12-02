@@ -4,6 +4,7 @@ import { ja } from 'date-fns/locale'
 import { Thumbnail } from './Thumbnail'
 import { AppBadge } from './Appbadge'
 import { AppUserIcon } from './AppUserIcon'
+import { useRouter } from 'next/navigation'
 
 type RequestCardProps = {
   id: number
@@ -14,6 +15,7 @@ type RequestCardProps = {
   description: string
   delivery_prefecture: string
   location_prefecture: string
+  color: string
 }
 
 export const RequestCard = ({
@@ -24,6 +26,7 @@ export const RequestCard = ({
   title,
   delivery_prefecture,
   location_prefecture,
+  color,
 }: RequestCardProps) => {
   return (
     <AppLink href={`/request/${id}`}>
@@ -33,10 +36,7 @@ export const RequestCard = ({
           borderRadius: '10px',
         }}
       >
-        <Thumbnail
-          backgroundColor="#87ceeb" //いずれは動的にカラーコードを指定する
-          title={title}
-        />
+        <Thumbnail backgroundColor={color} title={title} />
         <div
           className="mt-2 d-flex"
           style={{
@@ -48,14 +48,12 @@ export const RequestCard = ({
         </div>
         <p className="fw-bold my-2">{title}</p>
         <div className="d-flex justify-content-between align-items-center">
-          <AppLink href={`/user/${userId}`}>
-            <div className="d-flex align-items-center">
-              <AppUserIcon size={24} />
-              <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
-                {username}
-              </span>
-            </div>
-          </AppLink>
+          <div className="d-flex align-items-center">
+            <AppUserIcon size={24} />
+            <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
+              {username}
+            </span>
+          </div>
           <span className="text-muted" style={{ fontSize: '0.75rem' }}>
             {formatDistanceToNow(new Date(created_at), {
               addSuffix: true,
