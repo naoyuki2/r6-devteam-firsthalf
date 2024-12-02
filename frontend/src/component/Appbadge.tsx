@@ -1,16 +1,17 @@
 import { Badge } from 'react-bootstrap'
 
-type BadgeProps = {
-  className?: string
-  bg: string
-  textColor?: string
+type AppBadgeProps = {
   text: string
 }
 
-export const BadgeModel = ({ className, bg, textColor, text }: BadgeProps) => {
+export const AppBadge = ({ text }: AppBadgeProps) => {
   return (
     <>
-      <Badge bg={bg} text={textColor} className={className}>
+      <Badge
+        bg="none" // デフォルトだとprimaryになってしまうのでnoneに変更
+        className="px-2 py-1 fw-bold"
+        style={{ color: '#055160', backgroundColor: '#CFF4FC' }}
+      >
         {text}
       </Badge>
     </>

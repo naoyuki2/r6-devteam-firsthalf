@@ -1,30 +1,23 @@
 type ThumbnailProps = {
-  className?: string
-  bg: string
-  text?: string
-  body: string
+  backgroundColor: string
+  title: string
 }
 
-export const Thumbnail = ({ className, bg, text, body }: ThumbnailProps) => {
+export const Thumbnail = ({ backgroundColor, title }: ThumbnailProps) => {
   return (
     <div
-      className={`p-3 rounded ${className || ''}`}
+      className="p-3 rounded shadow-sm d-flex flex-column"
       style={{
-        backgroundColor: bg,
-        borderRadius: '10px',
-        display: 'flex',
-        flexDirection: 'column',
+        backgroundColor,
         height: '170px',
-        width: '100%',
       }}
     >
-      {text && <div className="fw-bold">{text}</div>}
-
+      <div className="fw-bold">Hakobun</div>
       <div
-        className="d-flex align-items-center justify-content-center"
-        style={{ flex: 1, fontWeight: 'bold', fontSize: '1.2rem' }}
+        className="d-flex align-items-center justify-content-center fw-bold"
+        style={{ flex: 1, fontSize: '1.2rem' }}
       >
-        {body}
+        {title}
       </div>
     </div>
   )

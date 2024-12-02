@@ -1,9 +1,9 @@
-import { HouseDoor, PersonCircle, Shop } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 import { formatDistanceToNow } from 'date-fns'
 import { ja } from 'date-fns/locale'
-import { BadgeModel } from './Appbadge'
 import { Thumbnail } from './Thumbnail'
+import { AppBadge } from './Appbadge'
+import { AppUserIcon } from './AppUserIcon'
 
 type RequestCardProps = {
   id: number
@@ -26,48 +26,32 @@ export const RequestCard = ({
   location_prefecture,
 }: RequestCardProps) => {
   return (
-    <div
-      className="card mb-3 shadow-sm"
-      style={{
-        borderRadius: '10px',
-        overflow: 'hidden',
-        padding: '8px',
-      }}
-    >
-      <div className="d-flex justify-content-between align-items-center bg-light">
+    <AppLink href={`/request/${id}`}>
+      <div
+        className="card mb-3 shadow-sm p-2"
+        style={{
+          borderRadius: '10px',
+        }}
+      >
         <Thumbnail
-          className="shadow-sm"
-          bg="#87ceeb" //いずれは動的にカラーコードを指定する
-          text="Hakobun"
-          body={title}
+          backgroundColor="#87ceeb" //いずれは動的にカラーコードを指定する
+          title={title}
         />
-      </div>
-
-      <AppLink href={`/request/${id}`}>
-        <div className="mt-2 d-flex" style={{ marginTop: '-15px' }}>
-          <div className="d-flex align-items-center justify-content-start">
-            <BadgeModel
-              bg="info"
-              textColor="dark"
-              className="px-2 py-1"
-              text={`入手場所：${location_prefecture}`}
-            />
-          </div>
-          <div className="d-flex align-items-center ms-2">
-            <BadgeModel
-              bg="info"
-              textColor="dark"
-              className="px-2 py-1"
-              text={`受け渡し場所：${delivery_prefecture}`}
-            />
-          </div>
+        <div
+          className="mt-2 d-flex"
+          style={{
+            gap: '8px',
+          }}
+        >
+          <AppBadge text={`入手場所：${location_prefecture}`} />
+          <AppBadge text={`受け渡し場所：${delivery_prefecture}`} />
         </div>
-        <p className="fw-bold mb-3 mt-2">{title}</p>
+        <p className="fw-bold my-2">{title}</p>
         <div className="d-flex justify-content-between align-items-center">
           <AppLink href={`/user/${userId}`}>
             <div className="d-flex align-items-center">
-              <PersonCircle size={24} className="me-3 dark" />
-              <span className="fw-bold" style={{ fontSize: '0.75rem' }}>
+              <AppUserIcon size={24} />
+              <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
                 {username}
               </span>
             </div>
@@ -79,7 +63,7 @@ export const RequestCard = ({
             })}
           </span>
         </div>
-      </AppLink>
-    </div>
+      </div>
+    </AppLink>
   )
 }
