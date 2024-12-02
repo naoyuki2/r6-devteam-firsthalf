@@ -4,11 +4,9 @@ import { ja } from 'date-fns/locale'
 import { Thumbnail } from './Thumbnail'
 import { AppBadge } from './Appbadge'
 import { AppUserIcon } from './AppUserIcon'
-import { useRouter } from 'next/navigation'
 
 type RequestCardProps = {
   id: number
-  userId: number
   username: string
   created_at: Date
   title: string
@@ -20,7 +18,6 @@ type RequestCardProps = {
 
 export const RequestCard = ({
   id,
-  userId,
   username,
   created_at,
   title,

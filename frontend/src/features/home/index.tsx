@@ -49,7 +49,6 @@ export const HomeClient = () => {
         <RequestCard
           key={request.id}
           id={request.id}
-          userId={request.user.id}
           username={request.user.name}
           created_at={request.created_at}
           title={request.title}
