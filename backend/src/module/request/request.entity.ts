@@ -76,7 +76,7 @@ export class Request {
   user!: User
 
   @Column({
-    default: '84C9EF',
+    default: '#84C9EF',
   })
   color!: string
 }
