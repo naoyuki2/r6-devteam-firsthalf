@@ -1,13 +1,16 @@
 'use client'
 
 import { PersonCircle, EmojiDizzy } from 'react-bootstrap-icons'
-import { Card, Row, Col, Spinner, Container } from 'react-bootstrap'
+import { Card, Row, Col, Spinner, Container, Nav } from 'react-bootstrap'
 import { AppLink } from '@/component/AppLink'
 import { AppAlert } from '@/component/AppAlert'
 import { useRoomList, formatCreate_at } from './hooks'
+import { RoomCard } from '@/component/RoomCard'
+import { useState } from 'react'
 
 export function RoomClient() {
   const { rooms, error, isLoading } = useRoomList()
+  const [isClosed, setIsClosed] = useState<boolean>(false)
 
   if (isLoading) return <Spinner animation="border" />
   if (error)
@@ -40,31 +43,33 @@ export function RoomClient() {
 
   return (
     <>
-      {rooms.map((room) => {
-        return (
-          <Card key={room.id} className="mb-3" style={{ width: '100%' }}>
+      <Nav variant="underline" defaultActiveKey="false">
+        <Nav.Item>
+          <Nav.Link eventKey="false" onClick={() => setIsClosed(false)}>
+            やり取り中
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link eventKey="true" onClick={() => setIsClosed(true)}>
+            取引終了
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      {rooms
+        .filter((room) => room.isClosed === isClosed)
+        .map((room) => {
+          return (
             <AppLink href={`/chat/${room.id}`}>
-              <Card.Body className="z-0">
-                <Row className="align-items-center">
-                  <Col xs="auto">
-                    <PersonCircle size={48} />
-                  </Col>
-                  <Col className="text-truncate">
-                    <p className="mb-0 fw-bold">
-                      {room.otherUser.user.name || 'Unknown'}
-                    </p>
-                    <p>{room.message || 'メッセージがありません'}</p>
-                    <p>{room.request.title}</p>
-                  </Col>
-                  <Col xs="auto" className="text-muted text-end">
-                    {formatCreate_at(room.created_at)}
-                  </Col>
-                </Row>
-              </Card.Body>
+              <RoomCard
+                username={room.otherUser.user.name}
+                created_at={room.created_at}
+                title={room.request.title}
+                color={room.request.color}
+                message={room.message || 'メッセージがありません'}
+              />
             </AppLink>
-          </Card>
-        )
-      })}
+          )
+        })}
     </>
   )
 }
