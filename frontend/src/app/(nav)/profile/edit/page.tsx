@@ -2,25 +2,24 @@
 
 import React, { useState } from 'react'
 import { Container, Row, Col, Button, Form } from 'react-bootstrap'
-import { useRouter } from 'next/navigation' // Next.jsのルーターを使用してページ遷移
+import { useRouter } from 'next/navigation'
 import { PersonCircle } from 'react-bootstrap-icons'
+import { useCurrentUser } from '@/lib/jotai/userState'
 
 export default function EditProfilePage() {
-  const [name, setName] = useState('山田太郎')
-  const [email, setEmail] = useState('sample@gmail.com')
+  const currentUser = useCurrentUser()
+  const [name, setName] = useState(currentUser?.name)
+  const [email, setEmail] = useState(currentUser?.email)
   const router = useRouter()
 
   const handleSave = () => {
-    // ここで保存処理を行う。今回はローカルストレージを使用。
     const profileData = {
       name,
       email,
     }
 
-    // ローカルストレージに保存（実際にはAPI呼び出しなどを使う）
     localStorage.setItem('profileData', JSON.stringify(profileData))
 
-    // 保存後、プロフィールページに遷移
     router.push('/profile')
   }
 
@@ -46,10 +45,6 @@ export default function EditProfilePage() {
       <Row className="mb-4">
         <Col xs={3}>
           <PersonCircle size={80} />
-          <Form.Group controlId="formFile" className="mt-3">
-            <Form.Label>アイコンを変更</Form.Label>
-            <Form.Control type="file" accept="image/*" />
-          </Form.Group>
         </Col>
         <Col xs={9}>
           <Form.Group controlId="formName" className="mb-3">
