@@ -29,4 +29,11 @@ export class MessageService {
       .orderBy('message.created_at', 'ASC')
     return await qb.getMany()
   }
+
+  async getByRoomId(roomId: string): Promise<Message | null> {
+    return await messageRepository.findOne({
+      where: { room: { id: roomId } },
+      order: { created_at: 'DESC' },
+    })
+  }
 }
