@@ -50,17 +50,7 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
             }}
           />
         )}
-        {isSearchShow && (
-          <Search
-            onClick={() => router.push('/search')}
-            size={30}
-            style={{
-              position: 'absolute',
-              right: 16,
-              top: 16,
-            }}
-          />
-        )}
+
         <AppLink href="/">
           <Image src={logo} alt="logo" width={48} height={48} priority />
         </AppLink>
