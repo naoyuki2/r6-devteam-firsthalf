@@ -16,11 +16,10 @@ export const useCurrentUserState = () => {
 }
 
 // 値のみ取得
-export const useCurrentUser = () => {
-  return useAtomValue(currentUserState)
-}
+export const useCurrentUser = () => useAtomValue(currentUserState)
 
 // 更新関数のみ取得
-export const useSetCurrentUser = () => {
-  return useSetAtom(currentUserState)
-}
+export const useSetCurrentUser = () => useSetAtom(currentUserState)
+
+// デフォルトエクスポートも追加
+export default currentUserState
