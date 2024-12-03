@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Image from 'next/image'
 import logo from '../../public/logo.png'
 import { AppLink } from './AppLink'
-import { ArrowLeft, PencilSquare, Search } from 'react-bootstrap-icons'
+import { ArrowLeft, PencilSquare, Person, Search } from 'react-bootstrap-icons'
 import { usePathname, useRouter } from 'next/navigation'
 import EditModal from './EditModal'
 import { DraftRequest } from '@/types'
@@ -37,7 +37,10 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
   const handleCloseModal = () => setShowModal(false)
 
   return (
-    <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
+    <nav
+      className="position-sticky top-0 bg-info shadow px-3 py-2 z-1 "
+      style={{ height: '52px' }}
+    >
       <div className="d-flex justify-content-center">
         {isArrowShow && (
           <ArrowLeft
@@ -50,9 +53,22 @@ export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
             }}
           />
         )}
-
+        <div>
+          <Person
+            onClick={() => router.push('/profile')}
+            className="border border-secondary rounded-circle p-1"
+            style={{
+              backgroundColor: 'white',
+              fontSize: '2rem',
+              width: '32px',
+              height: '32px',
+              position: 'absolute',
+              left: 16,
+            }}
+          />
+        </div>
         <AppLink href="/">
-          <Image src={logo} alt="logo" width={48} height={48} priority />
+          <Image src={logo} alt="logo" width={32} height={32} priority />
         </AppLink>
         {isChatPage && (
           <PencilSquare
