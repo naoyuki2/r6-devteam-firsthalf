@@ -1,18 +1,12 @@
 'use client'
 
-import {
-  ChatDots,
-  HouseDoor,
-  Person,
-  PlusCircleFill,
-  Bell,
-} from 'react-bootstrap-icons'
+import { ChatDots, HouseDoor, PlusCircleFill } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 import { usePathname } from 'next/navigation'
 import { getItem } from '@/utils/localStorage'
 import { LoginRecoModal } from './LoginRecoModal'
 import React, { useState } from 'react'
-import { ArrowLeft, PencilSquare, Search } from 'react-bootstrap-icons'
+import { Search } from 'react-bootstrap-icons'
 
 export default function BottomNav() {
   const pathname = usePathname()
