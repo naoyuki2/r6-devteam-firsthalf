@@ -14,6 +14,7 @@ export const requestSerializer = (request: Request) => ({
   completed_at: request.completed_at,
   created_at: request.created_at,
   updated_at: request.updated_at,
+  color: request.color,
   user: userSerializer(request.user),
   items: request.items.map((item) => itemSerializer(item)),
 })

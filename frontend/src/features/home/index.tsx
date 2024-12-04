@@ -44,18 +44,18 @@ export const HomeClient = () => {
     )
 
   return (
-    <Container>
+    <Container style={{ marginTop: '15px' }}>
       {requests.map((request) => (
         <RequestCard
           key={request.id}
           id={request.id}
-          userId={request.user.id}
           username={request.user.name}
           created_at={request.created_at}
           title={request.title}
           description={request.description}
           delivery_prefecture={request.delivery_prefecture}
           location_prefecture={request.location_prefecture}
+          color={request.color}
         />
       ))}
     </Container>

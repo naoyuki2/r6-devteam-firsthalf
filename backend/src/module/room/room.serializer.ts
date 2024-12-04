@@ -10,9 +10,11 @@ export const roomSerializer = (
   room: Room,
   otherUser: RoomUser,
   currentUser: RoomUser,
+  message: string | null,
+  created_at: Date,
 ) => ({
   id: room.id,
-  created_at: room.created_at,
+  created_at: created_at,
   isClosed: room.isClosed,
   request: requestSerializer(room.request),
   otherUser: {
@@ -21,6 +23,7 @@ export const roomSerializer = (
   currentUser: {
     ...room_userSerializer(currentUser),
   },
+  message: message,
 })
 
 export const getByRoomIdSerializer = (
