@@ -16,7 +16,7 @@ export default async function ProfilePage({
   const { requests } = resReq.data
   return (
     <>
-      <TopNav />
+      <TopNav isArrowShow={true} text="ユーザー情報" />
       <Container className="mt-4">
         <Row className="mb-4">
           <Col xs={3}>

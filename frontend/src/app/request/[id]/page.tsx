@@ -22,12 +22,8 @@ export default async function RequestDetail({
 
   return (
     <>
-      <TopNav />
-      <Container
-        style={{
-          paddingBottom: '80px',
-        }}
-      >
+      <TopNav isArrowShow={true} text="依頼詳細" />
+      <Container>
         <div
           className="mb-4"
           style={{
