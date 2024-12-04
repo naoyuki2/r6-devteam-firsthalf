@@ -185,7 +185,12 @@ export default async function RequestDetail({
         <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
           依頼者
         </p>
-        <div className="d-flex justify-content-center w-auto mb-3">
+        <div
+          className="d-flex justify-content-center w-auto mb-3"
+          style={{
+            paddingBottom: '54px',
+          }}
+        >
           <AppLink href={`../user/${request.user.id}`}>
             <PersonCircle
               className="bi bi-person-circle me-3"
