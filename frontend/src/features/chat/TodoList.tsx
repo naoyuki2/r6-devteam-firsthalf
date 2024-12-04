@@ -62,8 +62,9 @@ export const TodoList = ({ status }: TodoListProps) => {
             <AppArrowRight color="gray" size={24} />
           )}
           <span className="ms-2" style={{ fontSize: '12px' }}>
-            不都合な点が解消されたら、合意ボタンを押しましょう。
-            （＊依頼者と運び手がともに合意ボタンを押すと依頼が締結されます。）
+            右上のアイコンから依頼を確認して、不都合な点がないかチャットでやり取りしましょう。
+            <br />
+            （＊依頼者と運び手がともに合意ボタンを押すと依頼が締結されます）
           </span>
         </div>
 
@@ -77,7 +78,7 @@ export const TodoList = ({ status }: TodoListProps) => {
             <AppArrowRight color="gray" size={24} />
           )}
           <span className="ms-2" style={{ fontSize: '12px' }}>
-            依頼が承認されたら、受け渡し日時・場所などをチャットでやりとりしましょう。
+            依頼が締結されたら、受け渡し日時・場所などをチャットでやりとりしましょう。
           </span>
         </div>
 
