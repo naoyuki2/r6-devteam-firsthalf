@@ -5,6 +5,7 @@ import { apiClient } from '@/lib/axios'
 import { Request } from '@/types'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
+import { RequestCard } from '@/component/RequestCard'
 
 // 三桁区切り
 const formatCurrency = (value: number) => {
@@ -27,7 +28,23 @@ export default async function RequestDetail({
           paddingBottom: '80px',
         }}
       >
-        <h2 className="d-flex justify-content-center my-3">{request.title}</h2>
+        <div
+          className="mb-4"
+          style={{
+            marginTop: '16px',
+          }}
+        >
+          <RequestCard
+            id={request.id}
+            username={request.user.name}
+            created_at={request.created_at}
+            title={request.title}
+            description={request.description}
+            delivery_prefecture={request.delivery_prefecture}
+            location_prefecture={request.location_prefecture}
+            color={request.color} // 必要に応じて他のプロパティも渡す
+          />
+        </div>
 
         <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
           依頼する商品
