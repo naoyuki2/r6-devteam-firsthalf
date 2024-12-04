@@ -169,7 +169,9 @@ export default async function RequestDetail({
           <p className="fw-bold">■ 備考</p>
           <p>{request.description}</p>
         </div>
-
+        <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
+          依頼者
+        </p>
         <div className="d-flex justify-content-center w-auto mb-3">
           <AppLink href={`../user/${request.user.id}`}>
             <PersonCircle
