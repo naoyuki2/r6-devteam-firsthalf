@@ -199,13 +199,13 @@ export default async function RequestDetail({
           </AppLink>
         </div>
         <div
+          className="bg-white"
           style={{
             position: 'fixed',
             bottom: '0px',
             left: '0',
             width: '100%',
             zIndex: 1000,
-
             padding: '8px 0',
           }}
         >
