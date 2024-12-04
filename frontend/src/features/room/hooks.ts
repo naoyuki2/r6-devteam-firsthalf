@@ -15,3 +15,15 @@ export const useRoomList = (): {
     isLoading,
   }
 }
+
+export const formatCreate_at = (dateString: Date) => {
+  const date = new Date(dateString)
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }
+  return date.toLocaleDateString('ja-JP', options)
+}

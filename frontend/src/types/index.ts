@@ -12,6 +12,7 @@ export type Request = {
   completed_at: Date
   created_at: Date
   updated_at: Date
+  color: string
   user: {
     id: number
     name: string
@@ -71,10 +72,12 @@ export type CreateRoomArgs = {
 
 export type Room = {
   id: string
-  created_at: string
+  created_at: Date
   isClosed: boolean
   otherUser: RoomUser
   currentUser: RoomUser
+  message: string | null
+  request: Request
 }
 
 export type GetByRoomIdRes = {

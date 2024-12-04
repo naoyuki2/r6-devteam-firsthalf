@@ -20,6 +20,7 @@ type createProps = {
   delivery_details: string
   description: string
   status: 'pending' | 'agreed' | 'received' | 'completed'
+  color: string
   userId: number
   items: Item[]
 }
@@ -85,6 +86,7 @@ export class RequestService {
     delivery_details,
     description,
     status,
+    color,
     userId,
     items,
   }: createProps): Promise<Request> {
@@ -96,6 +98,7 @@ export class RequestService {
       delivery_details,
       description,
       status,
+      color,
       user: { id: userId },
       items,
     })

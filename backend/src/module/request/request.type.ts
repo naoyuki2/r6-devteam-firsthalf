@@ -37,6 +37,7 @@ export type CreateReq = {
   delivery_details: string
   description: string
   status: 'pending' | 'agreed' | 'received' | 'completed'
+  color: string
   items: Item[]
 }
 
