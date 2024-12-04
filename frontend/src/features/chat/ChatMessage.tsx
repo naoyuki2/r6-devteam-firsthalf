@@ -18,10 +18,12 @@ export const ChatMessage = ({
   onSendMessage,
 }: ChatMessageProps) => {
   const [inputMessage, setInputMessage] = useState<string>('')
-  const chatEndRef = useRef<HTMLDivElement | null>(null)
+  const chatBoxRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight
+    }
   }, [messages])
 
   return (
@@ -31,7 +33,11 @@ export const ChatMessage = ({
         className="bg-light rounded d-flex flex-column"
         style={{ height: '300px' }}
       >
-        <div className="p-2 overflow-scroll">
+        <div
+          ref={chatBoxRef}
+          className="p-2 overflow-scroll"
+          style={{ height: '100%', overflowY: 'auto' }}
+        >
           {messages.map((msg) => {
             const isMine = msg.userId === currentUserId
             return (
@@ -77,7 +83,6 @@ export const ChatMessage = ({
                 >
                   {formatChatDate(msg.created_at)}
                 </div>
-                <div ref={chatEndRef}></div>
               </div>
             )
           })}
