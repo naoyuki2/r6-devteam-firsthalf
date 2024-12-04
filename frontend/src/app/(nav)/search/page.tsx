@@ -1,12 +1,12 @@
-import TopNav from '@/component/TopNav'
-import japan_map_bg from '../../../public/japan_map_bg.png'
 import Image from 'next/image'
+import japan_map_bg from '../../../../public/japan_map_bg.png'
 import { SearchClient } from '@/features/search'
+import TopNav from '@/component/TopNav'
 
 export default function Search() {
   return (
     <>
-      <TopNav />
+      <TopNav text="検索" />
       <div
         style={{
           display: 'flex',

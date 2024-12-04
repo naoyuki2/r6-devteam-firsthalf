@@ -21,7 +21,7 @@ export default async function RequestDetail({
 
   return (
     <>
-      <TopNav />
+      <TopNav isArrowShow={true} text="依頼詳細" />
       <Container>
         <h2 className="d-flex justify-content-center my-3">{request.title}</h2>
 

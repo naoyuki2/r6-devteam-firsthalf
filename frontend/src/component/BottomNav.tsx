@@ -1,16 +1,12 @@
 'use client'
 
-import {
-  ChatDots,
-  HouseDoor,
-  Person,
-  PlusCircleFill,
-} from 'react-bootstrap-icons'
+import { ChatDots, HouseDoor, PlusCircleFill } from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 import { usePathname } from 'next/navigation'
 import { getItem } from '@/utils/localStorage'
 import { LoginRecoModal } from './LoginRecoModal'
 import React, { useState } from 'react'
+import { Search } from 'react-bootstrap-icons'
 
 export default function BottomNav() {
   const pathname = usePathname()
@@ -30,6 +26,8 @@ export default function BottomNav() {
           style={{
             fontSize: '2rem',
             color: pathname === '/home' ? 'white' : 'black',
+            width: '24px',
+            height: '24px',
           }}
         />
       ),
@@ -38,29 +36,32 @@ export default function BottomNav() {
     },
     {
       icon: (
+        <Search
+          style={{
+            fontSize: '2rem',
+            color: pathname === '/search' ? 'white' : 'black',
+            width: '24px',
+            height: '24px',
+          }}
+        />
+      ),
+      href: '/search',
+      active: pathname === '/search',
+    },
+    {
+      icon: (
         <ChatDots
           style={{
             fontSize: '2rem',
             color: pathname === '/room' ? 'white' : 'black',
+            width: '24px',
+            height: '24px',
           }}
           onClick={openModal}
         />
       ),
       href: token ? '/room' : '',
       active: pathname === '/room',
-    },
-    {
-      icon: (
-        <Person
-          style={{
-            fontSize: '2rem',
-            color: pathname === '/profile' ? 'white' : 'black',
-          }}
-          onClick={openModal}
-        />
-      ),
-      href: token ? '/profile' : '',
-      active: pathname === '/profile',
     },
   ]
   return (
@@ -73,7 +74,7 @@ export default function BottomNav() {
               style={{
                 fontSize: '3rem',
                 right: '16px',
-                bottom: '80px',
+                bottom: '68px',
                 zIndex: 10,
               }}
               onClick={openModal}
@@ -82,7 +83,10 @@ export default function BottomNav() {
         </div>
       )}
 
-      <nav className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between">
+      <nav
+        className="position-fixed bottom-0 left-0 bg-light p-3 w-100 d-flex justify-content-between align-items-center "
+        style={{ height: '52px' }}
+      >
         {items.map((item, i) => (
           <React.Fragment key={i}>
             <AppLink href={item.href}>
