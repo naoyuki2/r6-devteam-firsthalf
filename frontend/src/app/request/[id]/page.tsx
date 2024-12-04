@@ -5,6 +5,7 @@ import { apiClient } from '@/lib/axios'
 import { Request } from '@/types'
 import { Container } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
+import { RequestCard } from '@/component/RequestCard'
 
 // 三桁区切り
 const formatCurrency = (value: number) => {
@@ -23,55 +24,136 @@ export default async function RequestDetail({
     <>
       <TopNav isArrowShow={true} text="依頼詳細" />
       <Container>
-        <h2 className="d-flex justify-content-center my-3">{request.title}</h2>
-
-        <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
-          入手場所
-        </p>
         <div
-          className="d-flex justify-content-center w-auto mb-3"
-          style={{ width: '200px' }}
+          className="mb-4"
+          style={{
+            marginTop: '16px',
+          }}
         >
-          {request.location_prefecture}: {request.location_details}
+          <RequestCard
+            id={request.id}
+            username={request.user.name}
+            created_at={request.created_at}
+            title={request.title}
+            description={request.description}
+            delivery_prefecture={request.delivery_prefecture}
+            location_prefecture={request.location_prefecture}
+            color={request.color} // 必要に応じて他のプロパティも渡す
+          />
         </div>
 
-        <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
-          受け渡し場所
+        <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
+          依頼する商品
         </p>
-        <div
-          className="d-flex justify-content-center w-auto mb-3"
-          style={{ width: '200px' }}
-        >
-          {request.delivery_prefecture}: {request.delivery_details}
-        </div>
-
-        <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
-          欲しいもの
-        </p>
-        <div className="ms-4">
-          <table className="table table-bordered">
-            <thead>
+        <div className="ms-2" style={{ marginBottom: '16px' }}>
+          <table
+            style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+            }}
+          >
+            <thead
+              style={{
+                backgroundColor: '#85c9ef',
+                color: 'white',
+                fontSize: '12px',
+              }}
+            >
               <tr>
-                <th>商品名</th>
-                <th>単価</th>
-                <th>個数</th>
-                <th>金額</th>
+                <th
+                  style={{
+                    border: '1px solid #B3B3B3',
+                    textAlign: 'center',
+                    padding: '8px',
+                  }}
+                >
+                  商品名
+                </th>
+                <th
+                  style={{
+                    border: '1px solid #B3B3B3',
+                    textAlign: 'center',
+                    padding: '8px',
+                  }}
+                >
+                  単価
+                </th>
+                <th
+                  style={{
+                    border: '1px solid #B3B3B3',
+                    textAlign: 'center',
+                    padding: '8px',
+                  }}
+                >
+                  個数
+                </th>
+                <th
+                  style={{
+                    border: '1px solid #B3B3B3',
+                    textAlign: 'center',
+                    padding: '8px',
+                  }}
+                >
+                  金額
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody
+              style={{
+                fontSize: '14px',
+              }}
+            >
               {request.items.map((item) => (
                 <tr key={item.id}>
-                  <td>{item.name}</td>
-                  <td>¥{formatCurrency(item.price)}</td>
-                  <td>{item.quantity}</td>
-                  <td>¥{formatCurrency(item.price * item.quantity)}</td>
+                  <td
+                    style={{
+                      border: '1px solid #dee2e6',
+                      textAlign: 'left',
+                      padding: '8px',
+                    }}
+                  >
+                    {item.name}
+                  </td>
+                  <td
+                    style={{
+                      border: '1px solid #dee2e6',
+                      textAlign: 'right',
+                      padding: '8px',
+                    }}
+                  >
+                    ¥{formatCurrency(item.price)}
+                  </td>
+                  <td
+                    style={{
+                      border: '1px solid #dee2e6',
+                      textAlign: 'right',
+                      padding: '8px',
+                    }}
+                  >
+                    {item.quantity}
+                  </td>
+                  <td
+                    style={{
+                      border: '1px solid #dee2e6',
+                      textAlign: 'right',
+                      padding: '8px',
+                    }}
+                  >
+                    ¥{formatCurrency(item.price * item.quantity)}
+                  </td>
                 </tr>
               ))}
+              {/* 合計 */}
               <tr>
-                <td colSpan={3} className="text-end fw-bold">
-                  合計
-                </td>
-                <td>
+                <td
+                  colSpan={4}
+                  style={{
+                    textAlign: 'right',
+
+                    padding: '8px',
+                    border: '1px solid #dee2e6',
+                  }}
+                >
                   ¥
                   {formatCurrency(
                     request.items.reduce(
@@ -85,26 +167,52 @@ export default async function RequestDetail({
           </table>
         </div>
 
-        <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
+        <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
           詳細情報
         </p>
-        <div className="d-flex justify-content-center w-auto mx-5 mb-3">
-          <div className="text-container">{request.description}</div>
+        <div className="mt-3 ms-3">
+          <p className="fw-bold">■ 入手場所</p>
+          <p>
+            {request.location_prefecture}: {request.location_details}
+          </p>
+          <p className="fw-bold">■ 受け渡し場所</p>
+          <p>
+            {request.delivery_prefecture}: {request.delivery_details}
+          </p>
+          <p className="fw-bold">■ 備考</p>
+          <p>{request.description}</p>
         </div>
-        <p className="border-start border-info border-5 ps-2 fw-bold ms-4 my-2">
-          投稿者
+        <p className="border-start border-info border-5 ps-2 fw-bold ms-2">
+          依頼者
         </p>
-        <div className="d-flex justify-content-center w-auto mb-3">
+        <div
+          className="d-flex justify-content-center w-auto mb-3"
+          style={{
+            paddingBottom: '54px',
+          }}
+        >
           <AppLink href={`../user/${request.user.id}`}>
             <PersonCircle
               className="bi bi-person-circle me-3"
               style={{ fontSize: '3rem' }}
             ></PersonCircle>
-            <span className="fw-bold my-2">{request.user.name}さん</span>
+            <span className="fw-bold my-2">{request.user.name}</span>
           </AppLink>
         </div>
-        <div className="d-grid gap-2 col-10 mx-auto">
-          <RequestDetailClient request={request} />
+        <div
+          className="bg-white"
+          style={{
+            position: 'fixed',
+            bottom: '0px',
+            left: '0',
+            width: '100%',
+            zIndex: 1000,
+            padding: '8px 0',
+          }}
+        >
+          <div className="d-grid gap-2 col-10 mx-auto">
+            <RequestDetailClient request={request} />
+          </div>
         </div>
       </Container>
     </>
