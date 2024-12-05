@@ -16,7 +16,7 @@ export default async function ProfilePage({
   const { requests } = resReq.data
   return (
     <>
-      <TopNav />
+      <TopNav isArrowShow={true} text="ユーザー情報" />
       <Container className="mt-4">
         <Row className="mb-4">
           <Col xs={3}>
@@ -30,13 +30,13 @@ export default async function ProfilePage({
           <RequestCard
             key={request.id}
             id={request.id}
-            userId={request.user.id}
             username={request.user.name}
             created_at={request.created_at}
             title={request.title}
             description={request.description}
             delivery_prefecture={request.delivery_prefecture}
             location_prefecture={request.location_prefecture}
+            color={request.color}
           />
         ))}
       </Container>

@@ -19,3 +19,10 @@ export type ReceiveMessageProps = {
     created_at: Date
   }
 }
+
+export type UpdateStatusProps = {
+  updateStatus: {
+    status: string
+    roomId: string
+  }
+}

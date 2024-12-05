@@ -85,6 +85,7 @@ export class RequestController {
       delivery_details,
       description,
       status,
+      color,
       items,
     } = req.body
     const userId = req.currentUserId!
@@ -96,6 +97,7 @@ export class RequestController {
       delivery_details,
       description,
       status,
+      color,
       userId,
       items,
     })

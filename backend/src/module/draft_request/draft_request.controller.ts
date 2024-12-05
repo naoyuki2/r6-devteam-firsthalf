@@ -1,6 +1,14 @@
 import 'reflect-metadata'
 import { Request, Response } from 'express'
-import { Controller, Req, Res, Post, Delete, Get } from 'routing-controllers'
+import {
+  Controller,
+  Req,
+  Res,
+  Post,
+  Delete,
+  Get,
+  Authorized,
+} from 'routing-controllers'
 import {
   ApproveEndpoint,
   ApproveParam,
@@ -53,11 +61,14 @@ export class DraftRequestController {
     const roomId = req.params.roomId
     const draftRequest = await this.draft_requestService.getByRoomId(roomId)
 
+    if (draftRequest == undefined || null) return
+
     return res.json({
       draft_request: draft_requestSerializer(draftRequest),
     })
   }
 
+  @Authorized()
   @Post(ProposeUpEndpoint)
   async proposeUpdate(
     @Req() req: Request<ProposeUpParam, '', ProposeUpBody, ''>,

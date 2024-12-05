@@ -55,7 +55,7 @@ export default function RequestDetailClient({
     <>
       {!isRequestUser && (
         <AppButton
-          className="btn btn-info"
+          className="btn btn-info text-white"
           type="button"
           onClick={requestCreateRoom}
           text={
@@ -65,7 +65,7 @@ export default function RequestDetailClient({
       )}
       {isRequestUser && (
         <AppButton
-          className="btn btn-info"
+          className="btn btn-info text-white"
           type="button"
           onClick={requestEdit}
           text="依頼を修正"

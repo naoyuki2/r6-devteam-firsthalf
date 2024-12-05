@@ -48,7 +48,7 @@ export class DraftRequestService {
     return await draftRequestRepository.save(latestRequest)
   }
 
-  async getByRoomId(roomId: string): Promise<DraftRequest> {
+  async getByRoomId(roomId: string): Promise<DraftRequest | undefined | null> {
     const qb = draftRequestRepository
       .createQueryBuilder('draft_request')
       .leftJoinAndSelect('draft_request.draft_items', 'draft_items')
@@ -56,7 +56,7 @@ export class DraftRequestService {
       .where('room.id = :roomId', { roomId })
       .orderBy('draft_request.created_at', 'DESC')
       .take(1)
-    return await qb.getOneOrFail()
+    return await qb.getOne()
   }
 
   async getByDraftRequestId(draftRequestId: number): Promise<DraftRequest> {
@@ -109,6 +109,7 @@ export class DraftRequestService {
         ...item,
         id: undefined,
       })),
+      action: false,
       created_at: undefined,
       updated_at: undefined,
     })
@@ -118,7 +119,6 @@ export class DraftRequestService {
 
   _requestToDraftRequest(room: Room): DraftRequest {
     const draftRequest = new DraftRequest()
-    console.log(room.request)
     draftRequest.title = room.request.title
     draftRequest.location_prefecture = room.request.location_prefecture
     draftRequest.location_details = room.request.location_details

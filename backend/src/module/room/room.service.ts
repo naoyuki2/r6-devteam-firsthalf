@@ -26,6 +26,11 @@ export class RoomService {
         'messages',
         'messages.user',
       ],
+      order: {
+        messages: {
+          created_at: 'ASC',
+        },
+      },
     })
   }
 

@@ -12,6 +12,7 @@ export type Request = {
   completed_at: Date
   created_at: Date
   updated_at: Date
+  color: string
   user: {
     id: number
     name: string
@@ -55,14 +56,14 @@ export type CreateRequestForm = {
   delivery_prefecture: string
   delivery_details: string
   description: string
-  status: 'pending'
-  items: { id: number; name: string; quantity: number; price: string }[]
+  status: string
+  items: { id: number; name: string; quantity: number; price: number }[]
 }
 
 export type Item = {
   name: string
   quantity: number
-  price: string
+  price: number
 }
 
 export type CreateRoomArgs = {
@@ -71,10 +72,12 @@ export type CreateRoomArgs = {
 
 export type Room = {
   id: string
-  created_at: string
+  created_at: Date
   isClosed: boolean
   otherUser: RoomUser
   currentUser: RoomUser
+  message: string | null
+  request: Request
 }
 
 export type GetByRoomIdRes = {
@@ -88,7 +91,7 @@ export type GetByRoomIdRes = {
 
 export type RoomUser = {
   user: User
-  role: string
+  role: 'requester' | 'carrier'
   isAgreed: boolean
   isReceived: boolean
   isFeedback: boolean
@@ -126,6 +129,20 @@ export type DraftRequest = {
     quantity: number
     price: number
   }[]
+  room: {
+    id: string
+    created_at: Date
+    isClosed: boolean
+  }
   action: boolean
-  roomId: string
+}
+
+export type ProposeDraftRequestArgs = {
+  title: string
+  location_prefecture: string
+  location_details: string
+  delivery_prefecture: string
+  delivery_details: string
+  description: string
+  draft_items: Item[]
 }

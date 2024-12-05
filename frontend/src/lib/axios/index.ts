@@ -45,7 +45,21 @@ export const fetchWithToken = async ({
           Authorization: `Bearer ${token}`,
         },
       })
+    case 'DELETE':
+      return apiClient.delete(url)
+  }
+}
+
+export const fetchWithNoToken = async ({
+  method,
+  url,
+}: fetchWithTokenProps) => {
+  switch (method) {
+    case 'GET':
+      return apiClient.get(url)
   }
 }
 
 export const fetcher = (url: string) => fetchWithToken({ method: 'GET', url })
+export const homeFetcher = (url: string) =>
+  fetchWithNoToken({ method: 'GET', url })

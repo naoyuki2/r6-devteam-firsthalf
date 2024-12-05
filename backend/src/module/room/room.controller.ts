@@ -24,6 +24,7 @@ import { RoomUserService } from '../room_user/room_user.service'
 import { RequestService } from '../request/request.service'
 import { CustomError } from '../../error/CustomError'
 import { DraftRequestService } from '../draft_request/draft_request.service'
+import { MessageService } from '../message/message.service'
 
 @Controller()
 export class RoomController {
@@ -31,6 +32,7 @@ export class RoomController {
   private roomUserService = new RoomUserService()
   private requestService = new RequestService()
   private draftRequestService = new DraftRequestService()
+  private messageService = new MessageService()
 
   @Authorized()
   @Get(GetByUserIdEndpoint)
@@ -52,11 +54,22 @@ export class RoomController {
       const currentUser = room.room_users.find(
         (roomUser) => roomUser.user.id === userId,
       )!
-      rooms.push({ room, otherUser, currentUser })
+      const latestMessage = await this.messageService.getByRoomId(room.id)
+      console.log(latestMessage)
+      if (latestMessage !== null) {
+        const message = latestMessage.body
+        const created_at = latestMessage.created_at
+        rooms.push({ room, otherUser, currentUser, message, created_at })
+      } else {
+        const message = null
+        const created_at = room.created_at
+        rooms.push({ room, otherUser, currentUser, message, created_at })
+      }
     }
     return res.json({
-      rooms: rooms.map(({ room, otherUser, currentUser }) =>
-        roomSerializer(room, otherUser, currentUser),
+      rooms: rooms.map(
+        ({ room, otherUser, currentUser, message, created_at }) =>
+          roomSerializer(room, otherUser, currentUser, message, created_at),
       ),
     })
   }
@@ -70,6 +83,13 @@ export class RoomController {
     const { roomId } = req.params
     const room = await this.roomService.getByRoomId(roomId)
     const draftRequest = await this.draftRequestService.getByRoomId(roomId)
+
+    if (draftRequest == undefined) {
+      const request = await this.requestService.getByRequestId(room.request.id)
+      return res.json({
+        room: getByRoomIdSerializer(room, request, req.currentUserId!),
+      })
+    }
 
     return res.json({
       room: getByRoomIdSerializer(room, draftRequest, req.currentUserId!),
