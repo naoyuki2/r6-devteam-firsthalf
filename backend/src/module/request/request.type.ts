@@ -10,6 +10,7 @@ export type GetQuery = {
     status?: 'pending' | 'progress' | 'completed'
     userId?: number
     location_prefecture?: string
+    delivery_prefecture?: string
   }
 }
 

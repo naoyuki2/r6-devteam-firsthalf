@@ -4,15 +4,18 @@ import { Area } from '.'
 import { useRouter } from 'next/navigation'
 
 export const PrefectureModal = ({
+  setSelectedPrefecture,
   selectedArea,
   handleClose,
 }: {
+  setSelectedPrefecture: any
   selectedArea?: Area
   handleClose: () => void
 }) => {
   const router = useRouter()
   const handleSelectPrefecture = (prefecture: string) => {
-    router.push(`/home?filter[location_prefecture]=${prefecture}`)
+    setSelectedPrefecture(prefecture)
+    handleClose()
   }
 
   return (
