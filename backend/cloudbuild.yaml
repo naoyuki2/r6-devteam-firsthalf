@@ -5,15 +5,15 @@ steps:
       - '-c'
       - |
         echo "Installing dependencies..."
-        mkdir -p /workspace/api
-        cd /workspace/api
-        cp /workspace/package*.json .
+        mkdir -p /workspace/backend/api
+        cd /workspace/backend/api
+        cp /workspace/backend/package*.json .
         npm install
 
   - name: 'node:20-alpine3.19'
     entrypoint: 'npm'
     args: ['run', 'build']
-    dir: '/workspace/api'
+    dir: '/workspace/backend/api'
 
   - name: 'node:20-alpine3.19'
     entrypoint: 'sh'
@@ -33,10 +33,11 @@ steps:
           echo "Migration failed" >&2
           exit 1
         fi
-    dir: '/workspace/api'
+    dir: '/workspace/backend/api'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/hakobun/hakobun-api-image', '.']
+    dir: '/workspace/backend'
 
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'gcr.io/hakobun/hakobun-api-image']
