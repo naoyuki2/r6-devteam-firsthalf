@@ -1,0 +1,36 @@
+steps:
+  - name: 'node:20-alpine3.19'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Installing dependencies..."
+        mkdir -p /workspace/api
+        cd /workspace/api
+        cp /workspace/package*.json .
+        npm install
+
+  - name: 'node:20-alpine3.19'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+    dir: '/workspace/api'
+
+  - name: 'node:20-alpine3.19'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Running migrations..."
+        echo "DB_HOST: $DB_HOST"
+        echo "DB_USERNAME: $DB_USERNAME"
+        echo "DB_PASSWORD: $DB_PASSWORD"
+        echo "DB_DATABASE: $DB_DATABASE"
+        echo "DB_TYPEORM_ENTITIES: $DB_TYPEORM_ENTITIES"
+        echo "DB_TYPEORM_MIGRATIONS: $DB_TYPEORM_MIGRATIONS"
+        if npm run migrate; then
+          echo "Migration completed successfully"
+        else
+          echo "Migration failed" >&2
+          exit 1
+        fi
+    dir: '/workspace/api'
