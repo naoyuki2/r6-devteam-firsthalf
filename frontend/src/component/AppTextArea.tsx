@@ -1,6 +1,7 @@
 import { Form } from 'react-bootstrap'
 
 type AppTextAreaProps = {
+  value?: string
   label?: string
   name: string
   placeholder: string
@@ -9,6 +10,7 @@ type AppTextAreaProps = {
   labelClassName?: string
   controlClassName?: string
   rows?: number
+  disabled?: boolean
 }
 
 export const AppTextArea = ({

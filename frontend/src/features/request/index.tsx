@@ -9,9 +9,9 @@ import { useRouter } from 'next/navigation'
 import { PREFECTURES } from './constants'
 import { AppTextArea } from '@/component/AppTextArea'
 import { getItem } from '@/utils/localStorage'
-import { CreateRequestArgs, Item } from '@/types'
+import { CreateRequestArgs, CreateRequestForm, Item } from '@/types'
 
-const INITIAL_FORM: CreateRequestArgs = {
+const INITIAL_FORM: CreateRequestForm = {
   title: '',
   location_prefecture: '',
   location_details: '',
@@ -19,7 +19,7 @@ const INITIAL_FORM: CreateRequestArgs = {
   delivery_details: '',
   description: '',
   status: 'pending',
-  items: [{ name: '', quantity: 1, price: '' }],
+  items: [{ id: Date.now(), name: '', quantity: 1, price: 0 }], // id: Date.now() でユニークなIDを生成
 }
 
 export default function RequestClient() {
@@ -43,7 +43,7 @@ export default function RequestClient() {
     value: string | number
   ) => {
     const updatedItems = [...form.items]
-    if (field === 'quantity') {
+    if (field === 'quantity' || field === 'price') {
       updatedItems[index][field] = value as number
     } else {
       updatedItems[index][field] = value as string
@@ -51,11 +51,28 @@ export default function RequestClient() {
     setForm({ ...form, items: updatedItems })
   }
 
-  const addField = () => {
+  const addItemField = () => {
     setForm((prev) => ({
       ...prev,
-      items: [...prev.items, { name: '', quantity: 1, price: '' }],
+      items: [
+        ...prev.items,
+        { id: Date.now(), name: '1', quantity: 1, price: 0 },
+      ],
     }))
+  }
+
+  const removeItemField = (id: number) => {
+    setForm((prev) => ({
+      ...prev,
+      items: prev.items.filter((item) => item.id !== id),
+    }))
+  }
+
+  // idが未使用であるESLint警告が出るが、重大な問題ではないためコメントアウトで無視
+  const removeIdFromItems = (
+    items: { id: number; name: string; quantity: number; price: number }[]
+  ) => {
+    return items.map(({ id, ...rest }) => rest) // eslint-disable-line @typescript-eslint/no-unused-vars
   }
 
   const requestCreate = async () => {
@@ -67,7 +84,7 @@ export default function RequestClient() {
       delivery_details: form.delivery_details,
       description: form.description,
       status: 'pending',
-      items: form.items,
+      items: removeIdFromItems(form.items),
     }
     try {
       const token = getItem('token')
@@ -98,7 +115,7 @@ export default function RequestClient() {
             label="タイトル"
             type="text"
             name="title"
-            placeholder="例）＊＊＊限定グッズを購入してほしい！"
+            placeholder="例）＊＊＊限定グッズを購入してほしい!"
             autoComplete="off"
             onChange={handleInputChange}
           />
@@ -163,10 +180,22 @@ export default function RequestClient() {
         </Form.Group>
 
         {form.items.map((item, index) => (
-          <div key={index}>
+          <div key={item.id}>
             <Form.Group className="mb-3">
-              <AppTextInput
-                label={`欲しいもの${index + 1}`}
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
+                  欲しいもの{index + 1}
+                </Form.Label>
+                {form.items.length > 1 && (
+                  <AppButton
+                    text="削除"
+                    onClick={() => removeItemField(item.id)}
+                    className="outline-danger ms-2"
+                    variant="outline-danger"
+                  />
+                )}
+              </div>
+              <Form.Control
                 type="text"
                 name={`item${index + 1}`}
                 placeholder="例）***のTシャツ"
@@ -174,7 +203,7 @@ export default function RequestClient() {
                 onChange={(e) =>
                   handleItemChange(index, 'name', e.target.value)
                 }
-              />
+              ></Form.Control>
             </Form.Group>
 
             <Row className="mb-3">
@@ -214,6 +243,7 @@ export default function RequestClient() {
                 />
               </Col>
             </Row>
+            <div className="text-end mb-3"></div>
             <hr />
           </div>
         ))}
@@ -221,7 +251,7 @@ export default function RequestClient() {
         <div className="text-end mb-3">
           <AppButton
             text="追加"
-            onClick={addField}
+            onClick={addItemField}
             className="outline-info"
             variant="outline-info"
           />

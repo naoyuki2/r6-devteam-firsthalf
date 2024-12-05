@@ -10,6 +10,7 @@ import { setItem } from '@/utils/localStorage'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useState } from 'react'
 import { Form } from 'react-bootstrap'
+import { HouseDoor } from 'react-bootstrap-icons'
 
 type Form = {
   name: {
@@ -51,7 +52,7 @@ export const SignUpClient = () => {
       password: password.value,
     }
     try {
-      const res = await apiClient.post('/user', args)
+      const res = await apiClient.post('/users', args)
       if (res == null) return
       setItem('token', res.data.token)
       router.push('/home')
@@ -110,6 +111,15 @@ export const SignUpClient = () => {
           href="/login"
           className="mt-3"
         />
+        <div className="mt-4 text-center">
+          <a
+            href="/home"
+            className="text-decoration-none text-dark d-flex align-items-center justify-content-center"
+          >
+            <HouseDoor className="me-2" />
+            ホームに戻る
+          </a>
+        </div>
       </Form>
     </>
   )
