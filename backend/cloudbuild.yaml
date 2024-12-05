@@ -53,3 +53,6 @@ steps:
 
 images:
   - 'gcr.io/hakobun/hakobun-api-image'
+
+options:
+  logging: 'CLOUD_LOGGING_ONLY'
