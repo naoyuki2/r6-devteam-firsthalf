@@ -123,7 +123,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
         showModal={showModal}
       />
       <Container>
-        <TodoList status={status} />
+        <TodoList status={status} role={currentUser.role} />
         <UserStatus
           currentUser={currentUser}
           otherUser={room.otherUser}

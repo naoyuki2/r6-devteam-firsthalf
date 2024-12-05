@@ -4,9 +4,13 @@ import { AppLabel } from '@/component/AppLabel'
 
 type TodoListProps = {
   status: string
+  role: 'requester' | 'carrier'
 }
 
-export const TodoList = ({ status }: TodoListProps) => {
+type TaskStatus = 'pending' | 'agreed' | 'received' | 'completed'
+type Role = 'requester' | 'carrier'
+
+export const TodoList = ({ status, role }: TodoListProps) => {
   const taskOrder = ['agreed', 'received', 'completed']
 
   const isTaskCompleted = (taskStatus: string) => {
@@ -26,6 +30,31 @@ export const TodoList = ({ status }: TodoListProps) => {
   }
 
   const isAllTasksCompleted = status === 'completed'
+
+  const getMessage = (taskStatus: TaskStatus, role: Role) => {
+    const messages = {
+      pending: {
+        requester:
+          '右上のアイコンから依頼を確認し、不都合があれば修正を依頼しましょう。',
+        carrier:
+          '運び手からの修正依頼に応じて、右上のアイコンから依頼を修正しましょう。',
+      },
+      agreed: {
+        requester: '依頼内容に問題がなければ合意しましょう。',
+        carrier: '依頼内容に問題がなければ合意しましょう。',
+      },
+      received: {
+        requester: '商品を購入し、依頼者に受け渡しましょう。',
+        carrier: '運び手から商品を受け取りましょう。',
+      },
+      completed: {
+        requester: '画面下から取引相手の評価を行いましょう。',
+        carrier: '画面下から取引相手の評価を行いましょう。',
+      },
+    }
+
+    return messages[taskStatus][role]
+  }
 
   return (
     <>
@@ -61,10 +90,22 @@ export const TodoList = ({ status }: TodoListProps) => {
           ) : (
             <AppArrowRight color="gray" size={24} />
           )}
-          <span className="ms-2" style={{ fontSize: '12px' }}>
-            右上のアイコンから依頼を確認して、不都合な点がないかチャットでやり取りしましょう。
-            <br />
-            （＊依頼者と運び手がともに合意ボタンを押すと依頼が締結されます）
+          <span className="ms-2" style={{ fontSize: '0.75rem' }}>
+            {getMessage('pending', role)}
+          </span>
+        </div>
+
+        <div
+          className="d-flex align-items-center"
+          style={getTaskStyle('agreed')}
+        >
+          {isTaskCompleted('agreed') ? (
+            <AppCheck color="success" size={24} />
+          ) : (
+            <AppArrowRight color="gray" size={24} />
+          )}
+          <span className="ms-2" style={{ fontSize: '0.75rem' }}>
+            {getMessage('agreed', role)}
           </span>
         </div>
 
@@ -77,8 +118,8 @@ export const TodoList = ({ status }: TodoListProps) => {
           ) : (
             <AppArrowRight color="gray" size={24} />
           )}
-          <span className="ms-2" style={{ fontSize: '12px' }}>
-            依頼が締結されたら、受け渡し日時・場所などをチャットでやりとりしましょう。
+          <span className="ms-2" style={{ fontSize: '0.75rem' }}>
+            {getMessage('received', role)}
           </span>
         </div>
 
@@ -88,8 +129,8 @@ export const TodoList = ({ status }: TodoListProps) => {
           ) : (
             <AppArrowRight color="gray" size={24} />
           )}
-          <span className="ms-2" style={{ fontSize: '12px' }}>
-            商品の受け渡しが完了したら、画面下から取引相手の評価をしましょう。
+          <span className="ms-2" style={{ fontSize: '0.75rem' }}>
+            {getMessage('completed', role)}
           </span>
         </div>
       </div>
