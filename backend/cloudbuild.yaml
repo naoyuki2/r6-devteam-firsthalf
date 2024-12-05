@@ -9,6 +9,13 @@ steps:
         cd /workspace/backend/api
         cp /workspace/backend/package*.json .
         npm install
+  - name: 'node:20-alpine3.19'
+    entrypoint: 'sh'
+    args:
+      - '-c'
+      - |
+        echo "Checking if typeorm is installed..."
+        ls -R /workspace/backend/api/node_modules/typeorm || echo "typeorm not found"
 
   - name: 'node:20-alpine3.19'
     entrypoint: 'npm'
