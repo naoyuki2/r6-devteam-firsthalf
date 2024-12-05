@@ -146,3 +146,13 @@ export type ProposeDraftRequestArgs = {
   description: string
   draft_items: Item[]
 }
+
+export type Notification = {
+  id: number
+  body: string
+  type: 'room' | 'message'
+  created_at: Date
+  roomId: string
+  isRead: boolean
+  user: User
+}
