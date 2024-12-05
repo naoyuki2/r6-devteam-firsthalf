@@ -17,7 +17,7 @@ import { CustomError } from './error/CustomError'
 import { DraftRequestController } from './module/draft_request/draft_request.controller'
 import { RoomUserController } from './module/room_user/room_user.controller'
 
-const PORT = 3030
+const PORT = process.env.PORT || 3030
 
 AppDataSource.initialize()
   .then(() => {
