@@ -34,3 +34,22 @@ steps:
           exit 1
         fi
     dir: '/workspace/api'
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/hakobun/hakobun-api-image', '.']
+
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/hakobun/hakobun-api-image']
+
+  - name: 'gcr.io/cloud-builders/gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - 'hakobun-api'
+      - '--image=gcr.io/hakobun/hakobun-api-image'
+      - '--platform=managed'
+      - '--region=asia-northeast1'
+      - '--allow-unauthenticated'
+
+images:
+  - 'gcr.io/hakobun/hakobun-api-image'
