@@ -21,12 +21,12 @@ steps:
       - '-c'
       - |
         echo "Running migrations..."
-        echo "DB_HOST: $DB_HOST"
-        echo "DB_USERNAME: $DB_USERNAME"
-        echo "DB_PASSWORD: $DB_PASSWORD"
-        echo "DB_DATABASE: $DB_DATABASE"
-        echo "DB_TYPEORM_ENTITIES: $DB_TYPEORM_ENTITIES"
-        echo "DB_TYPEORM_MIGRATIONS: $DB_TYPEORM_MIGRATIONS"
+        echo "DB_HOST: $_DB_HOST"
+        echo "DB_USERNAME: $_DB_USERNAME"
+        echo "DB_PASSWORD: $_DB_PASSWORD"
+        echo "DB_DATABASE: $_DB_DATABASE"
+        echo "DB_TYPEORM_ENTITIES: $_DB_TYPEORM_ENTITIES"
+        echo "DB_TYPEORM_MIGRATIONS: $_DB_TYPEORM_MIGRATIONS"
         if npm run migrate; then
           echo "Migration completed successfully"
         else
