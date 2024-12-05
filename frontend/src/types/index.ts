@@ -91,7 +91,7 @@ export type GetByRoomIdRes = {
 
 export type RoomUser = {
   user: User
-  role: string
+  role: 'requester' | 'carrier'
   isAgreed: boolean
   isReceived: boolean
   isFeedback: boolean
