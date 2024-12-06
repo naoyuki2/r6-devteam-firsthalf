@@ -1,18 +1,19 @@
 import { AppButton } from '@/component/AppButton'
 import { Col, Container, Modal, Row } from 'react-bootstrap'
 import { Area } from '.'
-import { useRouter } from 'next/navigation'
 
 export const PrefectureModal = ({
+  setSelectedPrefecture,
   selectedArea,
   handleClose,
 }: {
+  setSelectedPrefecture: React.Dispatch<React.SetStateAction<string>>
   selectedArea?: Area
   handleClose: () => void
 }) => {
-  const router = useRouter()
   const handleSelectPrefecture = (prefecture: string) => {
-    router.push(`/home?filter[location_prefecture]=${prefecture}`)
+    setSelectedPrefecture(prefecture)
+    handleClose()
   }
 
   return (

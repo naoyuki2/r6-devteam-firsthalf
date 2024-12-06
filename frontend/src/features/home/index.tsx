@@ -10,8 +10,9 @@ import { EmojiDizzy } from 'react-bootstrap-icons'
 export const HomeClient = () => {
   const searchParams = useSearchParams()
   const locationPrefecture = searchParams.get('filter[location_prefecture]')
+  const deliveryPrefecture = searchParams.get('filter[delivery_prefecture]')
   const { requests, error, isLoading } = useRequestList(
-    `?filter[status]=pending&filter[location_prefecture]=${locationPrefecture}`
+    `?filter[status]=pending&filter[location_prefecture]=${locationPrefecture}&filter[delivery_prefecture]=${deliveryPrefecture}`
   )
 
   if (isLoading) return <Spinner animation="border" />
