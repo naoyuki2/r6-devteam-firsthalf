@@ -55,3 +55,7 @@ jobs:
       - name: Configure docker for artifact registry
         run: |
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Push Docker image
+        run: |
+          docker push asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }}
