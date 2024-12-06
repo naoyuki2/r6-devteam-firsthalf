@@ -8,7 +8,7 @@ import {
 import { IsNotEmpty, IsString } from 'class-validator'
 
 import { User } from '../user/user.entity'
-export type role = 'requester' | 'carrier'
+import { role } from '../room_user/room_user.entity'
 
 @Entity()
 export class Review {
@@ -21,10 +21,13 @@ export class Review {
   @ManyToOne(() => User, (user) => user.receive_users)
   receive_user!: User
 
-  @Column('varchar')
+  @Column({
+    type: 'varchar',
+    enum: role,
+  })
   @IsString()
   @IsNotEmpty()
-  send_role!: role
+  send_user_role!: role
 
   @Column('text')
   @IsString()
