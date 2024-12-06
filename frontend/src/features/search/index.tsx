@@ -13,9 +13,9 @@ export type Area = {
 }
 
 export function SearchClient() {
-  const [inputKeyword, setInputKeyword] = useState(undefined)
-  const [selectedLocation, setSelectedLocation] = useState(undefined)
-  const [selectedDelivery, setSelectedDelivery] = useState(undefined)
+  //const [inputKeyword, setInputKeyword] = useState(undefined)
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [selectedDelivery, setSelectedDelivery] = useState<string>('')
   const router = useRouter()
   const keyword = () => false
 

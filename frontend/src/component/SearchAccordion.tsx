@@ -9,8 +9,8 @@ import japan_map_bg from '../../public/japan_map_bg.png'
 import Image from 'next/image'
 
 type SearchAccordionProps = {
-  selectedPrefecture?: string
-  setSelectedPrefecture?: any
+  selectedPrefecture: string
+  setSelectedPrefecture: React.Dispatch<React.SetStateAction<string>>
 }
 
 export type Area = {
@@ -28,7 +28,9 @@ export const SearchAccordion = ({
   return (
     <Accordion defaultActiveKey="1">
       <Accordion.Item eventKey="0" style={{ position: 'relative' }}>
-        <Accordion.Header>{selectedPrefecture ?? '未選択'}</Accordion.Header>
+        <Accordion.Header>
+          {selectedPrefecture != '' ? selectedPrefecture : '未選択'}
+        </Accordion.Header>
         <Accordion.Body>
           <Image
             src={japan_map_bg}
