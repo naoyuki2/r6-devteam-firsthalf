@@ -30,4 +30,14 @@ export class ReviewService {
 
     await reviewRepository.save(createReview)
   }
+
+  async getById(userId: number): Promise<Review[]> {
+    const qb = reviewRepository
+      .createQueryBuilder('review')
+      .where('review.receive_user = :userId', { userId })
+      .leftJoinAndSelect('review.send_user', 'user')
+      .orderBy('review.created_at', 'ASC')
+
+    return await qb.getMany()
+  }
 }

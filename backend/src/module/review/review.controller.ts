@@ -18,6 +18,7 @@ import {
   GetByIdRes,
 } from './review.type'
 import { ReviewService } from './review.service'
+import { reviewSerializer } from './review.serializer'
 
 @Controller()
 export class ReviewController {
@@ -46,5 +47,12 @@ export class ReviewController {
   async getById(
     @Req() req: Request<GetByIdParam, '', '', ''>,
     @Res() res: Response<GetByIdRes>,
-  ) {}
+  ) {
+    const receiveUserId = req.params.userId
+    const reviews = await this.reviewService.getById(receiveUserId)
+
+    return res.json({
+      reviews: reviews.map((review) => reviewSerializer(review)),
+    })
+  }
 }
