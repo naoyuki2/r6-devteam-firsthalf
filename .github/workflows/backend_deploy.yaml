@@ -45,12 +45,13 @@ jobs:
           _DB_DATABASE: ${{ secrets._DB_DATABASE }}
           _DB_TYPEORM_ENTITIES: ${{ secrets._DB_TYPEORM_ENTITIES }}
           _DB_TYPEORM_MIGRATIONS: ${{ secrets._DB_TYPEORM_MIGRATIONS }}
+
       - name: Build Docker image
         run: |
           docker build \
             --tag gcr.io/${{ secrets.PROJECT_ID }}/backend:${{ github.sha }} \
             ./backend
 
-      - name: Push Docker image to GCR
+      - name: Configure docker for artifact registry
         run: |
-          docker push gcr.io/${{ secrets.PROJECT_ID }}/backend:${{ github.sha }}
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
