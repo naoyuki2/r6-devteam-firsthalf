@@ -36,7 +36,7 @@ export class ReviewService {
       .createQueryBuilder('review')
       .where('review.receive_user = :userId', { userId })
       .leftJoinAndSelect('review.send_user', 'user')
-      .orderBy('review.created_at', 'ASC')
+      .orderBy('review.created_at', 'DESC')
 
     return await qb.getMany()
   }
