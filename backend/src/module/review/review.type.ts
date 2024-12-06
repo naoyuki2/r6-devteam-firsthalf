@@ -11,8 +11,12 @@ export type CreateParam = {
 
 export type CreateReq = {
   body: string
-  sendRole: role
+  sendUserRole: role
   isGood: boolean
+}
+
+export type CreateRes = {
+  success: boolean
 }
 
 export const GetByIdEndpoint = `${root}/:userId`

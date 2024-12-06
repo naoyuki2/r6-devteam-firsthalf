@@ -12,6 +12,7 @@ import {
   CreateEndpoint,
   CreateParam,
   CreateReq,
+  CreateRes,
   GetByIdEndpoint,
   GetByIdParam,
   GetByIdRes,
@@ -25,19 +26,20 @@ export class ReviewController {
   @Post(CreateEndpoint)
   async create(
     @Req() req: Request<CreateParam, '', CreateReq, ''>,
-    @Res() _res: Response<''>,
+    @Res() res: Response<CreateRes>,
   ) {
     const sendUserId = req.currentUserId!
     const receiveUserId = req.params.receiveUserId
-    const { body, sendRole, isGood } = req.body
+    const { body, sendUserRole, isGood } = req.body
 
     await this.reviewService.create({
       sendUserId,
       receiveUserId,
       body,
-      sendRole,
+      sendUserRole,
       isGood,
     })
+    return res.json({ success: true })
   }
 
   @Get(GetByIdEndpoint)

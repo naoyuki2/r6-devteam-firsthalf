@@ -5,7 +5,7 @@ import { Review } from './review.entity'
 type CreateProps = {
   sendUserId: number
   receiveUserId: number
-  sendRole: role
+  sendUserRole: role
   body: string
   isGood: boolean
 }
@@ -16,14 +16,14 @@ export class ReviewService {
   async create({
     sendUserId,
     receiveUserId,
-    sendRole,
+    sendUserRole,
     body,
     isGood,
   }: CreateProps): Promise<void> {
     const createReview = reviewRepository.create({
       send_user: { id: sendUserId },
       receive_user: { id: receiveUserId },
-      send_user_role: sendRole,
+      send_user_role: sendUserRole,
       body: body,
       isGood: isGood,
     })
