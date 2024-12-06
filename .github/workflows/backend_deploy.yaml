@@ -39,6 +39,15 @@ jobs:
       - name: Show current directory
         run: pwd
 
+      - name: Show current directory
+        run: pwd
+
+      - name: List all files
+        run: ls -R
+
+      - name: List dist directory
+        run: ls -l ./backend/dist
+
       - name: Run database migration
         run: npm run typeorm migration:run -- -d dist/app-data-source.js
         working-directory: ./backend
