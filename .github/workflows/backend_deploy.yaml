@@ -27,6 +27,14 @@ jobs:
         with:
           version: '>= 363.0.0'
 
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Build TypeScript
+        run: npm run build
+        working-directory: ./backend
+
       # - name: Set up Cloud SQL Proxy
       #   run: |
       #     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
@@ -34,42 +42,12 @@ jobs:
       #     ./cloud_sql_proxy -instances=${{ secrets.GCP_SQL_INSTANCE_CONNECTION }}=tcp:5432 &
       #     sleep 5
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./backend
-
-      # # Dockerイメージをビルド
-      # - name: Build Docker image
-      #   run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest ./desume_api
-
-      # # DockerイメージをGCRにプッシュ
-      # - name: Push Docker image to GCR
-      #   run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest
-
-      # # Cloud SQL Proxyのセットアップ
-      # - name: Set up Cloud SQL Proxy
-      #   run: |
-      #     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
-      #     chmod +x cloud_sql_proxy
-      #     ./cloud_sql_proxy -instances=${{ secrets.GCP_SQL_INSTANCE_CONNECTION }}=tcp:3306 &
-      #     sleep 5
-
-      # # データベースマイグレーションの実行
       # - name: Run database migration
-      #   run: yarn typeorm migration:run
-      #   working-directory: ./desume_api
+      #   run: npm run typeorm migration:run -- -d src/app-data-source.ts
+      #   working-directory: ./backend
       #   env:
       #     DB_HOST: 127.0.0.1
+      #     DB_PORT: 5432
       #     DB_DATABASE: ${{ secrets.DB_NAME }}
       #     DB_USERNAME: ${{ secrets.DB_USER }}
       #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-      # # Cloud Runへのデプロイ
-      # - name: Deploy to Cloud Run
-      #   run: |
-      #     gcloud run deploy desume-api \
-      #       --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest \
-      #       --region=asia-northeast1 \
-      #       --platform=managed \
-      #       --allow-unauthenticated \
-      #       --project=${{ secrets.GCP_PROJECT_ID }}
