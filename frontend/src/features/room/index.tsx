@@ -2,7 +2,6 @@
 
 import { EmojiDizzy } from 'react-bootstrap-icons'
 import { Card, Spinner, Container, Nav } from 'react-bootstrap'
-import { AppLink } from '@/component/AppLink'
 import { AppAlert } from '@/component/AppAlert'
 import { useRoomList } from './hooks'
 import { RoomCard } from '@/component/RoomCard'
@@ -81,15 +80,14 @@ export function RoomClient() {
         .filter((room) => room.isClosed === isClosed)
         .map((room) => {
           return (
-            <AppLink href={`/chat/${room.id}`}>
-              <RoomCard
-                username={room.otherUser.user.name}
-                created_at={room.created_at}
-                title={room.request.title}
-                color={room.request.color}
-                message={room.message || 'メッセージがありません'}
-              />
-            </AppLink>
+            <RoomCard
+              id={room.id}
+              username={room.otherUser.user.name}
+              created_at={room.created_at}
+              title={room.request.title}
+              color={room.request.color}
+              message={room.message || 'メッセージがありません'}
+            />
           )
         })}
     </>
