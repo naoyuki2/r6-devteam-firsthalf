@@ -59,3 +59,12 @@ jobs:
       - name: Push Docker image
         run: |
           docker push asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }}
+
+      - name: Deploy
+        run: |-
+          gcloud run deploy hakobun-backend \
+            --project=${{ secrets.PROJECT_ID }} \
+            --image=asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }} \
+            --region=asia-northeast1 \
+            --service-account=${{ secrets.SERVICE_ACCOUNT }} \
+            --allow-unauthenticated
