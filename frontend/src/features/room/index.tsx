@@ -15,35 +15,57 @@ export function RoomClient() {
   if (isLoading) return <Spinner animation="border" />
   if (error)
     return <AppAlert variant="danger" message="ルームの取得に失敗しました" />
-  if (!rooms?.length)
+  if (!rooms?.filter((room) => room.isClosed === isClosed).length)
     return (
-      <Container
-        className="d-flex justify-content-center align-items-center"
-        style={{ minHeight: '100vh' }}
-      >
-        <Card
-          className="text-center shadow-sm"
-          style={{ width: '100%', maxWidth: '400px' }}
+      <>
+        <Nav
+          variant="underline"
+          defaultActiveKey="false"
+          className="justify-content-center"
         >
-          <Card.Body>
-            <EmojiDizzy
-              className="text-primary mb-3"
-              style={{ fontSize: '4rem' }}
-            />
-            <Card.Title className="text-primary fs-4">
-              ルームがありません
-            </Card.Title>
-            <Card.Text className="text-muted">
-              チャットしてみましょう！
-            </Card.Text>
-          </Card.Body>
-        </Card>
-      </Container>
+          <Nav.Item>
+            <Nav.Link eventKey="false" onClick={() => setIsClosed(false)}>
+              やり取り中
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="true" onClick={() => setIsClosed(true)}>
+              取引終了
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+        <Container
+          className="d-flex justify-content-center align-items-center"
+          style={{ minHeight: '70vh' }}
+        >
+          <Card
+            className="text-center shadow-sm"
+            style={{ width: '100%', maxWidth: '400px' }}
+          >
+            <Card.Body>
+              <EmojiDizzy
+                className="text-primary mb-3"
+                style={{ fontSize: '4rem' }}
+              />
+              <Card.Title className="text-primary fs-4">
+                ルームがありません
+              </Card.Title>
+              <Card.Text className="text-muted">
+                チャットしてみましょう！
+              </Card.Text>
+            </Card.Body>
+          </Card>
+        </Container>
+      </>
     )
 
   return (
     <>
-      <Nav variant="underline" defaultActiveKey="false">
+      <Nav
+        variant="underline"
+        defaultActiveKey="false"
+        className="justify-content-center"
+      >
         <Nav.Item>
           <Nav.Link eventKey="false" onClick={() => setIsClosed(false)}>
             やり取り中

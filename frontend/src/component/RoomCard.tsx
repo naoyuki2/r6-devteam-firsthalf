@@ -34,7 +34,10 @@ export const RoomCard = ({
             <div className="fw-bold" style={{ fontSize: '0.75rem' }}>
               {username}
             </div>
-            <div className="text-muted" style={{ fontSize: '0.75rem' }}>
+            <div
+              className="text-muted text-truncate d-inline-block"
+              style={{ fontSize: '0.75rem', maxWidth: '290px' }}
+            >
               {message}
             </div>
           </div>
