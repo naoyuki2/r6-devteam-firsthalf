@@ -8,7 +8,7 @@ steps:
         mkdir -p /workspace/backend/api
         cd /workspace/backend/api
         cp /workspace/backend/package*.json .
-        npm install
+        npm install --production=false
   - name: 'node:20-alpine3.19'
     entrypoint: 'sh'
     args:
