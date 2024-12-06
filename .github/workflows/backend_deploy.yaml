@@ -1,0 +1,64 @@
+name: Deploy to Cloud Run with Migration
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend_deploy.yaml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
+
+      # # Dockerイメージをビルド
+      # - name: Build Docker image
+      #   run: docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest ./desume_api
+
+      # # DockerイメージをGCRにプッシュ
+      # - name: Push Docker image to GCR
+      #   run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest
+
+      # # Cloud SQL Proxyのセットアップ
+      # - name: Set up Cloud SQL Proxy
+      #   run: |
+      #     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+      #     chmod +x cloud_sql_proxy
+      #     ./cloud_sql_proxy -instances=${{ secrets.GCP_SQL_INSTANCE_CONNECTION }}=tcp:3306 &
+      #     sleep 5
+
+      # # データベースマイグレーションの実行
+      # - name: Run database migration
+      #   run: yarn typeorm migration:run
+      #   working-directory: ./desume_api
+      #   env:
+      #     DB_HOST: 127.0.0.1
+      #     DB_DATABASE: ${{ secrets.DB_NAME }}
+      #     DB_USERNAME: ${{ secrets.DB_USER }}
+      #     DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+      # # Cloud Runへのデプロイ
+      # - name: Deploy to Cloud Run
+      #   run: |
+      #     gcloud run deploy desume-api \
+      #       --image=gcr.io/${{ secrets.GCP_PROJECT_ID }}/desume-api:latest \
+      #       --region=asia-northeast1 \
+      #       --platform=managed \
+      #       --allow-unauthenticated \
+      #       --project=${{ secrets.GCP_PROJECT_ID }}
