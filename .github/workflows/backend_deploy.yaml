@@ -27,15 +27,15 @@ jobs:
         with:
           version: '>= 363.0.0'
 
-      - name: Set up Cloud SQL Proxy
-        run: |
-          wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
-          chmod +x cloud_sql_proxy
-          ./cloud_sql_proxy -instances=${{ secrets.GCP_SQL_INSTANCE_CONNECTION }}=tcp:5432 &
-          sleep 5
+      # - name: Set up Cloud SQL Proxy
+      #   run: |
+      #     wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
+      #     chmod +x cloud_sql_proxy
+      #     ./cloud_sql_proxy -instances=${{ secrets.GCP_SQL_INSTANCE_CONNECTION }}=tcp:5432 &
+      #     sleep 5
 
       - name: Install dependencies
-        run: npm run install
+        run: npm install
         working-directory: ./backend
 
       # # Dockerイメージをビルド
