@@ -139,7 +139,12 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
           currentUserId={currentUser.user.id}
           onSendMessage={sendMessage}
         />
-        <FeedbackForm onFeedback={handleFeedback} status={status} />
+        <FeedbackForm
+          onFeedback={handleFeedback}
+          status={status}
+          receiveUserId={room.otherUser.user.id}
+          sendUserRole={room.currentUser.role}
+        />
       </Container>
     </>
   )
