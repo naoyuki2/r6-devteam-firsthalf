@@ -35,7 +35,7 @@ export const FeedbackForm = ({
     try {
       await fetchWithToken({
         method: 'POST',
-        url: `http://localhost:3030/review/${receiveUserId}`,
+        url: `review/${receiveUserId}`,
         args: JSON.stringify({
           body: inputMessage,
           sendUserRole,
