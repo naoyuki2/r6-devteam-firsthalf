@@ -55,9 +55,10 @@ useExpressServer(app, {
 
 export const httpServer = createServer(app)
 
+const url = process.env._HAKOBUN_FRONT_URL || 'http://localhost:3000'
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: url,
     methods: ['GET', 'POST'],
   },
 })
