@@ -1,6 +1,11 @@
 'use client'
 
-import { ChatDots, HouseDoor, PlusCircleFill } from 'react-bootstrap-icons'
+import {
+  ChatDots,
+  HouseDoor,
+  PlusCircleFill,
+  Bell,
+} from 'react-bootstrap-icons'
 import { AppLink } from './AppLink'
 import { usePathname } from 'next/navigation'
 import { getItem } from '@/utils/localStorage'
@@ -47,6 +52,21 @@ export default function BottomNav() {
       ),
       href: '/search',
       active: pathname === '/search',
+    },
+
+    {
+      icon: (
+        <Bell
+          style={{
+            fontSize: '2rem',
+            color: pathname === '/notifications' ? 'white' : 'black',
+            width: '24px',
+            height: '24px',
+          }}
+        />
+      ),
+      href: '/notifications',
+      active: pathname === '/notifications',
     },
     {
       icon: (
