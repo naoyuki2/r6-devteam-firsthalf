@@ -19,16 +19,23 @@ export const FeedbackForm = ({
 }: FeedbackProps) => {
   const [inputMessage, setInputMessage] = useState<string>('')
   const [isGood, setIsGood] = useState<boolean | null>(null)
+  const [errorMessage, setErrorMessage] = useState<{
+    type: string
+    message: string
+  } | null>(null)
 
   const isDisabled = status !== 'received'
 
   const handleSubmit = async () => {
     if (isGood === null) {
-      alert('評価（良い・悪い）を選択してください')
+      setErrorMessage({ type: 'evaluation', message: '評価を選択してください' })
       return
     }
     if (!inputMessage.trim()) {
-      alert('レビューのメッセージを入力してください')
+      setErrorMessage({
+        type: 'message',
+        message: 'メッセージを入力してください',
+      })
       return
     }
 
@@ -43,13 +50,17 @@ export const FeedbackForm = ({
         }),
       })
 
+      setErrorMessage(null)
       alert('レビューが送信されました')
       onFeedback()
       setInputMessage('')
       setIsGood(null)
     } catch (error) {
       console.error('レビューの送信に失敗しました', error)
-      alert('レビューの送信中にエラーが発生しました')
+      setErrorMessage({
+        type: 'submit',
+        message: 'レビューの送信中にエラーが発生しました',
+      })
     }
   }
 
@@ -67,59 +78,73 @@ export const FeedbackForm = ({
       <p className="border-start border-info border-5 ps-2 fw-bold mt-4">
         取引相手の評価
       </p>
-      <div className="d-flex justify-content-start mb-3">
-        <label
-          htmlFor="success"
-          className={`btn ${
-            isDisabled
-              ? 'btn-secondary'
-              : isGood === true
-              ? 'btn-success'
-              : 'btn-outline-success'
-          }`}
-          onClick={() => setIsGood(true)}
-        >
-          <HandThumbsUp className="me-2" />
-          良かった
-        </label>
-        <input
-          type="radio"
-          name="evaluation"
-          id="success"
-          className="invisible"
-          disabled={isDisabled}
-        />
-        <label
-          htmlFor="danger"
-          className={`btn ${
-            isDisabled
-              ? 'btn-secondary'
-              : isGood === false
-              ? 'btn-danger'
-              : 'btn-outline-danger'
-          }`}
-          onClick={() => setIsGood(false)}
-        >
-          <HandThumbsDown className="me-2" />
-          悪かった
-        </label>
-        <input
-          type="radio"
-          name="evaluation"
-          id="danger"
-          className="invisible"
-          disabled={isDisabled}
-        />
+      <div className="d-flex flex-column mb-3">
+        <div className="d-flex justify-content-start">
+          <label
+            htmlFor="success"
+            className={`btn ${
+              isDisabled
+                ? 'btn-secondary'
+                : isGood === true
+                ? 'btn-success'
+                : 'btn-outline-success'
+            }`}
+            onClick={() => setIsGood(true)}
+          >
+            <HandThumbsUp className="me-2" />
+            良かった
+          </label>
+          <input
+            type="radio"
+            name="evaluation"
+            id="success"
+            className="invisible"
+            disabled={isDisabled}
+          />
+          <label
+            htmlFor="danger"
+            className={`btn ${
+              isDisabled
+                ? 'btn-secondary'
+                : isGood === false
+                ? 'btn-danger'
+                : 'btn-outline-danger'
+            }`}
+            onClick={() => setIsGood(false)}
+          >
+            <HandThumbsDown className="me-2" />
+            悪かった
+          </label>
+          <input
+            type="radio"
+            name="evaluation"
+            id="danger"
+            className="invisible"
+            disabled={isDisabled}
+          />
+        </div>
+        {errorMessage?.type === 'evaluation' && (
+          <small style={{ color: 'red', marginTop: '5px' }}>
+            {errorMessage.message}
+          </small>
+        )}
       </div>
-      <AppTextArea
-        name="chatMessage"
-        value={inputMessage}
-        autoComplete="off"
-        onChange={(e) => setInputMessage(e.target.value)}
-        placeholder="メッセージを入力"
-        rows={4}
-        disabled={isDisabled}
-      />
+      <div className="d-flex flex-column">
+        <AppTextArea
+          name="chatMessage"
+          value={inputMessage}
+          autoComplete="off"
+          onChange={(e) => setInputMessage(e.target.value)}
+          placeholder="メッセージを入力"
+          rows={4}
+          disabled={isDisabled}
+        />
+        {errorMessage?.type === 'message' && (
+          <small style={{ color: 'red', marginTop: '5px' }}>
+            {errorMessage.message}
+          </small>
+        )}
+      </div>
       <AppButton
         text="評価を送信する"
         onClick={handleSubmit}
