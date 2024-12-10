@@ -48,9 +48,9 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
     })
   }
 
-  const handleAgree = async () => {
+  const handleAgree = async (): Promise<boolean> => {
     const isConfirm = window.confirm('合意しますか？')
-    if (!isConfirm) return
+    if (!isConfirm) return isConfirm
 
     const agreeRes = await fetchWithToken({
       method: 'PATCH',
@@ -60,18 +60,18 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       ...prev,
       isAgreed: true,
     }))
-    if (!agreeRes?.data.isBothAgreed) return
-
-    await fetchWithToken({
-      method: 'PATCH',
-      url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
-    })
+    if (!agreeRes?.data.isBothAgreed)
+      await fetchWithToken({
+        method: 'PATCH',
+        url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
+      })
 
     await fetchWithToken({
       method: 'DELETE',
       url: `/draft_requests/${room.id}/delete`,
     })
     updateStatus({ status: 'agreed', roomId: room.id })
+    return isConfirm
   }
 
   const handleReceive = async () => {

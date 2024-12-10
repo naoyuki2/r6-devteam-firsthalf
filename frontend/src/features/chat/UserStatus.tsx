@@ -8,7 +8,7 @@ type UserStatusProps = {
   otherUser: RoomUser
   status: string
   action: boolean
-  onAgree: () => void
+  onAgree: () => Promise<boolean>
   onReceive: () => void
   onSendMessage: (message: string) => void
   onOpenModal: () => void
@@ -55,7 +55,7 @@ const CurrentUserStatus = ({
   user: RoomUser
   action: boolean
   status: string
-  onAgree: () => void
+  onAgree: () => Promise<boolean>
   onReceive: () => void
   onSendMessage: (message: string) => void
   onOpenModal: () => void
@@ -107,12 +107,12 @@ const CurrentUserStatus = ({
     if (status === 'pending' && !user.isAgreed) {
       return {
         text: '合意',
-        onClick: () => {
-          onAgree()
-          onSendMessage(
-            `依頼の内容に同意しました。
+        onClick: async () => {
+          if (await onAgree())
+            onSendMessage(
+              `依頼の内容に同意しました。
                 （このメッセージは自動送信されました。）`
-          )
+            )
         },
         disabled: false,
       }
