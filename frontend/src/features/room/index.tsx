@@ -81,7 +81,8 @@ export function RoomClient() {
         .map((room) => {
           return (
             <RoomCard
-              id={room.id}
+              key={room.id}
+              roomId={room.id}
               username={room.otherUser.user.name}
               created_at={room.created_at}
               title={room.request.title}

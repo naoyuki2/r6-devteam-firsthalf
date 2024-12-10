@@ -5,7 +5,7 @@ import { AppUserIcon } from './AppUserIcon'
 import { AppLink } from '@/component/AppLink'
 
 type RoomCardProps = {
-  id: string
+  roomId: string
   username: string
   created_at: Date
   title: string
@@ -14,7 +14,7 @@ type RoomCardProps = {
 }
 
 export const RoomCard = ({
-  id,
+  roomId,
   username,
   created_at,
   title,
@@ -22,7 +22,7 @@ export const RoomCard = ({
   message,
 }: RoomCardProps) => {
   return (
-    <AppLink href={`/chat/${id}`}>
+    <AppLink href={`/chat/${roomId}`}>
       <div
         className="card mb-3 shadow-sm p-2"
         style={{
