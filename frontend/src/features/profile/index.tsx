@@ -3,7 +3,7 @@
 import { RequestCard } from '@/component/RequestCard'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { Request } from '@/types'
-import { Button, Spinner } from 'react-bootstrap'
+import { Spinner } from 'react-bootstrap'
 import { PencilFill, PersonCircle } from 'react-bootstrap-icons'
 import { useRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
