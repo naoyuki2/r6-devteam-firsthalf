@@ -3,6 +3,7 @@ import { ja } from 'date-fns/locale'
 import { Thumbnail } from './Thumbnail'
 import { AppUserIcon } from './AppUserIcon'
 import { AppLink } from '@/component/AppLink'
+import { AppCheck } from './AppCheck'
 
 type RoomCardProps = {
   roomId: string
@@ -11,6 +12,7 @@ type RoomCardProps = {
   title: string
   color: string
   message: string
+  isClosed: boolean
 }
 
 export const RoomCard = ({
@@ -20,15 +22,22 @@ export const RoomCard = ({
   title,
   color,
   message,
+  isClosed,
 }: RoomCardProps) => {
   return (
     <AppLink href={`/chat/${roomId}`}>
-      <div
-        className="card mb-3 shadow-sm p-2"
-        style={{
-          borderRadius: '10px',
-        }}
-      >
+      <div className="card mb-3 shadow-sm p-2 position-relative rounded">
+        {isClosed && (
+          <div
+            className="position-absolute"
+            style={{
+              top: '16px',
+              right: '16px',
+            }}
+          >
+            <AppCheck size={75} color="info" />
+          </div>
+        )}
         <Thumbnail backgroundColor={color} title={title} />
         <p className="fw-bold my-2">{title}</p>
         <div className="d-flex justify-content-between align-items-center">

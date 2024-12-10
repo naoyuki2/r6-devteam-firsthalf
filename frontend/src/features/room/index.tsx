@@ -63,7 +63,7 @@ export function RoomClient() {
       <Nav
         variant="underline"
         defaultActiveKey="false"
-        className="justify-content-center"
+        className="justify-content-center mb-1"
       >
         <Nav.Item>
           <Nav.Link eventKey="false" onClick={() => setIsClosed(false)}>
@@ -88,6 +88,7 @@ export function RoomClient() {
               title={room.request.title}
               color={room.request.color}
               message={room.message || 'メッセージがありません'}
+              isClosed={room.isClosed}
             />
           )
         })}

@@ -10,7 +10,7 @@ export const AppCheck = ({ color, size, bg }: AppCheckProps) => {
   return (
     <CheckCircle
       size={size}
-      className={`text-${color} flex-shrink-0 rounded-circle`}
+      className={`text-${color} flex-shrink-0 rounded-circle bg-white`}
       style={{ background: bg }}
     />
   )
