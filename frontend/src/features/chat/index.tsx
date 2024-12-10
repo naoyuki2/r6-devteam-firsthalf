@@ -16,6 +16,7 @@ import { UserStatus } from './UserStatus'
 import { handleSendMessage } from './utils'
 import { fetchWithToken } from '@/lib/axios'
 import ChatTopNav from './ChatTopNav'
+import { TodoList } from './TodoList'
 
 const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
   const [messages, setMessages] = useState<Message[]>(room.messages)
@@ -122,6 +123,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
         showModal={showModal}
       />
       <Container>
+        <TodoList status={status} role={currentUser.role} />
         <UserStatus
           currentUser={currentUser}
           otherUser={room.otherUser}

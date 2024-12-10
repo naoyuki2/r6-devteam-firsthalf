@@ -91,7 +91,7 @@ export type GetByRoomIdRes = {
 
 export type RoomUser = {
   user: User
-  role: string
+  role: 'requester' | 'carrier'
   isAgreed: boolean
   isReceived: boolean
   isFeedback: boolean
@@ -145,4 +145,14 @@ export type ProposeDraftRequestArgs = {
   delivery_details: string
   description: string
   draft_items: Item[]
+}
+
+export type Notification = {
+  id: number
+  body: string
+  type: 'room' | 'message'
+  created_at: Date
+  roomId: string
+  isRead: boolean
+  user: User
 }

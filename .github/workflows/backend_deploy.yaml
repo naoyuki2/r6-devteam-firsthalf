@@ -1,0 +1,70 @@
+name: Deploy to Cloud Run with Migration
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend_deploy.yaml'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      ACTIONS_STEP_DEBUG: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GCLOUD_AUTH }}'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+        with:
+          version: '>= 363.0.0'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Build TypeScript
+        run: npm run build
+        working-directory: ./backend
+
+      - name: Run database migration
+        run: npm run typeorm migration:run -- -d dist/src/app-data-source.js
+        working-directory: ./backend
+        env:
+          _DB_HOST: ${{ secrets._DB_HOST }}
+          _DB_USERNAME: ${{ secrets._DB_USERNAME }}
+          _DB_PASSWORD: ${{ secrets._DB_PASSWORD }}
+          _DB_DATABASE: ${{ secrets._DB_DATABASE }}
+          _DB_TYPEORM_ENTITIES: ${{ secrets._DB_TYPEORM_ENTITIES }}
+          _DB_TYPEORM_MIGRATIONS: ${{ secrets._DB_TYPEORM_MIGRATIONS }}
+
+      - name: Configure docker for artifact registry
+        run: |
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+
+      - name: Build Docker image
+        run: |
+          docker build \
+          --tag asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }} \
+          ./backend
+
+      - name: Push Docker image
+        run: |
+          docker push asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }}
+
+      - name: Deploy
+        run: |-
+          gcloud run deploy hakobun-backend \
+            --project=${{ secrets.PROJECT_ID }} \
+            --image=asia-northeast1-docker.pkg.dev/${{ secrets.PROJECT_ID }}/backend-repository/backend-image:${{ github.sha }} \
+            --region=asia-northeast1 \
+            --service-account=${{ secrets.SERVICE_ACCOUNT }} \
+            --allow-unauthenticated

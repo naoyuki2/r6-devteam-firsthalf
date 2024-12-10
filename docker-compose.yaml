@@ -12,7 +12,7 @@ services:
       POSTGRES_HOST: db
     working_dir: /api
     tty: true
-    entrypoint: "/bin/sh -c 'npm install; npm run typeorm migration:run -- -d src/app-data-source.ts; npm run start'"
+    entrypoint: "/bin/sh -c 'npm install; npm run typeorm migration:run -- -d src/app-data-source.ts; npm run dev'"
     depends_on:
       - db
 

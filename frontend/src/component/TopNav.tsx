@@ -1,90 +1,81 @@
 'use client'
 
-import React, { useState } from 'react'
 import Image from 'next/image'
 import logo from '../../public/logo.png'
 import { AppLink } from './AppLink'
-import { ArrowLeft, PencilSquare, Search } from 'react-bootstrap-icons'
-import { usePathname, useRouter } from 'next/navigation'
-import EditModal from './EditModal'
-import { DraftRequest } from '@/types'
+import { ArrowLeft, Person } from 'react-bootstrap-icons'
+import { useRouter } from 'next/navigation'
+import { useCurrentUser } from '@/lib/jotai/userState'
 
 type TopNavProps = {
-  draftRequest?: DraftRequest
-  otherRole?: string
+  isLogoShow?: boolean
+  isArrowShow?: boolean
+  text?: string
 }
 
-export default function TopNav({ draftRequest, otherRole }: TopNavProps) {
-  const pathname = usePathname()
+export default function TopNav({ isLogoShow, isArrowShow, text }: TopNavProps) {
   const router = useRouter()
-
-  // 特定のページで「戻る」ボタンを表示
-  const isArrowShow =
-    /^\/request\/\d+$/.test(pathname) ||
-    /^\/user\/\d+$/.test(pathname) ||
-    '/search' === pathname ||
-    '/request' === pathname ||
-    /^\/chat\/[a-zA-Z0-9-]+$/.test(pathname)
-
-  const isSearchShow = '/home' === pathname
-
-  // チャット画面の場合に編集アイコンを表示
-  const isChatPage = /^\/chat\/[a-zA-Z0-9-]+$/.test(pathname) // 必要に応じて調整
-
-  const [showModal, setShowModal] = useState(false)
-
-  const handleOpenModal = () => setShowModal(true)
-  const handleCloseModal = () => setShowModal(false)
+  const currentUser = useCurrentUser()
 
   return (
-    <nav className="position-sticky top-0 bg-info shadow px-3 py-2 z-1">
-      <div className="d-flex justify-content-center">
-        {isArrowShow && (
+    <nav
+      className="position-sticky top-0 bg-info shadow z-1 d-flex justify-content-center align-items-center px-3"
+      style={{ height: '52px' }}
+    >
+      <div>
+        {isArrowShow ? (
           <ArrowLeft
             onClick={() => router.back()}
-            size={36}
+            size={24}
+            className="position-absolute text-black"
             style={{
-              position: 'absolute',
-              left: 16,
-              top: 16,
+              top: '50%',
+              left: '16px',
+              transform: 'translateY(-50%)',
             }}
           />
+        ) : currentUser ? (
+          <AppLink href="/profile">
+            <Person
+              size={32}
+              className="border border-secondary rounded-circle bg-white p-1 position-absolute"
+              style={{
+                top: '50%',
+                left: '16px',
+                transform: 'translateY(-50%)',
+              }}
+            />
+          </AppLink>
+        ) : (
+          <AppLink href="/login">
+            <Person
+              size={32}
+              className="border border-secondary rounded-circle bg-white p-1 position-absolute"
+              style={{
+                top: '50%',
+                left: '16px',
+                transform: 'translateY(-50%)',
+              }}
+            />
+          </AppLink>
         )}
-        {isSearchShow && (
-          <Search
-            onClick={() => router.push('/search')}
-            size={30}
-            style={{
-              position: 'absolute',
-              right: 16,
-              top: 16,
-            }}
-          />
-        )}
-        <AppLink href="/">
-          <Image src={logo} alt="logo" width={48} height={48} priority />
-        </AppLink>
-        {isChatPage && (
-          <PencilSquare
-            onClick={handleOpenModal}
-            style={{
-              position: 'absolute',
-              fontSize: '30px',
-              right: 16,
-              top: 16,
-              cursor: 'pointer',
-            }}
-          />
-        )}
+        <span
+          className="fw-bold ps-4 position-absolute text-black"
+          style={{
+            top: '50%',
+            left: '48px',
+            transform: 'translateY(-50%)',
+          }}
+        >
+          {text}
+        </span>
       </div>
-      {draftRequest != undefined && otherRole != undefined && (
-        <EditModal
-          show={showModal}
-          onClose={handleCloseModal}
-          draftRequest={draftRequest}
-          otherRole={otherRole}
-        />
+      {isLogoShow && (
+        <AppLink href="/">
+          <Image src={logo} alt="logo" width={32} height={32} priority />
+        </AppLink>
       )}
+      <div></div>
     </nav>
   )
 }
