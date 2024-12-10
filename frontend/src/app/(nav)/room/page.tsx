@@ -6,7 +6,7 @@ export default function Room() {
   return (
     <>
       <TopNav text="メッセージ" />
-      <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
+      <Container>
         <RoomClient />
       </Container>
     </>
