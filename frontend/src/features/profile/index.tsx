@@ -3,10 +3,12 @@
 import { RequestCard } from '@/component/RequestCard'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { Request } from '@/types'
-import { Col, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Row, Spinner } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
 import { useRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
+import { PencilFill } from 'react-bootstrap-icons'
+import Link from 'next/link'
 
 export const ProfileClient = () => {
   const currentUser = useCurrentUser()
@@ -18,14 +20,36 @@ export const ProfileClient = () => {
 
   return (
     <>
-      <Row className="mb-4">
-        <Col xs={3}>
-          <PersonCircle size={80} />
-        </Col>
-        <Col xs={9}>
+      <div
+        style={{
+          position: 'relative',
+          top: '80px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+        }}
+      >
+        <PersonCircle
+          className="d-flex justify-content-center"
+          style={{}}
+          size={80}
+        />
+        <Button
+          variant="outline-primary"
+          size="sm"
+          style={{
+            position: 'absolute',
+          }}
+        >
+          編集
+        </Button>
+      </div>
+
+      <Row className="mb-4" style={{ marginTop: '60px' }}>
+        <Col xs={12} className="text-center">
           <h4 className="fw-bold">{currentUser?.name}</h4>
+        </Col>
+        <Col xs={12} className="text-center">
           <p className="text-muted">{currentUser?.email}</p>
-          <div className="d-flex"></div>
         </Col>
       </Row>
 

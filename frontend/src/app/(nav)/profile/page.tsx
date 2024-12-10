@@ -7,15 +7,6 @@ export default async function ProfilePage() {
   return (
     <>
       <Container className="mt-4">
-        <Row className="mb-4">
-          <Col className="text-end">
-            <Link href="/profile/edit" passHref>
-              <Button variant="outline-primary" size="sm">
-                編集
-              </Button>
-            </Link>
-          </Col>
-        </Row>
         <ProfileClient />
       </Container>
     </>
