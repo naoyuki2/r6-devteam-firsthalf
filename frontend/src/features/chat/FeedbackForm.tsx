@@ -1,7 +1,7 @@
 import { AppButton } from '@/component/AppButton'
 import { AppTextArea } from '@/component/AppTextArea'
 import { fetchWithToken } from '@/lib/axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { HandThumbsDown, HandThumbsUp } from 'react-bootstrap-icons'
 
 type FeedbackProps = {
@@ -9,13 +9,15 @@ type FeedbackProps = {
   status: string
   receiveUserId: number
   sendUserRole: 'requester' | 'carrier'
+  isFeedback: boolean
 }
 
 export const FeedbackForm = ({
   onFeedback,
-  status,
   receiveUserId,
   sendUserRole,
+  isFeedback,
+  status,
 }: FeedbackProps) => {
   const [inputMessage, setInputMessage] = useState<string>('')
   const [isGood, setIsGood] = useState<boolean | null>(null)
@@ -23,8 +25,15 @@ export const FeedbackForm = ({
     type: string
     message: string
   } | null>(null)
+  const [isDisabled, setIsDisabled] = useState<boolean>(true)
 
-  const isDisabled = status !== 'received'
+  useEffect(() => {
+    if (!isFeedback && status === 'received') {
+      setIsDisabled(false)
+    } else {
+      setIsDisabled(true)
+    }
+  }, [status, isFeedback])
 
   const handleSubmit = async () => {
     if (isGood === null) {
@@ -55,6 +64,7 @@ export const FeedbackForm = ({
       onFeedback()
       setInputMessage('')
       setIsGood(null)
+      setIsDisabled(true)
     } catch (error) {
       console.error('レビューの送信に失敗しました', error)
       setErrorMessage({

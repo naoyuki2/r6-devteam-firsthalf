@@ -144,6 +144,7 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
           status={status}
           receiveUserId={room.otherUser.user.id}
           sendUserRole={room.currentUser.role}
+          isFeedback={room.currentUser.isFeedback}
         />
       </Container>
     </>
