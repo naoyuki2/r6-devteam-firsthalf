@@ -3,11 +3,10 @@
 import { RequestCard } from '@/component/RequestCard'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { Request } from '@/types'
-import { Button, Col, Row, Spinner } from 'react-bootstrap'
-import { PersonCircle } from 'react-bootstrap-icons'
+import { Button, Spinner } from 'react-bootstrap'
+import { PencilFill, PersonCircle } from 'react-bootstrap-icons'
 import { useRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
-import { PencilFill } from 'react-bootstrap-icons'
 import Link from 'next/link'
 
 export const ProfileClient = () => {
@@ -20,39 +19,41 @@ export const ProfileClient = () => {
 
   return (
     <>
-      <div
-        style={{
-          position: 'relative',
-          top: '80px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-        }}
-      >
-        <PersonCircle
-          className="d-flex justify-content-center"
-          style={{}}
-          size={80}
-        />
-        <Button
-          variant="outline-primary"
-          size="sm"
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <div
+          className="mb-3"
           style={{
-            position: 'absolute',
+            position: 'relative',
           }}
         >
-          編集
-        </Button>
+          <PersonCircle size={80} />
+          <Link
+            href={'/profile/edit'}
+            className="rounded-circle bg-white border border-info"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              transform: 'translate(20%, 20%)',
+              width: 36,
+              height: 36,
+            }}
+          >
+            <PencilFill
+              size={24}
+              className={'text-info'}
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                transform: 'translate(-20%, 20%)',
+              }}
+            />
+          </Link>
+        </div>
+        <p className="fw-bold text-center">{currentUser?.name}</p>
+        <p className="text-muted text-center">{currentUser?.email}</p>
       </div>
-
-      <Row className="mb-4" style={{ marginTop: '60px' }}>
-        <Col xs={12} className="text-center">
-          <h4 className="fw-bold">{currentUser?.name}</h4>
-        </Col>
-        <Col xs={12} className="text-center">
-          <p className="text-muted">{currentUser?.email}</p>
-        </Col>
-      </Row>
-
       {!requestList || requestList.length === 0 ? (
         <p>依頼がありません</p>
       ) : (
