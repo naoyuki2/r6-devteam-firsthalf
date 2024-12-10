@@ -10,6 +10,7 @@ type GetProps = {
   status?: 'pending' | 'progress' | 'completed'
   userId?: number
   location_prefecture?: string
+  delivery_prefecture?: string
 }
 
 type createProps = {
@@ -47,6 +48,7 @@ export class RequestService {
     userId,
     status,
     location_prefecture,
+    delivery_prefecture,
   }: GetProps): Promise<Request[]> {
     const qb = requestRepository
       .createQueryBuilder('request')
@@ -65,6 +67,12 @@ export class RequestService {
     if (location_prefecture !== 'null' && location_prefecture !== undefined) {
       qb.where('location_prefecture = :location_prefecture', {
         location_prefecture,
+      })
+    }
+
+    if (delivery_prefecture !== 'null' && delivery_prefecture !== undefined) {
+      qb.where('delivery_prefecture = :delivery_prefecture', {
+        delivery_prefecture,
       })
     }
 

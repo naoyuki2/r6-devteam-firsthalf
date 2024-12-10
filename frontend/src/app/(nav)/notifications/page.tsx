@@ -1,13 +1,12 @@
 import TopNav from '@/component/TopNav'
-import { RoomClient } from '@/features/room'
 import { Container } from 'react-bootstrap'
-
-export default function Room() {
+import { NotificationsClient } from '@/features/notifications'
+export default function Notifications() {
   return (
     <>
-      <TopNav text="メッセージ" />
+      <TopNav text="通知" />
       <Container className="vh-100 d-flex justify-content-center align-items-center flex-column">
-        <RoomClient />
+        <NotificationsClient />
       </Container>
     </>
   )

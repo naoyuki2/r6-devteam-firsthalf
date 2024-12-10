@@ -8,8 +8,9 @@ import io, { Socket } from 'socket.io-client'
 let socket: Socket | undefined
 
 const initializeSocket = () => {
+  const url = process.env.NEXT_PUBLIC_HAKOBUN_API_URL || 'http://localhost:3030'
   if (!socket) {
-    socket = io('http://localhost:3030')
+    socket = io(url)
   }
 }
 
