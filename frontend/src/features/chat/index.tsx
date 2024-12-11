@@ -56,6 +56,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/agreed`,
     })
+    sendMessage(
+      `依頼の内容に同意しました。
+          （このメッセージは自動送信されました。）`
+    )
     setCurrentUser((prev) => ({
       ...prev,
       isAgreed: true,
@@ -79,6 +83,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/received`,
     })
+    sendMessage(
+      `依頼の品を受け取りました。
+          （このメッセージは自動送信されました。）`
+    )
     setCurrentUser((prev) => ({
       ...prev,
       isReceived: true,
@@ -139,7 +147,13 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
           currentUserId={currentUser.user.id}
           onSendMessage={sendMessage}
         />
-        <FeedbackForm onFeedback={handleFeedback} status={status} />
+        <FeedbackForm
+          onFeedback={handleFeedback}
+          status={status}
+          receiveUserId={room.otherUser.user.id}
+          sendUserRole={room.currentUser.role}
+          isFeedback={room.currentUser.isFeedback}
+        />
       </Container>
     </>
   )
