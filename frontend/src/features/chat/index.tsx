@@ -48,30 +48,34 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
     })
   }
 
-  const handleAgree = async (): Promise<boolean> => {
+  const handleAgree = async () => {
     const isConfirm = window.confirm('合意しますか？')
-    if (!isConfirm) return isConfirm
+    if (!isConfirm) return
 
     const agreeRes = await fetchWithToken({
       method: 'PATCH',
       url: `/room_users/${room.id}/agreed`,
     })
+    sendMessage(
+      `依頼の内容に同意しました。
+          （このメッセージは自動送信されました。）`
+    )
     setCurrentUser((prev) => ({
       ...prev,
       isAgreed: true,
     }))
-    if (!agreeRes?.data.isBothAgreed)
-      await fetchWithToken({
-        method: 'PATCH',
-        url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
-      })
+    if (!agreeRes?.data.isBothAgreed) return
+
+    await fetchWithToken({
+      method: 'PATCH',
+      url: `/requests/${room.draftRequest.id}/${room.request.id}/concluded`,
+    })
 
     await fetchWithToken({
       method: 'DELETE',
       url: `/draft_requests/${room.id}/delete`,
     })
     updateStatus({ status: 'agreed', roomId: room.id })
-    return isConfirm
   }
 
   const handleReceive = async () => {
@@ -79,6 +83,10 @@ const ChatClient = ({ room }: { room: GetByRoomIdRes }) => {
       method: 'PATCH',
       url: `/room_users/${room.id}/received`,
     })
+    sendMessage(
+      `依頼の品を受け取りました。
+          （このメッセージは自動送信されました。）`
+    )
     setCurrentUser((prev) => ({
       ...prev,
       isReceived: true,

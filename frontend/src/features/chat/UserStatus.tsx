@@ -8,7 +8,7 @@ type UserStatusProps = {
   otherUser: RoomUser
   status: string
   action: boolean
-  onAgree: () => Promise<boolean>
+  onAgree: () => void
   onReceive: () => void
   onSendMessage: (message: string) => void
   onOpenModal: () => void
@@ -49,13 +49,12 @@ const CurrentUserStatus = ({
   action,
   onAgree,
   onReceive,
-  onSendMessage,
   onOpenModal,
 }: {
   user: RoomUser
   action: boolean
   status: string
-  onAgree: () => Promise<boolean>
+  onAgree: () => void
   onReceive: () => void
   onSendMessage: (message: string) => void
   onOpenModal: () => void
@@ -107,12 +106,8 @@ const CurrentUserStatus = ({
     if (status === 'pending' && !user.isAgreed) {
       return {
         text: '合意',
-        onClick: async () => {
-          if (await onAgree())
-            onSendMessage(
-              `依頼の内容に同意しました。
-                （このメッセージは自動送信されました。）`
-            )
+        onClick: () => {
+          onAgree()
         },
         disabled: false,
       }
@@ -121,10 +116,6 @@ const CurrentUserStatus = ({
         text: '完了',
         onClick: () => {
           onReceive()
-          onSendMessage(
-            `依頼の品を受け取りました。
-                （このメッセージは自動送信されました。）`
-          )
         },
         disabled: false,
       }
@@ -139,12 +130,16 @@ const CurrentUserStatus = ({
       <div className="d-flex align-items-center">
         <PersonCircle size={36} className="me-2" />
         <div className="d-flex flex-column">
-          <span className="fw-bold">{user.user.name}</span>
-          <span className="text-muted">{role}</span>
+          <span className="fw-bold" style={{ fontSize: '12px' }}>
+            {user.user.name}
+          </span>
+          <span className="text-muted" style={{ fontSize: '12px' }}>
+            {role}
+          </span>
         </div>
       </div>
       <div>
-        <span>{displayText}</span>
+        <span style={{ fontSize: '12px' }}>{displayText}</span>
       </div>
       {buttonConfig.text ? (
         <AppButton
@@ -152,6 +147,7 @@ const CurrentUserStatus = ({
           text={buttonConfig.text}
           onClick={buttonConfig.onClick}
           disabled={buttonConfig.disabled}
+          style={{ fontSize: '14px' }}
         />
       ) : (
         <AppButton
@@ -212,11 +208,15 @@ const OtherUserStatus = ({
       <div className="d-flex align-items-center">
         <PersonCircle size={36} className="me-2" />
         <div className="d-flex flex-column">
-          <span className="fw-bold">{user.user.name}</span>
-          <span className="text-muted">{role}</span>
+          <span className="fw-bold" style={{ fontSize: '12px' }}>
+            {user.user.name}
+          </span>
+          <span className="text-muted" style={{ fontSize: '12px' }}>
+            {role}
+          </span>
         </div>
       </div>
-      <span>{displayText}</span>
+      <span style={{ fontSize: '12px' }}>{displayText}</span>
       {/* 隙間うめようのボタン、画面に表示はされません */}
       <AppButton
         className="invisible"
