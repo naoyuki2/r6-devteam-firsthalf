@@ -59,3 +59,14 @@ export type UpdateParamRes = {
     icon_image_url: string | null
   }
 }
+
+export const UpdateUserIconEndpoint = `${root}/icon`
+
+export type UpdateUserIconRes = {
+  user: {
+    id: number
+    name: string
+    email: string
+    icon_image_url: string | null
+  }
+}

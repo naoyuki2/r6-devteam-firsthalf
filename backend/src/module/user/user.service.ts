@@ -17,8 +17,9 @@ type GetByIdProps = {
 
 type UpdateParamProps = {
   userId: number
-  inputName: string | undefined
-  inputEmail: string | undefined
+  inputName?: string
+  inputEmail?: string
+  inputIconUrl?: string
 }
 
 export class UserService {
@@ -42,6 +43,7 @@ export class UserService {
     userId,
     inputName,
     inputEmail,
+    inputIconUrl,
   }: UpdateParamProps): Promise<User> {
     const user = await userRepository.findOneByOrFail({ id: userId })
     if (inputName !== undefined) {
@@ -50,6 +52,10 @@ export class UserService {
 
     if (inputEmail !== undefined) {
       user.email = inputEmail
+    }
+
+    if (inputIconUrl !== undefined) {
+      user.icon_image_url = inputIconUrl
     }
 
     await validateEntity(user)

@@ -3,10 +3,11 @@
 import { RequestCard } from '@/component/RequestCard'
 import { useCurrentUser } from '@/lib/jotai/userState'
 import { Request } from '@/types'
-import { Col, Row, Spinner } from 'react-bootstrap'
-import { PersonCircle } from 'react-bootstrap-icons'
+import { Spinner } from 'react-bootstrap'
+import { PencilFill, PersonCircle } from 'react-bootstrap-icons'
 import { useRequest } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
+import Link from 'next/link'
 
 export const ProfileClient = () => {
   const currentUser = useCurrentUser()
@@ -18,17 +19,41 @@ export const ProfileClient = () => {
 
   return (
     <>
-      <Row className="mb-4">
-        <Col xs={3}>
+      <div className="d-flex flex-column justify-content-center align-items-center">
+        <div
+          className="mb-3"
+          style={{
+            position: 'relative',
+          }}
+        >
           <PersonCircle size={80} />
-        </Col>
-        <Col xs={9}>
-          <h4 className="fw-bold">{currentUser?.name}</h4>
-          <p className="text-muted">{currentUser?.email}</p>
-          <div className="d-flex"></div>
-        </Col>
-      </Row>
-
+          <Link
+            href={'/profile/edit'}
+            className="rounded-circle bg-white border border-info"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              transform: 'translate(20%, 20%)',
+              width: 36,
+              height: 36,
+            }}
+          >
+            <PencilFill
+              size={24}
+              className={'text-info'}
+              style={{
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                transform: 'translate(-20%, 20%)',
+              }}
+            />
+          </Link>
+        </div>
+        <p className="fw-bold text-center">{currentUser?.name}</p>
+        <p className="text-muted text-center">{currentUser?.email}</p>
+      </div>
       {!requestList || requestList.length === 0 ? (
         <p>依頼がありません</p>
       ) : (

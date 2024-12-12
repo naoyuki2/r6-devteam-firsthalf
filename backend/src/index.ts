@@ -16,6 +16,7 @@ import { ClientToServerEvents, ServerToClientEvents } from './lib/socket.type'
 import { CustomError } from './error/CustomError'
 import { DraftRequestController } from './module/draft_request/draft_request.controller'
 import { RoomUserController } from './module/room_user/room_user.controller'
+import { ReviewController } from './module/review/review.controller'
 
 const PORT = process.env.PORT || 3030
 
@@ -31,6 +32,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use('/public', express.static('public'))
 app.use(express.urlencoded({ extended: false }))
 app.use(setCurrentUser)
 
@@ -43,6 +45,7 @@ useExpressServer(app, {
     MessageController,
     DraftRequestController,
     RoomUserController,
+    ReviewController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
