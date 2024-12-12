@@ -18,9 +18,9 @@ function getFileName(file: Express.Multer.File) {
   return `${Date.now()}-${fileName}`
 }
 
-function getFilePath(folderName: string, file: Express.Multer.File) {
-  return `${getDestination(folderName)}/${getFileName(file)}`
-}
+// function getFilePath(folderName: string, file: Express.Multer.File) {
+//   return `${getDestination(folderName)}/${getFileName(file)}`
+// }
 
 function uploadToLocal(
   req: Request,
