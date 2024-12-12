@@ -1,3 +1,4 @@
 node_modules
 /data
 /backend/public
+gcs-key.json

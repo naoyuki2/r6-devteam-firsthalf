@@ -88,7 +88,7 @@ export class UserController {
     @Res() res: Response<UpdateUserIconRes>,
   ) {
     const userId = req.currentUserId!
-    const uploadImage = await upload(req, res, '/userIcon')
+    const uploadImage = await upload(req, res, 'userIcon')
     const updateUser = await this.userService.updateParam({
       userId,
       inputIconUrl: uploadImage.url,

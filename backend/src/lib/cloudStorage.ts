@@ -2,18 +2,18 @@ import { Storage, Bucket, GetSignedUrlConfig } from '@google-cloud/storage'
 
 let storage: Storage
 let bucket: Bucket
-const BUCKET_NAME = 'hakobun-bucket'
+const BUCKET_NAME = process.env._BUCKET_NAME
 
 try {
   storage = new Storage({
-    projectId: 'hakobun',
+    projectId: process.env._PROJECT_ID,
     keyFilename:
       process.env.NODE_ENV === 'production' ? undefined : 'gcs-key.json',
   })
 
   bucket = storage.bucket(BUCKET_NAME ?? '')
 } catch (e) {
-  if (process.env.UPLOAD_TO_CLOUD === '1') {
+  if (process.env._UPLOAD_TO_CLOUD === '1') {
     throw new Error('エラーが発生しました')
   }
 }
