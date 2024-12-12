@@ -16,6 +16,7 @@ import { AppButton } from '@/component/AppButton'
 import { AppTextInput } from '@/component/AppTextInput'
 import { AppTextArea } from '@/component/AppTextArea'
 import { User } from '@/lib/jotai/userState'
+import { handleSendMessage } from './utils'
 
 type EditModalProps = {
   show: boolean
@@ -49,6 +50,15 @@ const EditModal: React.FC<EditModalProps> = ({
     request: Request | DraftRequest
   ): request is DraftRequest => {
     return 'room' in request && 'action' in request
+  }
+
+  const sendMessage = async (inputMessage: string) => {
+    if (!isDraftRequest(draftRequest)) return
+    await handleSendMessage({
+      inputMessage,
+      roomId: draftRequest.room.id,
+      currentUser: currentUser,
+    })
   }
 
   const items = isDraftRequest(draftRequest)
@@ -157,12 +167,9 @@ const EditModal: React.FC<EditModalProps> = ({
           Authorization: `Bearer ${token}`,
         },
       })
-      const createMessageArgs = {
-        body: '依頼を更新しました。右上のアイコンからご確認をお願いします。（このメッセージは自動送信されました。）',
-        roomId: draftRequest.room.id,
-        userId: currentUser?.id,
-      }
-      await apiClient.post('/messages', createMessageArgs)
+      sendMessage(
+        '依頼を更新しました。右上のアイコンからご確認をお願いします。（このメッセージは自動送信されました。）'
+      )
       window.location.reload()
     } catch (e) {
       console.log(e)
@@ -172,27 +179,16 @@ const EditModal: React.FC<EditModalProps> = ({
   const handleReject = async () => {
     if (!isDraftRequest(draftRequest)) return
     await apiClient.delete(`/draft_requests/${draftRequest.id}/reject`)
-    const createMessageArgs = {
-      body: `更新された依頼内容は拒否されました。（このメッセージ
-      は自動送信されました。）`,
-      roomId: draftRequest.room.id,
-      userId: currentUser?.id,
-    }
-
-    await apiClient.post('/messages', createMessageArgs)
+    sendMessage(`更新された依頼内容は拒否されました。（このメッセージ
+      は自動送信されました。）`)
     window.location.reload()
   }
   const handleApprove = async () => {
     if (!isDraftRequest(draftRequest)) return
     await apiClient.delete(`/draft_requests/${draftRequest.room.id}/approve`)
-    const createMessageArgs = {
-      body: `更新された依頼内容を承認しました。
+    sendMessage(`更新された依頼内容を承認しました。
       更新された依頼内容で問題なければ
-      合意ボタンを押してください。（このメッセージは自動送信されました。）`,
-      roomId: draftRequest.room.id,
-      userId: currentUser?.id,
-    }
-    await apiClient.post('/messages', createMessageArgs)
+      合意ボタンを押してください。（このメッセージは自動送信されました。）`)
     window.location.reload()
   }
 
