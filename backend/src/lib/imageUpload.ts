@@ -26,7 +26,7 @@ function uploadToLocal(
   req: Request,
   res: Response,
   folderName: string,
-): Promise<{ fields: any; url: string }> {
+): Promise<{ url: string }> {
   const destination = getDestination(folderName)
 
   mkdirSync(destination, { recursive: true })
@@ -43,12 +43,12 @@ function uploadToLocal(
   })
 
   return new Promise((resolve, reject) => {
-    multer.single(FIELD_NAME)(req, res, (err: any) => {
+    multer.single(FIELD_NAME)(req, res, (err: unknown) => {
       if (req.file == null) return reject(new Error('File required'))
       if (err != null) return reject(err)
 
       const baseURL = req.protocol + '://' + req.get('host')
-      resolve({ fields: req.body, url: `${baseURL}/${req.file.path}` })
+      resolve({ url: `${baseURL}/${req.file.path}` })
     })
   })
 }

@@ -88,10 +88,10 @@ export class UserController {
     @Res() res: Response<UpdateUserIconRes>,
   ) {
     const userId = req.currentUserId!
-    const url = await upload(req, res, '/userIcon')
+    const uploadImage = await upload(req, res, '/userIcon')
     const updateUser = await this.userService.updateParam({
       userId,
-      inputIconUrl: url.url,
+      inputIconUrl: uploadImage.url,
     })
     return res.json({ user: userSerializer(updateUser) })
   }
