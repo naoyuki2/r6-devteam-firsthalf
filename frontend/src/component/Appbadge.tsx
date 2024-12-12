@@ -2,9 +2,10 @@ import { Badge } from 'react-bootstrap'
 
 type AppBadgeProps = {
   text: string
+  onClose: () => void
 }
 
-export const AppBadge = ({ text }: AppBadgeProps) => {
+export const AppBadge = ({ text, onClose }: AppBadgeProps) => {
   return (
     <>
       <Badge
@@ -13,6 +14,16 @@ export const AppBadge = ({ text }: AppBadgeProps) => {
         style={{ color: '#055160', backgroundColor: '#CFF4FC' }}
       >
         {text}
+        <span
+          onClick={onClose}
+          style={{
+            marginLeft: '8px',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+          }}
+        >
+          ×
+        </span>
       </Badge>
     </>
   )
