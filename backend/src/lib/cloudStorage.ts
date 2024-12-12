@@ -14,7 +14,7 @@ try {
   bucket = storage.bucket(BUCKET_NAME ?? '')
 } catch (e) {
   if (process.env._UPLOAD_TO_CLOUD === '1') {
-    throw new Error('エラーが発生しました')
+    console.error(e)
   }
 }
 

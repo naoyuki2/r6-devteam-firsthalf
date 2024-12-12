@@ -2,7 +2,6 @@ import Multer from 'multer'
 import { Request, Response } from 'express'
 import { mkdirSync } from 'fs'
 import cloudStorage from './cloudStorage'
-;('./cloudStorage')
 
 const FIELD_NAME = 'file' // ※送る側のキー名と同じにすること
 
@@ -57,7 +56,7 @@ function uploadToCloud(
   req: Request,
   res: Response,
   folderName: string,
-): Promise<{ fields: any; url: string; fileName: string }> {
+): Promise<{ url: string; fileName: string }> {
   const storage = Multer.memoryStorage()
 
   const multer = Multer({
@@ -76,7 +75,6 @@ function uploadToCloud(
         .upload(req.file.buffer, getFilePath(folderName, req.file))
         .then((url) =>
           resolve({
-            fields: req.body,
             url,
             fileName: req.file!.originalname,
           }),
