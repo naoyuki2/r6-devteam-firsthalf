@@ -94,5 +94,5 @@ export type ThumbnailUpdateParam = {
 }
 
 export type ThumbnailUpdateRes = {
-  thumbnail: string
+  thumbnailUrl: string
 }

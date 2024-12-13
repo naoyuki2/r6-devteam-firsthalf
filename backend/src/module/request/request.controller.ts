@@ -116,7 +116,7 @@ export class RequestController {
     @Res() res: Response<AgreedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.agreed({ requestId })
+    const request = await this.requestService.agreed(requestId)
     return res.json({
       request: requestSerializer(request),
     })
@@ -150,7 +150,7 @@ export class RequestController {
     @Res() res: Response<ReceivedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.received({ requestId })
+    const request = await this.requestService.received(requestId)
     return res.json({
       request: requestSerializer(request),
     })
@@ -163,7 +163,7 @@ export class RequestController {
     @Res() res: Response<CompletedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.completed({ requestId })
+    const request = await this.requestService.completed(requestId)
     return res.json({
       request: requestSerializer(request),
     })
@@ -182,7 +182,7 @@ export class RequestController {
     })
 
     return res.json({
-      thumbnail,
+      thumbnailUrl: thumbnail,
     })
   }
 }

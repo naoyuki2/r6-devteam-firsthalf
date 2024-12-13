@@ -31,18 +31,9 @@ type conclusionProps = {
   draftRequest: DraftRequest
 }
 
-type RequestIdProps = {
-  requestId: number
-}
-
 type ThumbnailUpdateProps = {
   requestId: number
   thumbnailUrl: string
-}
-
-type ColorUpdateProps = {
-  requestId: number
-  colorCode: string
 }
 
 export class RequestService {
@@ -116,7 +107,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async agreed({ requestId }: RequestIdProps): Promise<Request> {
+  async agreed(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -126,7 +117,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async received({ requestId }: RequestIdProps): Promise<Request> {
+  async received(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -155,7 +146,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async completed({ requestId }: RequestIdProps): Promise<Request> {
+  async completed(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],

@@ -12,7 +12,7 @@ function getDestination(folderName: string) {
 }
 
 function getFileName(file: Express.Multer.File) {
-  // 日本語文字化け対策で、フロント側npm i multerでファイル名をエンコードしているため
+  // ランダムなファイル名を生成してそれを返す
   const crypto = require('crypto')
   const path = require('path')
   const currentDate = new Date()
@@ -29,7 +29,8 @@ function getFilePath(folderName: string, file: Express.Multer.File) {
 }
 
 function uploadToLocal(
-  req: any,
+  // Request型を渡すとRequestを拡張していた場合にエラーがでるのでanyにしてます
+  req: any, // eslint-disable-line @typescript-eslint/no-unused-vars
   res: Response,
   folderName: string,
 ): Promise<{ url: string }> {
