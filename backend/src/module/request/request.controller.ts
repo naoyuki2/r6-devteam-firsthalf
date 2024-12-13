@@ -15,10 +15,6 @@ import {
   AgreedEndpoint,
   AgreedParam,
   AgreedRes,
-  ColorUpdateEndpoint,
-  ColorUpdateParam,
-  ColorUpdateReq,
-  ColorUpdateRes,
   CompletedEndpoint,
   CompletedParam,
   CompletedRes,
@@ -187,23 +183,6 @@ export class RequestController {
 
     return res.json({
       thumbnail,
-    })
-  }
-
-  @Patch(ColorUpdateEndpoint)
-  async ColorUpdate(
-    @Req() req: Request<ColorUpdateParam, '', ColorUpdateReq, ''>,
-    @Res() res: Response<ColorUpdateRes>,
-  ) {
-    const { requestId } = req.params
-    const colorCode = req.body.colorCode
-    const RequestColor = await this.requestService.colorUpdate({
-      requestId,
-      colorCode,
-    })
-
-    return res.json({
-      RequestColor,
     })
   }
 }
