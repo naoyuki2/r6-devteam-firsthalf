@@ -86,3 +86,13 @@ export type CompletedParam = {
 export type CompletedRes = {
   request: ReturnType<typeof requestSerializer>
 }
+
+export const thumbnailUpdateEndpoint = `${root}/:requestId/thumbnail`
+
+export type ThumbnailUpdateParam = {
+  requestId: number
+}
+
+export type ThumbnailUpdateRes = {
+  thumbnail: string
+}

@@ -31,16 +31,18 @@ type conclusionProps = {
   draftRequest: DraftRequest
 }
 
-type AgreedProps = {
+type RequestIdProps = {
   requestId: number
 }
 
-type ReceivedProps = {
+type ThumbnailUpdateProps = {
   requestId: number
+  thumbnailUrl: string
 }
 
-type CompletedProps = {
+type ColorUpdateProps = {
   requestId: number
+  colorCode: string
 }
 
 export class RequestService {
@@ -114,7 +116,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async agreed({ requestId }: AgreedProps): Promise<Request> {
+  async agreed({ requestId }: RequestIdProps): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -124,7 +126,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async received({ requestId }: ReceivedProps): Promise<Request> {
+  async received({ requestId }: RequestIdProps): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -153,7 +155,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async completed({ requestId }: CompletedProps): Promise<Request> {
+  async completed({ requestId }: RequestIdProps): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -178,5 +180,17 @@ export class RequestService {
         price: draftItem.price,
       })
     })
+  }
+
+  async thumbnailUpdate({
+    requestId,
+    thumbnailUrl,
+  }: ThumbnailUpdateProps): Promise<string> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+    })
+    request.thumbnail_url = thumbnailUrl
+    requestRepository.save(request)
+    return request.thumbnail_url
   }
 }

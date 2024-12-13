@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator'
+import { IsNotEmpty, IsString, ValidateIf } from 'class-validator'
 import {
   Column,
   Entity,
@@ -56,6 +56,14 @@ export class Request {
     update: false,
   })
   created_at!: Date
+
+  @ValidateIf((o) => o.icon_image_url !== null)
+  @IsString()
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  thumbnail_url: string | null = null
 
   @OneToMany(() => Item, (item) => item.request, { cascade: true })
   items!: Item[]

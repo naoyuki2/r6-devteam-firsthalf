@@ -13,8 +13,15 @@ function getDestination(folderName: string) {
 
 function getFileName(file: Express.Multer.File) {
   // 日本語文字化け対策で、フロント側npm i multerでファイル名をエンコードしているため
-  const fileName = decodeURIComponent(file.originalname)
-  return `${Date.now()}-${fileName}`
+  const crypto = require('crypto')
+  const path = require('path')
+  const currentDate = new Date()
+  const formattedDate = currentDate
+    .toISOString()
+    .replace(/[-:T]/g, '')
+    .split('.')[0]
+  let sanitizedFilename = `${formattedDate}_${crypto.randomBytes(16).toString('hex')}${path.extname(file.originalname)}`
+  return sanitizedFilename
 }
 
 function getFilePath(folderName: string, file: Express.Multer.File) {
@@ -22,7 +29,7 @@ function getFilePath(folderName: string, file: Express.Multer.File) {
 }
 
 function uploadToLocal(
-  req: Request,
+  req: any,
   res: Response,
   folderName: string,
 ): Promise<{ url: string }> {
@@ -53,7 +60,7 @@ function uploadToLocal(
 }
 
 function uploadToCloud(
-  req: Request,
+  req: any,
   res: Response,
   folderName: string,
 ): Promise<{ url: string; fileName: string }> {
