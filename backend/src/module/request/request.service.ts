@@ -193,4 +193,16 @@ export class RequestService {
     requestRepository.save(request)
     return request.thumbnail_url
   }
+
+  async colorUpdate({
+    requestId,
+    colorCode,
+  }: ColorUpdateProps): Promise<string> {
+    const request = await requestRepository.findOneOrFail({
+      where: { id: requestId },
+    })
+    request.color = colorCode
+    requestRepository.save(request)
+    return request.color
+  }
 }

@@ -96,3 +96,17 @@ export type ThumbnailUpdateParam = {
 export type ThumbnailUpdateRes = {
   thumbnail: string
 }
+
+export const ColorUpdateEndpoint = `${root}/:requestId/color`
+
+export type ColorUpdateParam = {
+  requestId: number
+}
+
+export type ColorUpdateReq = {
+  colorCode: string
+}
+
+export type ColorUpdateRes = {
+  RequestColor: string
+}
