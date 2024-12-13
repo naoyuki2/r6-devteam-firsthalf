@@ -1,6 +1,8 @@
 import Multer from 'multer'
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { mkdirSync } from 'fs'
+import crypto from 'crypto'
+import path from 'path'
 import cloudStorage from './cloudStorage'
 
 const FIELD_NAME = 'file' // ※送る側のキー名と同じにすること
@@ -13,15 +15,12 @@ function getDestination(folderName: string) {
 
 function getFileName(file: Express.Multer.File) {
   // ランダムなファイル名を生成してそれを返す
-  const crypto = require('crypto')
-  const path = require('path')
   const currentDate = new Date()
   const formattedDate = currentDate
     .toISOString()
     .replace(/[-:T]/g, '')
     .split('.')[0]
-  let sanitizedFilename = `${formattedDate}_${crypto.randomBytes(16).toString('hex')}${path.extname(file.originalname)}`
-  return sanitizedFilename
+  return `${formattedDate}_${crypto.randomBytes(16).toString('hex')}${path.extname(file.originalname)}`
 }
 
 function getFilePath(folderName: string, file: Express.Multer.File) {
@@ -30,7 +29,7 @@ function getFilePath(folderName: string, file: Express.Multer.File) {
 
 function uploadToLocal(
   // Request型を渡すとRequestを拡張していた場合にエラーがでるのでanyにしてます
-  req: any, // eslint-disable-line @typescript-eslint/no-unused-vars
+  req: any, // eslint-disable-line @typescript-eslint/no-explicit-any
   res: Response,
   folderName: string,
 ): Promise<{ url: string }> {
@@ -61,7 +60,7 @@ function uploadToLocal(
 }
 
 function uploadToCloud(
-  req: any,
+  req: any, // eslint-disable-line @typescript-eslint/no-explicit-any
   res: Response,
   folderName: string,
 ): Promise<{ url: string; fileName: string }> {
