@@ -68,12 +68,14 @@ export const HomeClient = () => {
         {locationPrefecture && (
           <AppBadge
             text={`入手場所: ${locationPrefecture}`}
+            showCloseButton={true}
             onClose={() => handleRemoveCondition('location_prefecture')}
           />
         )}
         {deliveryPrefecture && (
           <AppBadge
             text={`受け渡し場所: ${deliveryPrefecture}`}
+            showCloseButton={true}
             onClose={() => handleRemoveCondition('delivery_prefecture')}
           />
         )}
