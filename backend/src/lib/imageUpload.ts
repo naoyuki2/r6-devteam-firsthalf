@@ -1,5 +1,5 @@
 import Multer from 'multer'
-import { Response } from 'express'
+import { Request, Response } from 'express'
 import { mkdirSync } from 'fs'
 import crypto from 'crypto'
 import path from 'path'
@@ -10,7 +10,7 @@ const FIELD_NAME = 'file' // ※送る側のキー名と同じにすること
 export const upload =
   process.env._UPLOAD_TO_CLOUD === '1' ? uploadToCloud : uploadToLocal
 function getDestination(folderName: string) {
-  return `public/uploads/${folderName}`
+  return `public/${folderName}`
 }
 
 function getFileName(file: Express.Multer.File) {
@@ -29,7 +29,7 @@ function getFilePath(folderName: string, file: Express.Multer.File) {
 
 function uploadToLocal(
   // Request型を渡すとRequestを拡張していた場合にエラーがでるのでanyにしてます
-  req: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  req: Request,
   res: Response,
   folderName: string,
 ): Promise<{ url: string }> {
@@ -60,7 +60,7 @@ function uploadToLocal(
 }
 
 function uploadToCloud(
-  req: any, // eslint-disable-line @typescript-eslint/no-explicit-any
+  req: Request,
   res: Response,
   folderName: string,
 ): Promise<{ url: string; fileName: string }> {
