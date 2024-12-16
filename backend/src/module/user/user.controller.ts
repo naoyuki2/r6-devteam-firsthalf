@@ -23,11 +23,8 @@ import {
   SignUpRes,
   UpdateParamReq,
   UpdateParamRes,
-  UpdateUserIconEndpoint,
-  UpdateUserIconRes,
   UpdateUserParamEndpoint,
 } from './user.type'
-import { upload } from '../../lib/imageUpload'
 
 @Controller()
 export class UserController {
@@ -72,27 +69,13 @@ export class UserController {
     @Res() res: Response<UpdateParamRes>,
   ) {
     const userId = req.currentUserId!
-    const { inputName, inputEmail } = req.body
+    const { inputName, inputEmail, inputIconUrl } = req.body
     const user = await this.userService.updateParam({
       userId,
       inputName,
       inputEmail,
+      inputIconUrl,
     })
     return res.json({ user: userSerializer(user) })
-  }
-
-  @Patch(UpdateUserIconEndpoint)
-  @Authorized()
-  async updateUserIcon(
-    @Req() req: Request,
-    @Res() res: Response<UpdateUserIconRes>,
-  ) {
-    const userId = req.currentUserId!
-    const uploadImage = await upload(req, res, 'userIcon')
-    const updateUser = await this.userService.updateParam({
-      userId,
-      inputIconUrl: uploadImage.url,
-    })
-    return res.json({ user: userSerializer(updateUser) })
   }
 }

@@ -86,6 +86,7 @@ export class RequestController {
       description,
       status,
       color,
+      thumbnail_url,
       items,
     } = req.body
     const userId = req.currentUserId!
@@ -98,6 +99,7 @@ export class RequestController {
       description,
       status,
       color,
+      thumbnail_url,
       userId,
       items,
     })
@@ -112,7 +114,7 @@ export class RequestController {
     @Res() res: Response<AgreedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.agreed({ requestId })
+    const request = await this.requestService.agreed(requestId)
     return res.json({
       request: requestSerializer(request),
     })
@@ -146,7 +148,7 @@ export class RequestController {
     @Res() res: Response<ReceivedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.received({ requestId })
+    const request = await this.requestService.received(requestId)
     return res.json({
       request: requestSerializer(request),
     })
@@ -159,7 +161,7 @@ export class RequestController {
     @Res() res: Response<CompletedRes>,
   ) {
     const { requestId } = req.params
-    const request = await this.requestService.completed({ requestId })
+    const request = await this.requestService.completed(requestId)
     return res.json({
       request: requestSerializer(request),
     })

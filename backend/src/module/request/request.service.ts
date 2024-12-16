@@ -22,6 +22,7 @@ type createProps = {
   description: string
   status: 'pending' | 'agreed' | 'received' | 'completed'
   color: string
+  thumbnail_url: string | undefined
   userId: number
   items: Item[]
 }
@@ -29,18 +30,6 @@ type createProps = {
 type conclusionProps = {
   request: Request
   draftRequest: DraftRequest
-}
-
-type AgreedProps = {
-  requestId: number
-}
-
-type ReceivedProps = {
-  requestId: number
-}
-
-type CompletedProps = {
-  requestId: number
 }
 
 export class RequestService {
@@ -95,6 +84,7 @@ export class RequestService {
     description,
     status,
     color,
+    thumbnail_url,
     userId,
     items,
   }: createProps): Promise<Request> {
@@ -107,6 +97,7 @@ export class RequestService {
       description,
       status,
       color,
+      thumbnail_url,
       user: { id: userId },
       items,
     })
@@ -114,7 +105,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async agreed({ requestId }: AgreedProps): Promise<Request> {
+  async agreed(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -124,7 +115,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async received({ requestId }: ReceivedProps): Promise<Request> {
+  async received(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],
@@ -153,7 +144,7 @@ export class RequestService {
     return await requestRepository.save(request)
   }
 
-  async completed({ requestId }: CompletedProps): Promise<Request> {
+  async completed(requestId: number): Promise<Request> {
     const request = await requestRepository.findOneOrFail({
       where: { id: requestId },
       relations: ['user', 'items'],

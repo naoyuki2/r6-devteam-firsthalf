@@ -17,6 +17,7 @@ import { CustomError } from './error/CustomError'
 import { DraftRequestController } from './module/draft_request/draft_request.controller'
 import { RoomUserController } from './module/room_user/room_user.controller'
 import { ReviewController } from './module/review/review.controller'
+import { MediaController } from './module/media/media.controller'
 
 const PORT = process.env.PORT || 3030
 
@@ -46,6 +47,7 @@ useExpressServer(app, {
     DraftRequestController,
     RoomUserController,
     ReviewController,
+    MediaController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,

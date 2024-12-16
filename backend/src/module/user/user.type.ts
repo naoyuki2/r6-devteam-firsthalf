@@ -49,20 +49,10 @@ export const UpdateUserParamEndpoint = root
 export type UpdateParamReq = {
   inputName: string | undefined
   inputEmail: string | undefined
+  inputIconUrl: string | undefined
 }
 
 export type UpdateParamRes = {
-  user: {
-    id: number
-    name: string
-    email: string
-    icon_image_url: string | null
-  }
-}
-
-export const UpdateUserIconEndpoint = `${root}/icon`
-
-export type UpdateUserIconRes = {
   user: {
     id: number
     name: string
