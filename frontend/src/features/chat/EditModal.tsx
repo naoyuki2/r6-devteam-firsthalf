@@ -81,6 +81,8 @@ const EditModal: React.FC<EditModalProps> = ({
           quantity: item.quantity,
           price: item.price,
         })),
+        //サムネイルの色をデフォルトの色にしています。後々動的にしたいです。
+        color: '#85C9EF',
       }
     } else {
       return {
@@ -97,6 +99,7 @@ const EditModal: React.FC<EditModalProps> = ({
           quantity: item.quantity,
           price: item.price,
         })),
+        color: '#85C9EF',
       }
     }
   })
