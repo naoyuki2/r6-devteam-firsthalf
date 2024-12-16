@@ -3,13 +3,14 @@ import { AppButton } from '@/component/AppButton'
 import { AppTextInput } from '@/component/AppTextInput'
 import { AppAlert } from '@/component/AppAlert'
 import { useState } from 'react'
-import { Form, Row, Col } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 import { apiClient } from '@/lib/axios'
 import { useRouter } from 'next/navigation'
-import { PREFECTURES } from './constants'
 import { AppTextArea } from '@/component/AppTextArea'
 import { getItem } from '@/utils/localStorage'
 import { CreateRequestArgs, CreateRequestForm, Item } from '@/types'
+import { SearchAccordion } from '@/component/SearchAccordion'
+import { Check } from 'react-bootstrap-icons'
 
 const INITIAL_FORM: CreateRequestForm = {
   title: '',
@@ -20,12 +21,16 @@ const INITIAL_FORM: CreateRequestForm = {
   description: '',
   status: 'pending',
   items: [{ id: Date.now(), name: '', quantity: 1, price: 0 }], // id: Date.now() でユニークなIDを生成
+  color: '',
 }
 
 export default function RequestClient() {
   const router = useRouter()
   const [form, setForm] = useState(INITIAL_FORM)
   const [hasError, setHasError] = useState<boolean>(false)
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [selectedDelivery, setSelectedDelivery] = useState<string>('')
+  const [selectThumbnail, setSelectThumbnail] = useState<number>(0)
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -68,6 +73,14 @@ export default function RequestClient() {
     }))
   }
 
+  let thumbnailFlags = [false, false, false, false, false]
+  const thumbnailColors = ['info', 'purple', 'limegreen', 'orange', 'pink']
+  const ColorNums = ['#85C9EF', '#AA99EC', '#94D69D', '#FFA01C', '#FFACCD']
+  let beforeKey = 0
+  thumbnailFlags[beforeKey] = false
+  thumbnailFlags[selectThumbnail] = true
+  beforeKey = selectThumbnail
+
   // idが未使用であるESLint警告が出るが、重大な問題ではないためコメントアウトで無視
   const removeIdFromItems = (
     items: { id: number; name: string; quantity: number; price: number }[]
@@ -78,13 +91,14 @@ export default function RequestClient() {
   const requestCreate = async () => {
     const args: CreateRequestArgs = {
       title: form.title,
-      location_prefecture: form.location_prefecture,
+      location_prefecture: selectedLocation,
       location_details: form.location_details,
-      delivery_prefecture: form.delivery_prefecture,
+      delivery_prefecture: selectedDelivery,
       delivery_details: form.delivery_details,
       description: form.description,
       status: 'pending',
       items: removeIdFromItems(form.items),
+      color: ColorNums[selectThumbnail],
     }
     try {
       const token = getItem('token')
@@ -108,6 +122,7 @@ export default function RequestClient() {
         message="入力項目に問題があります"
         variant="danger"
         show={hasError}
+        style={{ zIndex: 100 }}
       />
       <Form>
         <Form.Group className="mb-3">
@@ -123,25 +138,17 @@ export default function RequestClient() {
 
         <Form.Group className="mb-3">
           <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
-            入手場所（都道府県）
+            商品の入手場所（都道府県）
           </Form.Label>
-          <Form.Select
-            name="location_prefecture"
-            required
-            onChange={handleInputChange}
-          >
-            <option value="">選択してください</option>
-            {PREFECTURES.map((prefecture) => (
-              <option key={prefecture} value={prefecture}>
-                {prefecture}
-              </option>
-            ))}
-          </Form.Select>
+          <SearchAccordion
+            selectedPrefecture={selectedLocation}
+            setSelectedPrefecture={setSelectedLocation}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <AppTextInput
-            label="入手場所（詳細情報）"
+            label="商品の入手場所（詳細情報）"
             type="text"
             name="location_details"
             placeholder="例）東京ビッグサイト"
@@ -152,25 +159,17 @@ export default function RequestClient() {
 
         <Form.Group className="mb-3">
           <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
-            受け渡し場所（都道府県）
+            商品の受け渡し場所（都道府県）
           </Form.Label>
-          <Form.Select
-            name="delivery_prefecture"
-            required
-            onChange={handleInputChange}
-          >
-            <option value="">選択してください</option>
-            {PREFECTURES.map((prefecture) => (
-              <option key={prefecture} value={prefecture}>
-                {prefecture}
-              </option>
-            ))}
-          </Form.Select>
+          <SearchAccordion
+            selectedPrefecture={selectedDelivery}
+            setSelectedPrefecture={setSelectedDelivery}
+          />
         </Form.Group>
 
         <Form.Group className="mb-3">
           <AppTextInput
-            label="受け渡し場所（詳細情報）"
+            label="商品の受け渡し場所（詳細情報）"
             type="text"
             name="delivery_details"
             placeholder="例）東京ビッグサイト"
@@ -179,87 +178,9 @@ export default function RequestClient() {
           />
         </Form.Group>
 
-        {form.items.map((item, index) => (
-          <div key={item.id}>
-            <Form.Group className="mb-3">
-              <div className="d-flex justify-content-between align-items-center mb-2">
-                <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
-                  欲しいもの{index + 1}
-                </Form.Label>
-                {form.items.length > 1 && (
-                  <AppButton
-                    text="削除"
-                    onClick={() => removeItemField(item.id)}
-                    className="outline-danger ms-2"
-                    variant="outline-danger"
-                  />
-                )}
-              </div>
-              <Form.Control
-                type="text"
-                name={`item${index + 1}`}
-                placeholder="例）***のTシャツ"
-                autoComplete="off"
-                onChange={(e) =>
-                  handleItemChange(index, 'name', e.target.value)
-                }
-              ></Form.Control>
-            </Form.Group>
-
-            <Row className="mb-3">
-              <Col>
-                <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
-                  個数
-                </Form.Label>
-                <Form.Select
-                  required
-                  value={item.quantity}
-                  onChange={(e) =>
-                    handleItemChange(
-                      index,
-                      'quantity',
-                      parseInt(e.target.value)
-                    )
-                  }
-                >
-                  <option value="">-</option>
-                  {[...Array(10)].map((_, i) => (
-                    <option key={i} value={i + 1}>
-                      {i + 1}
-                    </option>
-                  ))}
-                </Form.Select>
-              </Col>
-              <Col>
-                <AppTextInput
-                  label="金額"
-                  type="number"
-                  name={`price${index + 1}`}
-                  placeholder="円"
-                  autoComplete="off"
-                  onChange={(e) =>
-                    handleItemChange(index, 'price', e.target.value)
-                  }
-                />
-              </Col>
-            </Row>
-            <div className="text-end mb-3"></div>
-            <hr />
-          </div>
-        ))}
-
-        <div className="text-end mb-3">
-          <AppButton
-            text="追加"
-            onClick={addItemField}
-            className="outline-info"
-            variant="outline-info"
-          />
-        </div>
-
         <Form.Group className="mb-3">
           <AppTextArea
-            label="詳細情報"
+            label="備考"
             name="description"
             placeholder={`例）〇〇フェスで手に入る限定グッズをお願いしたいです。希望するアイテムは以下です。\n\nTシャツ（黒、Lサイズ）`}
             autoComplete="off"
@@ -268,11 +189,170 @@ export default function RequestClient() {
           />
         </Form.Group>
 
+        <div>
+          <Form.Group className="mb-3">
+            <div className="align-items-center mb-2">
+              <div className="d-flex justify-content-between mb-2">
+                <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
+                  欲しいもの
+                </Form.Label>
+                <AppButton
+                  text="追加"
+                  onClick={addItemField}
+                  className="outline-info"
+                  variant="outline-info"
+                />
+              </div>
+              <table className="border">
+                <thead
+                  style={{
+                    backgroundColor: '#85c9ef',
+                    color: 'white',
+                    fontSize: '12px',
+                  }}
+                >
+                  <tr>
+                    <th
+                      style={{
+                        width: '30%',
+                        border: '1px solid #B3B3B3',
+                        textAlign: 'center',
+                        padding: '8px',
+                      }}
+                    >
+                      商品名
+                    </th>
+                    <th
+                      style={{
+                        width: '30%',
+                        border: '1px solid #B3B3B3',
+                        textAlign: 'center',
+                        padding: '8px',
+                      }}
+                    >
+                      単価
+                    </th>
+                    <th
+                      style={{
+                        width: '20%',
+                        border: '1px solid #B3B3B3',
+                        textAlign: 'center',
+                        padding: '8px',
+                      }}
+                    >
+                      個数
+                    </th>
+                    <th
+                      style={{
+                        width: '20%',
+                        border: '1px solid #B3B3B3',
+                        textAlign: 'center',
+                        padding: '8px',
+                      }}
+                    >
+                      -
+                    </th>
+                  </tr>
+                </thead>
+                {form.items.map((item, index) => (
+                  <tr key={item.id}>
+                    <td className="border" style={{ height: '20px' }}>
+                      <Form.Control
+                        type="text"
+                        name={`item${index + 1}`}
+                        placeholder="Tシャツ"
+                        autoComplete="off"
+                        onChange={(e) =>
+                          handleItemChange(index, 'name', e.target.value)
+                        }
+                        style={{ border: 'none' }}
+                      ></Form.Control>
+                    </td>
+                    <td className="border d-flex">
+                      <span className="pt-1">￥</span>
+                      <Form.Control
+                        type="number"
+                        name={`price${index + 1}`}
+                        placeholder="1000"
+                        autoComplete="off"
+                        onChange={(e) =>
+                          handleItemChange(index, 'name', e.target.value)
+                        }
+                        style={{ border: 'none' }}
+                      ></Form.Control>
+                    </td>
+                    <td className="border">
+                      <Form.Select
+                        required
+                        value={item.quantity}
+                        onChange={(e) =>
+                          handleItemChange(
+                            index,
+                            'quantity',
+                            parseInt(e.target.value)
+                          )
+                        }
+                      >
+                        <option value="">-</option>
+                        {[...Array(10)].map((_, i) => (
+                          <option key={i} value={i + 1}>
+                            {i + 1}
+                          </option>
+                        ))}
+                      </Form.Select>
+                    </td>
+                    <td className="border">
+                      {form.items.length > 1 && (
+                        <AppButton
+                          text="削除"
+                          onClick={() => removeItemField(item.id)}
+                          className="outline-danger ms-2"
+                          variant="outline-danger"
+                        />
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </table>
+            </div>
+          </Form.Group>
+        </div>
+
+        <Form.Group className="mb-3" style={{ paddingBottom: '54px' }}>
+          <Form.Label className="border-start border-info border-5 ps-2 fw-bold">
+            サムネイル
+          </Form.Label>
+          <div className="d-flex justify-content-between mb-3 ms-4">
+            {thumbnailColors.map((item, index) => (
+              <>
+                <label
+                  htmlFor={item}
+                  className="btn rounded-circle"
+                  style={{ backgroundColor: ColorNums[index] }}
+                >
+                  <Check
+                    className={`text-light ${
+                      thumbnailFlags[index] ? '' : 'invisible'
+                    }`}
+                  />
+                </label>
+                <input
+                  type="radio"
+                  name="thumbnail"
+                  id={item}
+                  className="invisible"
+                  onClick={() => setSelectThumbnail(index)}
+                />
+              </>
+            ))}
+          </div>
+        </Form.Group>
+
         <AppButton
           text="この内容で依頼を投稿"
           onClick={requestCreate}
-          className="w-100"
           variant="info"
+          style={{ position: 'fixed', width: '95%', bottom: 10, right: 10 }}
         />
       </Form>
     </>
