@@ -16,6 +16,7 @@ import { ClientToServerEvents, ServerToClientEvents } from './lib/socket.type'
 import { CustomError } from './error/CustomError'
 import { DraftRequestController } from './module/draft_request/draft_request.controller'
 import { RoomUserController } from './module/room_user/room_user.controller'
+import { NotificationController } from './module/notification/notification.controller'
 
 const PORT = process.env.PORT || 3030
 
@@ -43,6 +44,7 @@ useExpressServer(app, {
     MessageController,
     DraftRequestController,
     RoomUserController,
+    NotificationController,
   ],
   middlewares: [ErrorHandler],
   defaultErrorHandler: false,
