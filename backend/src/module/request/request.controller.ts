@@ -33,12 +33,8 @@ import {
   ReceivedEndpoint,
   ReceivedParam,
   ReceivedRes,
-  thumbnailUpdateEndpoint,
-  ThumbnailUpdateParam,
-  ThumbnailUpdateRes,
 } from './request.type'
 import { DraftRequestService } from '../draft_request/draft_request.service'
-import { upload } from '../../lib/imageUpload'
 
 @Controller()
 export class RequestController {
@@ -90,6 +86,7 @@ export class RequestController {
       description,
       status,
       color,
+      thumbnail_url,
       items,
     } = req.body
     const userId = req.currentUserId!
@@ -102,6 +99,7 @@ export class RequestController {
       description,
       status,
       color,
+      thumbnail_url,
       userId,
       items,
     })
@@ -166,23 +164,6 @@ export class RequestController {
     const request = await this.requestService.completed(requestId)
     return res.json({
       request: requestSerializer(request),
-    })
-  }
-
-  @Patch(thumbnailUpdateEndpoint)
-  async thumbnailUpdate(
-    @Req() req: Request<ThumbnailUpdateParam, '', '', ''>,
-    @Res() res: Response<ThumbnailUpdateRes>,
-  ) {
-    const { requestId } = req.params
-    const thumbnailImage = await upload(req, res, 'thumbnail')
-    const thumbnail = await this.requestService.thumbnailUpdate({
-      requestId,
-      thumbnailUrl: thumbnailImage.url,
-    })
-
-    return res.json({
-      thumbnailUrl: thumbnail,
     })
   }
 }

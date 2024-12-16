@@ -22,6 +22,7 @@ type createProps = {
   description: string
   status: 'pending' | 'agreed' | 'received' | 'completed'
   color: string
+  thumbnail_url: string | undefined
   userId: number
   items: Item[]
 }
@@ -29,11 +30,6 @@ type createProps = {
 type conclusionProps = {
   request: Request
   draftRequest: DraftRequest
-}
-
-type ThumbnailUpdateProps = {
-  requestId: number
-  thumbnailUrl: string
 }
 
 export class RequestService {
@@ -88,6 +84,7 @@ export class RequestService {
     description,
     status,
     color,
+    thumbnail_url,
     userId,
     items,
   }: createProps): Promise<Request> {
@@ -100,6 +97,7 @@ export class RequestService {
       description,
       status,
       color,
+      thumbnail_url,
       user: { id: userId },
       items,
     })
@@ -171,17 +169,5 @@ export class RequestService {
         price: draftItem.price,
       })
     })
-  }
-
-  async thumbnailUpdate({
-    requestId,
-    thumbnailUrl,
-  }: ThumbnailUpdateProps): Promise<string> {
-    const request = await requestRepository.findOneOrFail({
-      where: { id: requestId },
-    })
-    request.thumbnail_url = thumbnailUrl
-    requestRepository.save(request)
-    return request.thumbnail_url
   }
 }

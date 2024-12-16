@@ -57,7 +57,7 @@ export class Request {
   })
   created_at!: Date
 
-  @ValidateIf((o) => o.icon_image_url !== null)
+  @ValidateIf((o) => o.thumbnail_url !== null)
   @IsString()
   @Column({
     type: 'varchar',
