@@ -73,7 +73,7 @@ export default function RequestClient() {
     }))
   }
 
-  let thumbnailFlags = [false, false, false, false, false]
+  const thumbnailFlags = [false, false, false, false, false]
   const thumbnailColors = ['info', 'purple', 'limegreen', 'orange', 'pink']
   const ColorNums = ['#85C9EF', '#AA99EC', '#94D69D', '#FFA01C', '#FFACCD']
   let beforeKey = 0
