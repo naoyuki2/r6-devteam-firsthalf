@@ -19,6 +19,7 @@ const INITIAL_FORM: CreateRequestForm = {
   description: '',
   status: 'pending',
   items: [{ id: Date.now(), name: '', quantity: 1, price: 0 }], // id: Date.now() でユニークなIDを生成
+  color: '',
 }
 
 export default function EditRequestClient() {

@@ -47,6 +47,7 @@ export type CreateRequestArgs = {
   description: string
   status: 'pending'
   items: Item[]
+  color: string
 }
 
 export type CreateRequestForm = {
@@ -58,6 +59,7 @@ export type CreateRequestForm = {
   description: string
   status: string
   items: { id: number; name: string; quantity: number; price: number }[]
+  color: string
 }
 
 export type Item = {
