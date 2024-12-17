@@ -4,7 +4,7 @@ import { apiClient } from '@/lib/axios'
 import { Request } from '@/types'
 import { Col, Container, Row } from 'react-bootstrap'
 import { PersonCircle } from 'react-bootstrap-icons'
-
+import ProgressBar from 'react-bootstrap/ProgressBar'
 export default async function ProfilePage({
   params,
 }: {
@@ -18,14 +18,35 @@ export default async function ProfilePage({
     <>
       <TopNav isArrowShow={true} text="ユーザー情報" />
       <Container className="mt-4">
-        <Row className="mb-4">
-          <Col xs={3}>
-            <PersonCircle size={80} />
+        <Row className="mb-4 align-items-center">
+          <Col xs="auto">
+            <PersonCircle
+              className="d-flex flex-column justify-content-center"
+              size={80}
+            />
           </Col>
-          <Col xs={9}>
-            <h4 className="fw-bold">{user.name}</h4>
+          <Col>
+            <h4 className="fw-bold mb-1">{user.name}</h4> {/* ユーザー名 */}
+            <div className="d-flex align-items-center mb-1">
+              <h2 className="mb-0" style={{ marginRight: '2rem' }}>
+                評価 <span className="fw-bold">4.0</span> {/* 評価と4.0 */}
+              </h2>
+              <a
+                href="/some-link"
+                className="text-primary text-decoration-underline"
+              >
+                評価一覧を見る
+              </a>{' '}
+              {/* リンク */}
+            </div>
+            <ProgressBar
+              variant="warning"
+              now={60}
+              style={{ height: '10px', maxWidth: '300px' }}
+            />
           </Col>
         </Row>
+
         {requests.map((request: Request) => (
           <RequestCard
             key={request.id}
