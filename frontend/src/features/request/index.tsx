@@ -1,4 +1,5 @@
 'use client'
+
 import { AppButton } from '@/component/AppButton'
 import { AppTextInput } from '@/component/AppTextInput'
 import { AppAlert } from '@/component/AppAlert'
@@ -11,6 +12,7 @@ import { getItem } from '@/utils/localStorage'
 import { CreateRequestArgs, CreateRequestForm, Item } from '@/types'
 import { SearchAccordion } from '@/component/SearchAccordion'
 import { Check } from 'react-bootstrap-icons'
+import { THUMBNAIL_COLORS } from './constants'
 
 const INITIAL_FORM: CreateRequestForm = {
   title: '',
@@ -30,7 +32,7 @@ export default function RequestClient() {
   const [hasError, setHasError] = useState<boolean>(false)
   const [selectedLocation, setSelectedLocation] = useState<string>('')
   const [selectedDelivery, setSelectedDelivery] = useState<string>('')
-  const [selectThumbnail, setSelectThumbnail] = useState<number>(0)
+  const [selectColor, setSelectColor] = useState<string>('#85C9EF')
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -73,14 +75,6 @@ export default function RequestClient() {
     }))
   }
 
-  const thumbnailFlags = [false, false, false, false, false]
-  const thumbnailColors = ['info', 'purple', 'limegreen', 'orange', 'pink']
-  const ColorNums = ['#85C9EF', '#AA99EC', '#94D69D', '#FFA01C', '#FFACCD']
-  let beforeKey = 0
-  thumbnailFlags[beforeKey] = false
-  thumbnailFlags[selectThumbnail] = true
-  beforeKey = selectThumbnail
-
   // idが未使用であるESLint警告が出るが、重大な問題ではないためコメントアウトで無視
   const removeIdFromItems = (
     items: { id: number; name: string; quantity: number; price: number }[]
@@ -98,7 +92,7 @@ export default function RequestClient() {
       description: form.description,
       status: 'pending',
       items: removeIdFromItems(form.items),
-      color: ColorNums[selectThumbnail],
+      color: selectColor,
     }
     try {
       const token = getItem('token')
@@ -323,16 +317,16 @@ export default function RequestClient() {
             サムネイル
           </Form.Label>
           <div className="d-flex justify-content-between mb-3 ms-4">
-            {thumbnailColors.map((item, index) => (
-              <>
+            {THUMBNAIL_COLORS.map((item) => (
+              <div key={item}>
                 <label
                   htmlFor={item}
                   className="btn rounded-circle"
-                  style={{ backgroundColor: ColorNums[index] }}
+                  style={{ backgroundColor: item }}
                 >
                   <Check
                     className={`text-light ${
-                      thumbnailFlags[index] ? '' : 'invisible'
+                      item === selectColor ? '' : 'invisible'
                     }`}
                   />
                 </label>
@@ -341,9 +335,9 @@ export default function RequestClient() {
                   name="thumbnail"
                   id={item}
                   className="invisible"
-                  onClick={() => setSelectThumbnail(index)}
+                  onClick={() => setSelectColor(item)}
                 />
-              </>
+              </div>
             ))}
           </div>
         </Form.Group>
