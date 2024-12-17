@@ -13,17 +13,17 @@ export type Area = {
 }
 
 export function SearchClient() {
-  //const [inputKeyword, setInputKeyword] = useState(undefined)
+  const [inputKeyword, setInputKeyword] = useState('')
   const [selectedLocation, setSelectedLocation] = useState<string>('')
   const [selectedDelivery, setSelectedDelivery] = useState<string>('')
   const router = useRouter()
-  const keyword = () => false
 
   const handleSearch = () => {
     let url = '/home?filter[status]=pending'
-    if (selectedLocation != undefined)
+    if (inputKeyword != '') url += `&filter[keyword]=${inputKeyword}`
+    if (selectedLocation != '')
       url += `&filter[location_prefecture]=${selectedLocation}`
-    if (selectedDelivery != undefined)
+    if (selectedDelivery != '')
       url += `&filter[delivery_prefecture]=${selectedDelivery}`
     router.push(url)
   }
@@ -36,7 +36,7 @@ export function SearchClient() {
         name="searchKeyword"
         placeholder="例）＊＊＊フェス"
         autoComplete="off"
-        onChange={keyword}
+        onChange={(e) => setInputKeyword(e.target.value)}
         labelClassName="my-2"
       />
       <p className="border-start border-info border-5 ps-2 fw-bold my-2">
