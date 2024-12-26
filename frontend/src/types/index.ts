@@ -158,3 +158,12 @@ export type Notification = {
   isRead: boolean
   user: User
 }
+
+export type Reviews = {
+  id: number
+  sendUserRole: string
+  body: string
+  isGood: boolean
+  created_at: Date
+  sendUser: User
+}
