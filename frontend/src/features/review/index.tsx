@@ -13,7 +13,7 @@ export type reviewProps = {
 }
 
 export function ReviewClient({ userId }: reviewProps) {
-  const [isGood, setIsGood] = useState<boolean>(false)
+  const [isGood, setIsGood] = useState<boolean>(true)
   const { reviews, error, isLoading } = useReviewList(userId)
 
   if (isLoading) return <Spinner animation="border" />
