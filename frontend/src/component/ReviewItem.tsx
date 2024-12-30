@@ -1,5 +1,6 @@
 import { Reviews } from '@/types'
 import { AppUserIcon } from '@/component/AppUserIcon'
+import Image from 'next/image'
 
 type ReviewItemProps = {
   review: Reviews
@@ -10,10 +11,12 @@ export function ReviewItem({ review }: ReviewItemProps) {
     <div className="d-flex mb-3 align-items-start">
       <div className="me-3">
         {review.sendUser.iconImageUrl ? (
-          <img
+          <Image
             src={review.sendUser.iconImageUrl}
+            alt={`${review.sendUser.name}のアイコン画像`}
+            width={36}
+            height={36}
             className="rounded-circle"
-            style={{ width: '36px', height: '36px' }}
           />
         ) : (
           <AppUserIcon size={36} />
@@ -34,15 +37,13 @@ export function ReviewItem({ review }: ReviewItemProps) {
         </div>
 
         <div
-          className="p-2 rounded border"
+          className="p-2 rounded border border-dark"
           style={{
-            backgroundColor: '#f8f9fa',
-            borderColor: '#ddd',
-            borderRadius: '10px',
+            borderRadius: '12px',
           }}
         >
           {review.body}
-          <small className="text-muted d-block mt-1">
+          <small className="text-muted d-block mt-1 text-end">
             {new Date(review.created_at).toLocaleString('ja-JP', {
               weekday: 'short',
               year: 'numeric',
