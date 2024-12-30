@@ -14,6 +14,7 @@ type RequestCardProps = {
   delivery_prefecture: string
   location_prefecture: string
   color: string
+  userId: number
 }
 
 export const RequestCard = ({
@@ -24,6 +25,7 @@ export const RequestCard = ({
   delivery_prefecture,
   location_prefecture,
   color,
+  userId,
 }: RequestCardProps) => {
   return (
     <AppLink href={`/request/${id}`}>
@@ -45,12 +47,15 @@ export const RequestCard = ({
         </div>
         <p className="fw-bold my-2">{title}</p>
         <div className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
+          <AppLink
+            href={`../review/${userId}`}
+            className="d-flex align-items-center"
+          >
             <AppUserIcon size={24} />
             <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
               {username}
             </span>
-          </div>
+          </AppLink>
           <span className="text-muted" style={{ fontSize: '0.75rem' }}>
             {formatDistanceToNow(new Date(created_at), {
               addSuffix: true,
