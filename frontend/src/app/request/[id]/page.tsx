@@ -39,6 +39,7 @@ export default async function RequestDetail({
             delivery_prefecture={request.delivery_prefecture}
             location_prefecture={request.location_prefecture}
             color={request.color} // 必要に応じて他のプロパティも渡す
+            userId={request.user.id}
           />
         </div>
 
