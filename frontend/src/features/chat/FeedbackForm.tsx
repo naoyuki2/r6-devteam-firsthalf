@@ -51,7 +51,7 @@ export const FeedbackForm = ({
     try {
       await fetchWithToken({
         method: 'POST',
-        url: `review/${receiveUserId}`,
+        url: `reviews/${receiveUserId}`,
         args: JSON.stringify({
           body: inputMessage,
           sendUserRole,
