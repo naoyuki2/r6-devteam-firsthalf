@@ -18,9 +18,49 @@ export function ReviewClient({ userId }: reviewProps) {
 
   if (isLoading) return <Spinner animation="border" />
   if (error)
-    return <AppAlert variant="danger" message="レビューの取得に失敗しました" />
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: '70vh' }}
+      >
+        <Card
+          className="text-center shadow-sm"
+          style={{ width: '100%', maxWidth: '400px' }}
+        >
+          <Card.Body>
+            <EmojiDizzy
+              className="text-primary mb-3"
+              style={{ fontSize: '4rem' }}
+            />
+            <Card.Title className="text-primary fs-4">
+              エラーが発生しました
+            </Card.Title>
+          </Card.Body>
+        </Card>
+      </Container>
+    )
   if (!reviews || reviews.length === 0)
-    return <AppAlert variant="info" message="レビューがありません。" />
+    return (
+      <Container
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: '70vh' }}
+      >
+        <Card
+          className="text-center shadow-sm"
+          style={{ width: '100%', maxWidth: '400px' }}
+        >
+          <Card.Body>
+            <EmojiDizzy
+              className="text-primary mb-3"
+              style={{ fontSize: '4rem' }}
+            />
+            <Card.Title className="text-primary fs-4">
+              レビューがありません
+            </Card.Title>
+          </Card.Body>
+        </Card>
+      </Container>
+    )
 
   const filteredReviews = reviews.filter(
     (review: Reviews) => review.isGood === isGood
