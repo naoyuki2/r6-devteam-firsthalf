@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { Card, Container, Nav, Spinner } from 'react-bootstrap'
 import { useReviewList } from './hooks'
-import { AppAlert } from '@/component/AppAlert'
 import { ReviewItem } from '@/component/ReviewItem'
 import { Reviews } from '@/types'
 import { EmojiDizzy } from 'react-bootstrap-icons'
