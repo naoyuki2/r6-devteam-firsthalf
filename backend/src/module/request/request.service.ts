@@ -9,6 +9,7 @@ const itemRepository = AppDataSource.getRepository(Item)
 type GetProps = {
   status?: 'pending' | 'progress' | 'completed'
   userId?: number
+  keyword?: string
   location_prefecture?: string
   delivery_prefecture?: string
 }
@@ -47,6 +48,7 @@ export class RequestService {
   async get({
     userId,
     status,
+    keyword,
     location_prefecture,
     delivery_prefecture,
   }: GetProps): Promise<Request[]> {
@@ -57,21 +59,27 @@ export class RequestService {
       .orderBy('request.id', 'DESC')
 
     if (userId !== undefined) {
-      qb.where('user.id = :userId', { userId })
+      qb.andWhere('user.id = :userId', { userId })
     }
 
     if (status !== undefined) {
-      qb.where('status = :status', { status })
+      qb.andWhere('status = :status', { status })
+    }
+
+    if (keyword !== 'null' && keyword !== undefined) {
+      qb.andWhere('(title LIKE :keyword)', {
+        keyword: `%${keyword}%`,
+      })
     }
 
     if (location_prefecture !== 'null' && location_prefecture !== undefined) {
-      qb.where('location_prefecture = :location_prefecture', {
+      qb.andWhere('location_prefecture = :location_prefecture', {
         location_prefecture,
       })
     }
 
     if (delivery_prefecture !== 'null' && delivery_prefecture !== undefined) {
-      qb.where('delivery_prefecture = :delivery_prefecture', {
+      qb.andWhere('delivery_prefecture = :delivery_prefecture', {
         delivery_prefecture,
       })
     }

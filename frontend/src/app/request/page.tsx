@@ -5,9 +5,8 @@ import { Container } from 'react-bootstrap'
 export default function Request() {
   return (
     <>
-      <TopNav />
-      <Container className="my-5 p-3 shadow rounded">
-        <h3 className="text-center mb-3">依頼を作成</h3>
+      <TopNav isArrowShow={true} text="依頼の作成" />
+      <Container>
         <RequestClient />
       </Container>
     </>

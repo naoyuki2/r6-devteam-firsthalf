@@ -47,3 +47,11 @@ export const PREFECTURES = [
   '鹿児島県',
   '沖縄県',
 ]
+
+export const THUMBNAIL_COLORS = [
+  '#85C9EF',
+  '#AA99EC',
+  '#94D69D',
+  '#FFA01C',
+  '#FFACCD',
+]
