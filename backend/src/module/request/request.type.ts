@@ -26,7 +26,7 @@ export type GetByIdParam = {
 }
 
 export type GetByIdRes = {
-  request: unknown
+  request: ReturnType<typeof requestSerializer>
 }
 
 export const CreateEndpoint = root
@@ -40,11 +40,12 @@ export type CreateReq = {
   description: string
   status: 'pending' | 'agreed' | 'received' | 'completed'
   color: string
+  thumbnail_url: string | undefined
   items: Item[]
 }
 
 export type CreateRes = {
-  request: unknown
+  request: ReturnType<typeof requestSerializer>
 }
 
 export const AgreedEndpoint = `${root}/:requestId/agreed`
@@ -86,4 +87,14 @@ export type CompletedParam = {
 
 export type CompletedRes = {
   request: ReturnType<typeof requestSerializer>
+}
+
+export const thumbnailUpdateEndpoint = `${root}/:requestId/thumbnail`
+
+export type ThumbnailUpdateParam = {
+  requestId: number
+}
+
+export type ThumbnailUpdateRes = {
+  thumbnailUrl: string
 }
