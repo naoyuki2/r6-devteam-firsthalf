@@ -270,7 +270,7 @@ export default function RequestClient() {
                         placeholder="1000"
                         autoComplete="off"
                         onChange={(e) =>
-                          handleItemChange(index, 'name', e.target.value)
+                          handleItemChange(index, 'price', e.target.value)
                         }
                         style={{ border: 'none' }}
                       ></Form.Control>
