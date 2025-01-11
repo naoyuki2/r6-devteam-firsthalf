@@ -1,7 +1,7 @@
 import { role } from '../room_user/room_user.entity'
 import { reviewSerializer } from './review.serializer'
 
-const root = '/review'
+const root = '/reviews'
 
 export const CreateEndpoint = `${root}/:receiveUserId`
 

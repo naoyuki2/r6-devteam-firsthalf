@@ -37,6 +37,7 @@ export default async function ProfilePage({
             delivery_prefecture={request.delivery_prefecture}
             location_prefecture={request.location_prefecture}
             color={request.color}
+            userId={request.user.id}
           />
         ))}
       </Container>
