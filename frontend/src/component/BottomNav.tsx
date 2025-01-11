@@ -96,6 +96,8 @@ export default function BottomNav() {
                 right: '16px',
                 bottom: '68px',
                 zIndex: 10,
+                backgroundColor: 'white',
+                borderRadius: '50%',
               }}
               onClick={openModal}
             />
