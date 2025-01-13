@@ -14,6 +14,7 @@ type RequestCardProps = {
   delivery_prefecture: string
   location_prefecture: string
   color: string
+  userId: number
 }
 
 export const RequestCard = ({
@@ -24,34 +25,45 @@ export const RequestCard = ({
   delivery_prefecture,
   location_prefecture,
   color,
+  userId,
 }: RequestCardProps) => {
   return (
-    <AppLink href={`/request/${id}`}>
+    <div
+      className="card mb-3 shadow-sm p-2"
+      style={{
+        borderRadius: '10px',
+        position: 'relative',
+      }}
+    >
+      <AppLink
+        href={`/request/${id}`}
+        style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+      ></AppLink>
+      <Thumbnail backgroundColor={color} title={title} />
       <div
-        className="card mb-3 shadow-sm p-2"
+        className="mt-2 d-flex"
         style={{
-          borderRadius: '10px',
+          gap: '8px',
         }}
       >
-        <Thumbnail backgroundColor={color} title={title} />
-        <div
-          className="mt-2 d-flex"
-          style={{
-            gap: '8px',
-          }}
+        <AppBadge text={`入手場所：${location_prefecture}`} />
+        <AppBadge text={`受け渡し場所：${delivery_prefecture}`} />
+      </div>
+      <p className="fw-bold my-2">{title}</p>
+      <div className="d-flex justify-content-between align-items-center">
+        <AppLink
+          href={`../review/${userId}`}
+          className="d-flex align-items-center"
+          style={{ zIndex: 1 }}
         >
-          <AppBadge text={`入手場所：${location_prefecture}`} />
-          <AppBadge text={`受け渡し場所：${delivery_prefecture}`} />
-        </div>
-        <p className="fw-bold my-2">{title}</p>
-        <div className="d-flex justify-content-between align-items-center">
-          <div className="d-flex align-items-center">
-            <AppUserIcon size={24} />
-            <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
-              {username}
-            </span>
-          </div>
-          <span className="text-muted" style={{ fontSize: '0.75rem' }}>
+          <AppUserIcon size={24} />
+          <span className="fw-bold ms-2" style={{ fontSize: '0.75rem' }}>
+            {username}
+          </span>
+        </AppLink>
+
+        <div className="text-muted">
+          <span style={{ fontSize: '0.75rem' }}>
             {formatDistanceToNow(new Date(created_at), {
               addSuffix: true,
               locale: ja,
@@ -59,6 +71,6 @@ export const RequestCard = ({
           </span>
         </div>
       </div>
-    </AppLink>
+    </div>
   )
 }

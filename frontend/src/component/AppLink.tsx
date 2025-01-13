@@ -2,11 +2,12 @@ import Link from 'next/link'
 
 type AppLinkProps = {
   href: string
-  children: React.ReactNode
+  children?: React.ReactNode
   className?: string
+  style?: React.CSSProperties
 }
 
-export const AppLink = ({ href, children, className }: AppLinkProps) => {
+export const AppLink = ({ href, children, className, style }: AppLinkProps) => {
   return (
     <Link
       href={href}
@@ -14,6 +15,7 @@ export const AppLink = ({ href, children, className }: AppLinkProps) => {
       style={{
         textDecoration: 'none',
         color: '#4b4b4b',
+        ...style,
       }}
     >
       {children}

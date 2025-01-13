@@ -6,6 +6,7 @@ import { useRequestList } from './hooks'
 import { AppAlert } from '@/component/AppAlert'
 import { useSearchParams } from 'next/navigation'
 import { EmojiDizzy } from 'react-bootstrap-icons'
+import { AppBadge } from '@/component/Appbadge'
 
 export const HomeClient = () => {
   const searchParams = useSearchParams()
@@ -15,6 +16,13 @@ export const HomeClient = () => {
   const { requests, error, isLoading } = useRequestList(
     `?filter[status]=pending&filter[keyword]=${keyword}&filter[location_prefecture]=${locationPrefecture}&filter[delivery_prefecture]=${deliveryPrefecture}`
   )
+
+  // 条件を削除する関数
+  const handleRemoveCondition = (key: string) => {
+    const newParams = new URLSearchParams(window.location.search)
+    newParams.delete(`filter[${key}]`)
+    window.location.search = newParams.toString()
+  }
 
   if (isLoading) return <Spinner animation="border" />
   if (error)
@@ -47,6 +55,33 @@ export const HomeClient = () => {
 
   return (
     <Container style={{ marginTop: '15px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          flexWrap: 'wrap',
+          marginBottom: '20px',
+        }}
+      >
+        <strong>{requests?.length || 0}件</strong>
+
+        {locationPrefecture && (
+          <AppBadge
+            text={`入手場所: ${locationPrefecture}`}
+            showCloseButton={true}
+            onClose={() => handleRemoveCondition('location_prefecture')}
+          />
+        )}
+        {deliveryPrefecture && (
+          <AppBadge
+            text={`受け渡し場所: ${deliveryPrefecture}`}
+            showCloseButton={true}
+            onClose={() => handleRemoveCondition('delivery_prefecture')}
+          />
+        )}
+      </div>
+
       {requests.map((request) => (
         <RequestCard
           key={request.id}
@@ -58,6 +93,7 @@ export const HomeClient = () => {
           delivery_prefecture={request.delivery_prefecture}
           location_prefecture={request.location_prefecture}
           color={request.color}
+          userId={request.user.id}
         />
       ))}
     </Container>

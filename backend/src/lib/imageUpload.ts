@@ -1,6 +1,8 @@
 import Multer from 'multer'
 import { Request, Response } from 'express'
 import { mkdirSync } from 'fs'
+import crypto from 'crypto'
+import path from 'path'
 import cloudStorage from './cloudStorage'
 
 const FIELD_NAME = 'file' // ※送る側のキー名と同じにすること
@@ -8,13 +10,17 @@ const FIELD_NAME = 'file' // ※送る側のキー名と同じにすること
 export const upload =
   process.env._UPLOAD_TO_CLOUD === '1' ? uploadToCloud : uploadToLocal
 function getDestination(folderName: string) {
-  return `public/uploads/${folderName}`
+  return `public/${folderName}`
 }
 
 function getFileName(file: Express.Multer.File) {
-  // 日本語文字化け対策で、フロント側npm i multerでファイル名をエンコードしているため
-  const fileName = decodeURIComponent(file.originalname)
-  return `${Date.now()}-${fileName}`
+  // ランダムなファイル名を生成してそれを返す
+  const currentDate = new Date()
+  const formattedDate = currentDate
+    .toISOString()
+    .replace(/[-:T]/g, '')
+    .split('.')[0]
+  return `${formattedDate}_${crypto.randomBytes(16).toString('hex')}${path.extname(file.originalname)}`
 }
 
 function getFilePath(folderName: string, file: Express.Multer.File) {
@@ -22,6 +28,7 @@ function getFilePath(folderName: string, file: Express.Multer.File) {
 }
 
 function uploadToLocal(
+  // Request型を渡すとRequestを拡張していた場合にエラーがでるのでanyにしてます
   req: Request,
   res: Response,
   folderName: string,
